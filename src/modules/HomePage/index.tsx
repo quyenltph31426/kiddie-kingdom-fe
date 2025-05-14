@@ -17,7 +17,7 @@ const HomePage = () => {
 
         <ProductBestSeller />
 
-        <Brand />
+        {/* <Brand /> */}
       </VStack>
 
       <div className="h-[300px]"></div>
