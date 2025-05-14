@@ -33,7 +33,7 @@ const LoginPage = () => {
     },
   });
   const login = useGoogleLogin({
-    onSuccess: (codeResponse) => console.log(codeResponse),
+    onSuccess: (codeResponse) =>{ console.log(codeResponse)},
     flow: 'auth-code',
   });
 
