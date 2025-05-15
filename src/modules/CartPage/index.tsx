@@ -40,6 +40,7 @@ const CartPage = () => {
     },
   });
 
+  console.log(carts);
   console.log(isCartLoading);
 
   // Calculate total price

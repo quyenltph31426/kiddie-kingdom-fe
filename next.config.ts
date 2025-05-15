@@ -47,6 +47,7 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: 'mykingdom.com.vn' },
       { protocol: 'https', hostname: 'res.cloudinary.com' },
       { protocol: 'https', hostname: 'picsum.photos' },
+      { protocol: 'https', hostname: 'images.unsplash.com' },
     ],
   },
   webpack: process.env.NODE_ENV === 'development' ? undefined : webpack,

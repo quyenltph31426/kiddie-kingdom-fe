@@ -29,5 +29,5 @@ export interface IUpdateCartRequest {
 }
 
 export interface IMergeCartRequest {
-  items: ICartItem[];
+  items: IAddToCartRequest[];
 }

@@ -1,8 +1,9 @@
-import { createSelectorFunctions } from 'auto-zustand-selectors-hook';
-import { create } from 'zustand';
-import { createJSONStorage, persist } from 'zustand/middleware';
 import { addToCart, mergeCart, removeFromCart, updateCartItem } from '@/api/cart/requests';
 import type { ICartItem } from '@/api/cart/types';
+import { createSelectorFunctions } from 'auto-zustand-selectors-hook';
+import { getCookie } from 'cookies-next';
+import { create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
 
 export interface ICartStore {
   carts: ICartItem[];
@@ -47,7 +48,7 @@ const useBaseCartStore = create<ICartStore>()(
           });
 
           // Then sync with server if user is logged in
-          if (typeof window !== 'undefined' && localStorage.getItem('access_token')) {
+          if (typeof window !== 'undefined' && getCookie('access_token')) {
             await addToCart({
               productId: data.productId,
               variantId: data.variantId,
@@ -92,7 +93,7 @@ const useBaseCartStore = create<ICartStore>()(
           });
 
           // Sync with server if logged in
-          if (typeof window !== 'undefined' && localStorage.getItem('access_token')) {
+          if (typeof window !== 'undefined' && getCookie('access_token')) {
             await updateCartItem({ cartItemId, quantity });
           }
         } catch (error) {
@@ -116,7 +117,7 @@ const useBaseCartStore = create<ICartStore>()(
           }));
 
           // Sync with server if logged in
-          if (typeof window !== 'undefined' && localStorage.getItem('access_token')) {
+          if (typeof window !== 'undefined' && getCookie('access_token')) {
             await removeFromCart(cartItemId);
           }
         } catch (error) {
@@ -132,8 +133,16 @@ const useBaseCartStore = create<ICartStore>()(
 
         set({ isLoading: true });
         try {
-          if (typeof window !== 'undefined' && localStorage.getItem('access_token')) {
-            const response = await mergeCart({ items: carts });
+          if (typeof window !== 'undefined' && getCookie('access_token')) {
+            console.log('aaaaaaaa', carts);
+            const cartMerges = carts.map((item) => ({
+              productId: item.productId,
+              variantId: item.variantId,
+              quantity: item.quantity,
+            }));
+
+            console.log(cartMerges);
+            const response = await mergeCart({ items: cartMerges });
             set({ carts: response.items });
           }
         } catch (error) {
