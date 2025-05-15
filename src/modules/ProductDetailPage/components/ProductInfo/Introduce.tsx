@@ -46,6 +46,23 @@ const Introduce = ({ _id, name, images, originalPrice, currentPrice, variants, t
   const handleAddToCart = () => {
     if (!selectedVariant || !variantSelect || !name) return;
 
+    // Check if the selected quantity exceeds available stock
+    const availableQuantity = selectedVariant?.quantity || totalQuantity || 0;
+
+    // Find if this product variant is already in cart
+    const existingCartItem = useCartStore
+      .getState()
+      .carts.find((item) => item.productId === String(_id) && item.variantId === String(selectedVariant._id));
+
+    // Calculate total quantity (existing in cart + new quantity to add)
+    const totalRequestedQuantity = (existingCartItem?.quantity || 0) + (variantSelect.quantity || 1);
+
+    // Check if total requested quantity exceeds available stock
+    if (totalRequestedQuantity > availableQuantity) {
+      toast.error(`Cannot add to cart. Only ${availableQuantity} items available.`);
+      return;
+    }
+
     const newCart = {
       _id: id,
       productId: String(_id),

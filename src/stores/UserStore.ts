@@ -7,16 +7,26 @@ export interface IUserStore {
   user: IUser;
   setUser: (data: IUser) => void;
   logout: () => void;
+  isLoggedIn: boolean;
+  setIsLoggedIn: (data: boolean) => void;
 }
 
 const useBaseUserStore = create<IUserStore>()(
   persist(
     (set) => ({
-      isWalletConnected: false,
+      isLoggedIn: false,
       user: {} as IUser,
-      setUser: (data) => set((state) => ({ ...state, user: data })),
+      setUser: (data) => set((state) => ({ ...state, user: data, isLoggedIn: !!data?.id })),
+      setIsLoggedIn: (data) => set((state) => ({ ...state, isLoggedIn: data })),
       logout: () =>
-        set(() => ({ accessToken: '', verifyToken: '', user: {} as IUser, isWalletConnected: false, isVerifiedUser: undefined })),
+        set(() => ({
+          accessToken: '',
+          verifyToken: '',
+          isLoggedIn: false,
+          user: {} as IUser,
+          isWalletConnected: false,
+          isVerifiedUser: undefined,
+        })),
     }),
     {
       name: 'user-store',

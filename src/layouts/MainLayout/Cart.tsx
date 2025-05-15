@@ -4,11 +4,31 @@ import { Icons } from '@/assets/icons';
 import { Button } from '@/components/ui/button';
 import { ROUTER } from '@/libs/router';
 import { useCartStore } from '@/stores/CartStore';
+import { useCartQuery } from '@/api/cart/queries';
+import { useUserStore } from '@/stores/UserStore';
+import { useEffect } from 'react';
 import Link from 'next/link';
-import React from 'react';
 
 const Cart = () => {
-  const { carts } = useCartStore();
+  const { carts, mergeCart } = useCartStore();
+  const { user } = useUserStore();
+
+  // Fetch cart from API if user is logged in
+  const { data: cartData } = useCartQuery({
+    enabled: !!user?.id,
+    onSuccess: (data) => {
+      if (data?.items?.length) {
+        useCartStore.getState().setCart(data.items);
+      }
+    },
+  });
+
+  // Merge local cart with server cart when user logs in
+  useEffect(() => {
+    if (user?.id && carts.length > 0) {
+      mergeCart();
+    }
+  }, [user?.id]);
 
   return (
     <div>

@@ -3,10 +3,11 @@
 import type { Control, FieldPath, FieldPathValue, FieldValues } from 'react-hook-form';
 
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import type { ReactNode } from 'react';
 import { FormControl, FormField, FormItem, FormMessage } from '../ui/form';
 
 interface IOptionSelect {
-  label: string;
+  label: ReactNode;
   value: string;
 }
 interface RadioGroupFieldProps<T extends FieldValues = FieldValues> {

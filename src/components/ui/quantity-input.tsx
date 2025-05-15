@@ -29,7 +29,8 @@ const QuantityInput = ({ value, onChange, min = 1, max }: Props) => {
   return (
     <HStack noWrap className="overflow-hidden rounded-sm border border-primary-500 bg-primary-200">
       <button
-        onClick={() => handleChange(valueInput > min ? valueInput - 1 : min)}
+        type="button"
+        onClick={() => valueInput > Number(min) && handleChange(valueInput > min ? valueInput - 1 : min)}
         className={cn('px-4 text-2xl hover:text-white disabled:cursor-not-allowed disabled:text-grey-600', {
           'cursor-not-allowed hover:text-grey-600': valueInput <= Number(min),
         })}
@@ -44,7 +45,8 @@ const QuantityInput = ({ value, onChange, min = 1, max }: Props) => {
         className="w-16 border-none bg-transparent text-center focus-visible:bg-white focus-visible:shadow-none"
       />
       <button
-        onClick={() => handleChange(valueInput + 1)}
+        type="button"
+        onClick={() => valueInput < Number(max) && handleChange(valueInput + 1)}
         className={cn('px-4 text-xl hover:text-white', {
           'cursor-not-allowed hover:text-grey-600': valueInput >= Number(max),
         })}

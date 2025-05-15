@@ -16,6 +16,8 @@ export interface IUser {
   username: string;
   avatar: string;
   wallet_address: string;
+  name: string;
+  phone: string;
 }
 export interface IForgotPassword {
   email: string;
