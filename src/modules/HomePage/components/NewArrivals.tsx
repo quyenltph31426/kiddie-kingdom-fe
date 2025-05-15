@@ -1,6 +1,6 @@
 'use client';
 
-import { useProductsBestSeller } from '@/api/product/queries';
+import { useProductsNewArrivalsQuery } from '@/api/product/queries';
 import H2 from '@/components/text/H2';
 import { Button } from '@/components/ui/button';
 import { Show } from '@/components/utilities';
@@ -10,15 +10,15 @@ import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
 
-const ProductBestSeller = () => {
-  const { data, isFetching } = useProductsBestSeller({
+const NewArrivals = () => {
+  const { data, isFetching } = useProductsNewArrivalsQuery({
     variables: { limit: 6 },
   });
 
   return (
     <section className="mt-10">
       <div className="mb-8 flex items-center justify-between">
-        <H2 className="text-primary-500">Best Sellers</H2>
+        <H2 className="text-primary-500">New Arrivals</H2>
         <Link href={ROUTER.PRODUCTS}>
           <Button variant="ghost" className="group">
             View All
@@ -37,7 +37,7 @@ const ProductBestSeller = () => {
 
       <Show when={!isFetching && (!data?.items || data.items.length === 0)}>
         <div className="flex justify-center py-8">
-          <p className="text-gray-500">No best seller products available</p>
+          <p className="text-gray-500">No new arrival products available</p>
         </div>
       </Show>
 
@@ -52,4 +52,4 @@ const ProductBestSeller = () => {
   );
 };
 
-export default ProductBestSeller;
+export default NewArrivals;

@@ -23,6 +23,7 @@ const buttonVariants = cva(
         select: 'text-main-10 bg-[#091E420A] border rounded-sm',
         shadow:
           'shadow-[0px_1px_2px_0px_#1018280D] bg-primary-500 bg-opacity-10 hover:bg-primary-200 text-primary-500 border border-primary-500',
+        destructive: 'bg-red-damask-500 text-white hover:bg-red-damask-600',
       },
       size: {
         default: 'h-11 px-4 py-2 rounded',

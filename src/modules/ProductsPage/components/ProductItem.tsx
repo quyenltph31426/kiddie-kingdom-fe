@@ -1,5 +1,6 @@
 import type { IProduct } from '@/api/product/types';
 import { Icons } from '@/assets/icons';
+import FavoriteButton from '@/components/FavoriteButton';
 import H4 from '@/components/text/H4';
 import { SkeletonWrapper } from '@/components/ui/skeleton-wrapper';
 import { HStack, VStack } from '@/components/utilities';
@@ -14,7 +15,7 @@ type Props = {
   loading?: boolean;
 } & Partial<IProduct>;
 
-const ProductItem = ({ loading, name, brand, slug, images, originalPrice, currentPrice }: Props) => {
+const ProductItem = ({ _id, loading, name, brand, slug, images, originalPrice, currentPrice }: Props) => {
   const _originalPrice = originalPrice ? originalPrice : Number(currentPrice) + 10000;
   return (
     <Link href={`${ROUTER.PRODUCTS}/${slug}`}>
@@ -52,6 +53,7 @@ const ProductItem = ({ loading, name, brand, slug, images, originalPrice, curren
           <span className="p-1 hover:text-primary-500 ">
             <Heart className="hover:fill-primary-500" />
           </span>
+          <FavoriteButton productId={_id} />
         </HStack>
 
         <div className="text-xs">

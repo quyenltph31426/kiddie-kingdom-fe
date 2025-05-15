@@ -1,5 +1,13 @@
 import { createQuery } from 'react-query-kit';
-import { getProductByIdOrSlug, getProductBySlug, getProducts, getProductsBestSeller, getProductsRelated } from './requests';
+import {
+  getProductByIdOrSlug,
+  getProductBySlug,
+  getProducts,
+  getProductsBestSeller,
+  getProductsFeatured,
+  getProductsNewArrivals,
+  getProductsRelated,
+} from './requests';
 import type { IProduct, IProductQuery, IProductResponse } from './types';
 
 export const useProductsQuery = createQuery<IProductResponse, Partial<IProductQuery>>({
@@ -25,4 +33,14 @@ export const useProductByIdOrSlugQuery = createQuery<IProduct, string>({
 export const useProductBySlugQuery = createQuery<IProduct, string>({
   queryKey: ['product-by-slug'],
   fetcher: (slug) => getProductBySlug(slug),
+});
+
+export const useProductsNewArrivalsQuery = createQuery<IProductResponse, Partial<IProductQuery>>({
+  queryKey: ['products/new-arrivals'],
+  fetcher: (params) => getProductsNewArrivals(params),
+});
+
+export const useProductsFeaturedQuery = createQuery<IProductResponse, Partial<IProductQuery>>({
+  queryKey: ['products/featured'],
+  fetcher: (params) => getProductsFeatured(params),
 });

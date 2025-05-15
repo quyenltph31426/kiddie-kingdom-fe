@@ -1,50 +1,81 @@
-'use client';
-
 import { cn } from '@/libs/common';
-import type { FC } from 'react';
+import { motion } from 'framer-motion';
+import React, { useState } from 'react';
 
-interface Option {
+export type TabOption = {
   label: string;
   value: string | number;
+  icon?: React.ReactNode;
   disabled?: boolean;
-}
-interface Props {
-  data: Option[];
-  onChange: (value: string | number) => void;
-  value: string | number;
-  layoutId: string;
-  className?: string;
-}
+};
 
-const Tabs: FC<Props> = ({ data, onChange, value, layoutId, className }) => {
+type TabsProps = {
+  data: TabOption[];
+  value?: string | number;
+  onChange?: (value: string | number) => void;
+  layoutId?: string;
+  className?: string;
+  tabClassName?: string;
+  activeTabClassName?: string;
+  inactiveTabClassName?: string;
+  disabledTabClassName?: string;
+};
+
+const Tabs = ({
+  data,
+  value,
+  onChange,
+  layoutId,
+  className,
+  tabClassName,
+  activeTabClassName,
+  inactiveTabClassName,
+  disabledTabClassName,
+}: TabsProps) => {
+  const [activeTab, setActiveTab] = useState<string | number>(value || data[0]?.value || '');
+
+  const handleTabClick = (tab: TabOption) => {
+    if (tab.disabled) return;
+
+    const newValue = tab.value;
+    setActiveTab(newValue);
+    onChange?.(newValue);
+  };
+
   return (
-    <div className={cn('rounded-xl border-[#FFFFFF26] bg-[#FFFFFF26] p-1 text-sm', className)}>
-      <ul className="flex flex-wrap gap-4">
-        {data.map((tab) => (
-          <li
-            onClick={() => {
-              onChange(tab.value);
-            }}
-            className={cn(
-              'cursor-pointer rounded-md px-4 py-2 text-center font-semibold text-gray-500',
-              value === tab.value ? 'bg-red-damask-500 text-white' : 'hover:text-primary-300',
-              { 'pointer-events-none cursor-not-allowed text-gray-500 opacity-75': tab?.disabled }
-            )}
+    <div className={cn('flex overflow-x-auto', className)}>
+      {data.map((tab) => {
+        const isActive = value !== undefined ? tab.value === value : tab.value === activeTab;
+
+        return (
+          <button
             key={tab.value}
+            onClick={() => handleTabClick(tab)}
+            disabled={tab.disabled}
+            className={cn(
+              'relative px-4 py-2 font-medium text-sm transition-colors',
+              'focus:outline-none',
+              tabClassName,
+              isActive ? cn('text-primary-600', activeTabClassName) : cn('text-gray-600 hover:text-gray-900', inactiveTabClassName),
+              tab.disabled && cn('cursor-not-allowed opacity-50', disabledTabClassName)
+            )}
           >
-            {tab.label}
-            {/* {value === tab.value ? (
+            <div className="flex items-center gap-2">
+              {tab.icon}
+              {tab.label}
+            </div>
+
+            {isActive && layoutId && (
               <motion.div
                 layoutId={layoutId}
-                className="absolute bottom-0 z-10 h-[.125rem] w-full bg-primary-400"
-                initial={{ width: '0' }}
-                animate={{ width: '100%' }}
-                exit={{ width: 0 }}
+                className="absolute right-0 bottom-0 left-0 h-0.5 bg-primary-600"
+                initial={false}
+                transition={{ type: 'spring', stiffness: 500, damping: 30 }}
               />
-            ) : null} */}
-          </li>
-        ))}
-      </ul>
+            )}
+          </button>
+        );
+      })}
     </div>
   );
 };

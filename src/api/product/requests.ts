@@ -46,3 +46,21 @@ export const getProductsRelated = async ({
   });
   return data?.data;
 };
+
+export const getProductsNewArrivals = async (params: Partial<IProductQuery>): Promise<IProductResponse> => {
+  const { data } = await client({
+    url: '/api/products/new-arrivals',
+    method: 'GET',
+    params,
+  });
+  return data?.data;
+};
+
+export const getProductsFeatured = async (params: Partial<IProductQuery>): Promise<IProductResponse> => {
+  const { data } = await client({
+    url: '/api/products/featured',
+    method: 'GET',
+    params,
+  });
+  return data?.data;
+};
