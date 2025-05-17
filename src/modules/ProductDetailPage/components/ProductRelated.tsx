@@ -11,13 +11,11 @@ type Props = {
   productId: string;
 };
 const ProductRelated = ({ productId }: Props) => {
-  const { isFetching } = useProductsRelated({
+  const { data, isFetching } = useProductsRelated({
     variables: { productId, params: { limit: 1000 } },
     enabled: Boolean(productId),
     onError: onMutateError,
   });
-
-  const data: any = {};
 
   return (
     <section className="mt-10">
@@ -27,7 +25,7 @@ const ProductRelated = ({ productId }: Props) => {
         <div>Category</div>
       </Show>
       <Show when={!isFetching && data && data?.items?.length > 0}>
-        <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-6">
+        <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4">
           {data?.items?.map((item: any) => (
             <ProductItem key={item._id} {...item} />
           ))}

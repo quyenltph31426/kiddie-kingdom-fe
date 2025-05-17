@@ -47,6 +47,7 @@ export interface IProduct {
   updatedAt: string;
   slug: string;
   totalQuantity: number;
+  specifications: Record<string, string>;
 }
 
 export interface IProductResponse {

@@ -9,7 +9,7 @@ import { TablePagination } from '@/components/ui/table';
 import { Show } from '@/components/utilities';
 import Container from '@/components/wrapper/Container';
 import { onMutateError } from '@/libs/common';
-import { useParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
 import FilterLeftBar from './components/FilterLeftBar';
 import FilterTopBar from './components/FilterTopBar';
@@ -20,7 +20,11 @@ const ProductPage = () => {
     page: 1,
     limit: 20,
   });
-  const { slug } = useParams();
+
+  const searchParams = useSearchParams();
+  const brand = searchParams.get('brand');
+  const category = searchParams.get('category');
+  console.log({ brand, category });
 
   const { data, isFetching } = useProductsQuery({ variables: paramsQuery, onError: onMutateError });
 
@@ -30,7 +34,7 @@ const ProductPage = () => {
 
       <Container className="mt-10">
         <div className=" flex">
-          <FilterLeftBar />
+          <FilterLeftBar onChange={(value) => setParamsQuery((prev) => ({ ...prev, ...value }))} />
 
           <div className="ml-4 flex-1 lg:ml-8">
             <FilterTopBar total={data?.meta.total || 0} />
