@@ -234,9 +234,7 @@ const OrderDetailPage = () => {
 
                     {order?.paidAt && (
                       <div className="mt-2 p-2 bg-green-50 rounded-md">
-                        <p className="text-sm text-green-600 font-medium">
-                          Paid on {format(new Date(order.paidAt), 'dd/MM/yyyy HH:mm')}
-                        </p>
+                        <p className="text-sm text-green-600 font-medium">Paid on {format(new Date(order.paidAt), 'dd/MM/yyyy HH:mm')}</p>
                       </div>
                     )}
                   </div>
@@ -251,4 +249,3 @@ const OrderDetailPage = () => {
 };
 
 export default OrderDetailPage;
-

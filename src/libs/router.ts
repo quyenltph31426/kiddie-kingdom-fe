@@ -18,4 +18,3 @@ export const ROUTER = {
   COLLECTIONS: '/collections',
   PAYMENT_CALLBACK: '/payment/callback',
 } as const;
-

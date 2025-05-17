@@ -21,4 +21,3 @@ export const useCancelOrderMutation = createMutation<IOrder, string>({
   mutationKey: ['orders/cancel'],
   mutationFn: (orderId) => cancelOrder(orderId),
 });
-

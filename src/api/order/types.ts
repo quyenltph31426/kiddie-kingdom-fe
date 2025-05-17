@@ -1,10 +1,8 @@
-import type { IShippingAddress } from '@/stores/CheckoutStore';
-import type { IMetaResponse, ITableQuery } from '@/types';
-import type { ICartItem } from '../cart/types';
+import type { IMetaResponse } from '@/types';
 
-export type OrderStatus = 'PENDING' | 'PROCESSING' | 'SHIPPING' | 'COMPLETED' | 'CANCELLED';
 export type PaymentMethod = 'CASH_ON_DELIVERY' | 'ONLINE_PAYMENT';
-
+export type OrderStatus = 'PENDING' | 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED';
+export type PaymentStatus = 'PENDING' | 'COMPLETED' | 'FAILED' | 'REFUNDED';
 export interface IOrderItem {
   _id: string;
   productId: string;
@@ -12,7 +10,8 @@ export interface IOrderItem {
   quantity: number;
   price: number;
   productName: string;
-  image?: string;
+  productImage?: string;
+  attributes?: Record<string, string>;
 }
 
 export interface IShippingAddress {
@@ -29,17 +28,17 @@ export interface IShippingAddress {
 export interface IOrder {
   _id: string;
   userId: string;
-  orderNumber: string;
+  orderCode: string;
   items: IOrderItem[];
   totalAmount: number;
   discountAmount: number;
   voucherId: string | null;
-  status: OrderStatus;
+  paymentStatus: PaymentStatus;
+  shippingStatus: OrderStatus;
   paymentMethod: PaymentMethod;
   shippingAddress: IShippingAddress;
   createdAt: string;
   updatedAt: string;
-  paidAt?: string;
   paymentUrl?: string;
 }
 
@@ -74,3 +73,9 @@ export interface ICreateOrderRequest {
   notes?: string;
 }
 
+export interface IOrderQuery {
+  page: number;
+  limit: number;
+  shippingStatus?: OrderStatus;
+  paymentStatus?: PaymentStatus;
+}

@@ -34,4 +34,3 @@ export const cancelOrder = async (orderId: string): Promise<IOrder> => {
   });
   return data?.data;
 };
-

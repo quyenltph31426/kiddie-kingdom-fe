@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { useFormContext } from 'react-hook-form';
 import * as z from 'zod';
 
-
 const paymentMethods = [
   {
     value: 'CASH_ON_DELIVERY',
