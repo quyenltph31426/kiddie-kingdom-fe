@@ -21,7 +21,6 @@ export type ProductVariantSchema = z.infer<typeof productVariantSchema>;
 export const productSchema = z.object({
   name: z.string().min(1, { message: validationMessages.required() }),
   description: z.string().min(1, { message: validationMessages.required() }),
-  type: z.enum(['simple', 'variable']),
   images: z.array(z.string()).min(1, { message: 'At least one image is required' }),
   categories: z.array(z.string()).optional(),
   primaryCategoryId: z.string().nullable(),

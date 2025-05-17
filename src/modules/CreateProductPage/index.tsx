@@ -26,7 +26,6 @@ const CreateProductPage = () => {
     defaultValues: {
       name: '',
       description: '',
-      type: 'simple',
       images: [],
       categories: [],
       primaryCategoryId: '',
