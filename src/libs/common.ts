@@ -21,6 +21,36 @@ export const sleep = async (time: number) => {
 };
 
 /**
+ * Format currency with locale and currency symbol
+ *
+ * @param {number | string | null | undefined} value - The amount to format
+ * @param {string} [currency='VND'] - The currency code
+ * @returns {string} Formatted currency string
+ */
+export function formatCurrency(value: number | string | null | undefined, currency: string = 'VND'): string {
+  if (value === undefined || value === null) return '-';
+  if (Number.isNaN(Number(value))) return `invalid amount: ${value}`;
+
+  const amount = Number(value);
+
+  // For VND, no decimal places
+  if (currency === 'VND') {
+    return new Intl.NumberFormat('vi-VN', {
+      style: 'currency',
+      currency: 'VND',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(amount);
+  }
+
+  // For other currencies, use standard formatting
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency,
+  }).format(amount);
+}
+
+/**
  * Format Number With Custom Fraction Precision
  * Can expan with more locale option
  *
