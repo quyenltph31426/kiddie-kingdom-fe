@@ -1,5 +1,5 @@
 import client from '../axios';
-import type { IOrder, IOrderQuery, IOrderResponse } from './types';
+import type { ICreateOrderRequest, IOrder, IOrderQuery, IOrderResponse } from './types';
 
 export const getOrders = async (params: Partial<IOrderQuery>): Promise<IOrderResponse> => {
   const { data } = await client({
@@ -18,6 +18,15 @@ export const getOrderById = async (orderId: string): Promise<IOrder> => {
   return data?.data;
 };
 
+export const createOrder = async (orderData: ICreateOrderRequest): Promise<IOrder> => {
+  const { data } = await client({
+    url: '/api/orders',
+    method: 'POST',
+    data: orderData,
+  });
+  return data?.data;
+};
+
 export const cancelOrder = async (orderId: string): Promise<IOrder> => {
   const { data } = await client({
     url: `/api/orders/${orderId}/cancel`,
@@ -25,3 +34,4 @@ export const cancelOrder = async (orderId: string): Promise<IOrder> => {
   });
   return data?.data;
 };
+

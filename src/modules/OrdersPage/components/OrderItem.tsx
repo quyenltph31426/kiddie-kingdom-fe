@@ -1,6 +1,5 @@
 import { useCancelOrderMutation } from '@/api/order/queries';
 import type { IOrder } from '@/api/order/types';
-import { Icons } from '@/assets/icons';
 import H4 from '@/components/text/H4';
 import { Button } from '@/components/ui/button';
 import { HStack, VStack } from '@/components/utilities';
@@ -8,7 +7,7 @@ import { cn, onMutateError } from '@/libs/common';
 import { ROUTER } from '@/libs/router';
 import { formatNumber } from '@/libs/utils';
 import { format } from 'date-fns';
-import { AlertCircle, Check, Package, Truck } from 'lucide-react';
+import { AlertCircle, CheckCircle, Package, Truck, X } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
@@ -37,16 +36,16 @@ const OrderItem = ({ order, onCancelSuccess }: OrderItemProps) => {
 
   const getStatusIcon = () => {
     switch (order.status) {
-      case 'pending':
+      case 'PENDING':
         return <AlertCircle className="h-5 w-5 text-yellow-500" />;
-      case 'processing':
+      case 'PROCESSING':
         return <Package className="h-5 w-5 text-blue-500" />;
-      case 'shipped':
+      case 'SHIPPING':
         return <Truck className="h-5 w-5 text-blue-500" />;
-      case 'delivered':
-        return <Check className="h-5 w-5 text-green-500" />;
-      case 'cancelled':
-        return <Icons.X className="h-5 w-5 text-red-500" />;
+      case 'COMPLETED':
+        return <CheckCircle className="h-5 w-5 text-green-500" />;
+      case 'CANCELLED':
+        return <X className="h-5 w-5 text-red-500" />;
       default:
         return <AlertCircle className="h-5 w-5 text-gray-500" />;
     }
@@ -54,15 +53,15 @@ const OrderItem = ({ order, onCancelSuccess }: OrderItemProps) => {
 
   const getStatusText = () => {
     switch (order.status) {
-      case 'pending':
+      case 'PENDING':
         return 'Pending';
-      case 'processing':
+      case 'PROCESSING':
         return 'Processing';
-      case 'shipped':
-        return 'Shipped';
-      case 'delivered':
-        return 'Delivered';
-      case 'cancelled':
+      case 'SHIPPING':
+        return 'Shipping';
+      case 'COMPLETED':
+        return 'Completed';
+      case 'CANCELLED':
         return 'Cancelled';
       default:
         return 'Unknown';
@@ -71,15 +70,15 @@ const OrderItem = ({ order, onCancelSuccess }: OrderItemProps) => {
 
   const getStatusColor = () => {
     switch (order.status) {
-      case 'pending':
+      case 'PENDING':
         return 'bg-yellow-100 text-yellow-800';
-      case 'processing':
+      case 'PROCESSING':
         return 'bg-blue-100 text-blue-800';
-      case 'shipped':
+      case 'SHIPPING':
         return 'bg-blue-100 text-blue-800';
-      case 'delivered':
+      case 'COMPLETED':
         return 'bg-green-100 text-green-800';
-      case 'cancelled':
+      case 'CANCELLED':
         return 'bg-red-100 text-red-800';
       default:
         return 'bg-gray-100 text-gray-800';
@@ -97,7 +96,7 @@ const OrderItem = ({ order, onCancelSuccess }: OrderItemProps) => {
           </HStack>
 
           <HStack spacing={8}>
-            <span className={cn('rounded-full px-3 py-1 font-medium text-xs', getStatusColor())}>
+            <span className={cn('flex items-center rounded-full px-3 py-1 font-medium text-xs', getStatusColor())}>
               {getStatusIcon()}
               <span className="ml-1">{getStatusText()}</span>
             </span>
@@ -113,7 +112,7 @@ const OrderItem = ({ order, onCancelSuccess }: OrderItemProps) => {
       <div className="p-4">
         <HStack className="justify-between">
           <div>
-            <H4 className="mb-1">Total: {formatNumber(order.total)}</H4>
+            <H4 className="mb-1">Total: {formatNumber(order.totalAmount)}</H4>
             <p className="text-gray-500 text-sm">{order.items.length} items</p>
           </div>
 
@@ -124,7 +123,7 @@ const OrderItem = ({ order, onCancelSuccess }: OrderItemProps) => {
               </Button>
             </Link>
 
-            {order.status === 'pending' && (
+            {order.status === 'PENDING' && (
               <Button variant="destructive" size="sm" onClick={handleCancelOrder} disabled={isLoading}>
                 Cancel Order
               </Button>
@@ -144,7 +143,7 @@ const OrderItem = ({ order, onCancelSuccess }: OrderItemProps) => {
                 {order.items.map((item, index) => (
                   <HStack key={index} className="justify-between">
                     <span className="text-sm">
-                      {item.quantity} x {item.name}
+                      {item.quantity} x {item.productName}
                     </span>
                     <span className="font-medium text-sm">{formatNumber(item.price * item.quantity)}</span>
                   </HStack>
@@ -157,16 +156,23 @@ const OrderItem = ({ order, onCancelSuccess }: OrderItemProps) => {
               <h5 className="mb-2 font-medium">Shipping Address</h5>
               <VStack spacing={4} className="text-sm">
                 <p>{order.shippingAddress.fullName}</p>
-                <p>{order.shippingAddress.phoneNumber}</p>
-                <p>{order.shippingAddress.address}</p>
+                <p>{order.shippingAddress.phone}</p>
+                <p>{order.shippingAddress.addressLine1}</p>
+                {order.shippingAddress.addressLine2 && <p>{order.shippingAddress.addressLine2}</p>}
                 <p>
-                  {order.shippingAddress.city}, {order.shippingAddress.state} {order.shippingAddress.zipCode}
+                  {order.shippingAddress.city}, {order.shippingAddress.district} {order.shippingAddress.postalCode}
                 </p>
-                <p>{order.shippingAddress.country}</p>
+                {order.shippingAddress.ward && <p>{order.shippingAddress.ward}</p>}
               </VStack>
 
               <h5 className="mt-4 mb-2 font-medium">Payment Method</h5>
-              <p className="text-sm capitalize">{order.paymentMethod.type.replace('_', ' ')}</p>
+              <p className="text-sm capitalize">{order.paymentMethod === 'CASH_ON_DELIVERY' ? 'Cash On Delivery' : 'Online Payment'}</p>
+
+              {order.paidAt && (
+                <div className="mt-2">
+                  <p className="font-medium text-green-600 text-sm">Paid on {format(new Date(order.paidAt), 'dd/MM/yyyy HH:mm')}</p>
+                </div>
+              )}
             </div>
           </div>
 
@@ -174,21 +180,17 @@ const OrderItem = ({ order, onCancelSuccess }: OrderItemProps) => {
           <div className="mt-4 border-gray-200 border-t pt-4">
             <HStack className="justify-between text-sm">
               <span>Subtotal:</span>
-              <span>{formatNumber(order.subtotal)}</span>
+              <span>{formatNumber(order.totalAmount)}</span>
             </HStack>
-            <HStack className="justify-between text-sm">
-              <span>Shipping Fee:</span>
-              <span>{formatNumber(order.shippingFee)}</span>
-            </HStack>
-            {order.discount > 0 && (
+            {order.discountAmount > 0 && (
               <HStack className="justify-between text-sm">
                 <span>Discount:</span>
-                <span>-{formatNumber(order.discount)}</span>
+                <span>-{formatNumber(order.discountAmount)}</span>
               </HStack>
             )}
             <HStack className="justify-between font-medium">
               <span>Total:</span>
-              <span>{formatNumber(order.total)}</span>
+              <span>{formatNumber(order.totalAmount - order.discountAmount)}</span>
             </HStack>
           </div>
         </div>

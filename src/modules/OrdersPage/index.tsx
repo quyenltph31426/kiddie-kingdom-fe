@@ -12,7 +12,7 @@ import { Show, VStack } from '@/components/utilities';
 import Container from '@/components/wrapper/Container';
 import { onMutateError } from '@/libs/common';
 import { ROUTER } from '@/libs/router';
-import { Package, ShoppingBag, Truck, X } from 'lucide-react';
+import { CheckCircle, Package, ShoppingBag, Truck, X } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import OrderItem from './components/OrderItem';
@@ -26,15 +26,15 @@ const OrdersPage = () => {
   const getStatusFilter = (): OrderStatus | undefined => {
     switch (activeTab) {
       case 'pending':
-        return 'pending';
+        return 'PENDING';
       case 'processing':
-        return 'processing';
-      case 'shipped':
-        return 'shipped';
-      case 'delivered':
-        return 'delivered';
+        return 'PROCESSING';
+      case 'shipping':
+        return 'SHIPPING';
+      case 'completed':
+        return 'COMPLETED';
       case 'cancelled':
-        return 'cancelled';
+        return 'CANCELLED';
       default:
         return undefined;
     }
@@ -62,8 +62,8 @@ const OrdersPage = () => {
     { label: 'All Orders', value: 'all' },
     { label: 'Pending', value: 'pending' },
     { label: 'Processing', value: 'processing' },
-    { label: 'Shipped', value: 'shipped' },
-    { label: 'Delivered', value: 'delivered' },
+    { label: 'Shipping', value: 'shipping' },
+    { label: 'Completed', value: 'completed' },
     { label: 'Cancelled', value: 'cancelled' },
   ];
 
@@ -122,10 +122,10 @@ function getEmptyStateIcon(tab: string) {
       return <ShoppingBag className="h-16 w-16 text-yellow-500" />;
     case 'processing':
       return <Package className="h-16 w-16 text-blue-500" />;
-    case 'shipped':
+    case 'shipping':
       return <Truck className="h-16 w-16 text-blue-500" />;
-    case 'delivered':
-      return <ShoppingBag className="h-16 w-16 text-green-500" />;
+    case 'completed':
+      return <CheckCircle className="h-16 w-16 text-green-500" />;
     case 'cancelled':
       return <X className="h-16 w-16 text-red-500" />;
     default:
@@ -134,3 +134,4 @@ function getEmptyStateIcon(tab: string) {
 }
 
 export default OrdersPage;
+

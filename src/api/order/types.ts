@@ -1,34 +1,76 @@
+import type { IShippingAddress } from '@/stores/CheckoutStore';
 import type { IMetaResponse, ITableQuery } from '@/types';
 import type { ICartItem } from '../cart/types';
-import type { IShippingAddress } from '@/stores/CheckoutStore';
 
-export type OrderStatus = 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+export type OrderStatus = 'PENDING' | 'PROCESSING' | 'SHIPPING' | 'COMPLETED' | 'CANCELLED';
+export type PaymentMethod = 'CASH_ON_DELIVERY' | 'ONLINE_PAYMENT';
 
-export interface IOrderQuery extends ITableQuery {
-  status?: OrderStatus;
+export interface IOrderItem {
+  _id: string;
+  productId: string;
+  variantId: string;
+  quantity: number;
+  price: number;
+  productName: string;
+  image?: string;
+}
+
+export interface IShippingAddress {
+  fullName: string;
+  phone: string;
+  addressLine1: string;
+  addressLine2?: string;
+  city: string;
+  district?: string;
+  ward?: string;
+  postalCode: string;
 }
 
 export interface IOrder {
   _id: string;
-  orderNumber: string;
   userId: string;
-  items: ICartItem[];
-  shippingAddress: IShippingAddress;
-  paymentMethod: {
-    type: string;
-    details?: Record<string, any>;
-  };
+  orderNumber: string;
+  items: IOrderItem[];
+  totalAmount: number;
+  discountAmount: number;
+  voucherId: string | null;
   status: OrderStatus;
-  subtotal: number;
-  shippingFee: number;
-  discount: number;
-  total: number;
-  notes?: string;
+  paymentMethod: PaymentMethod;
+  shippingAddress: IShippingAddress;
   createdAt: string;
   updatedAt: string;
+  paidAt?: string;
+  paymentUrl?: string;
 }
 
 export interface IOrderResponse {
   items: IOrder[];
   meta: IMetaResponse;
 }
+
+export interface ICreateOrderItem {
+  productId: string;
+  variantId: string;
+  quantity: number;
+}
+
+export interface ICreateOrderShippingAddress {
+  fullName: string;
+  phone: string;
+  addressLine1: string;
+  addressLine2?: string;
+  city: string;
+  district?: string;
+  ward?: string;
+  postalCode: string;
+  isDefault?: boolean;
+}
+
+export interface ICreateOrderRequest {
+  items: ICreateOrderItem[];
+  paymentMethod: PaymentMethod;
+  shippingAddress: ICreateOrderShippingAddress;
+  voucherId?: string;
+  notes?: string;
+}
+
