@@ -14,7 +14,7 @@ const FormCategory = () => {
       <TextAreaField required control={form.control} name="description" label="Description" className="h" fullWidth />
 
       <UploadButtonField
-        accept={['png', 'jpg', 'jpeg']}
+        accept={['png', 'jpg', 'jpeg', 'svg', 'webp']}
         control={form.control}
         name="image"
         label="Image"

@@ -44,7 +44,7 @@ const FormBanner = () => {
       />
 
       <UploadButtonField
-        accept={['png', 'jpg', 'jpeg']}
+        accept={['png', 'jpg', 'jpeg', 'svg', 'webp']}
         control={form.control}
         name="image"
         label="Banner Image"
