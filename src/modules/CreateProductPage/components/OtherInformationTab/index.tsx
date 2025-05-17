@@ -21,7 +21,6 @@ const OtherInformationTab = () => {
 
   const handleTrigger = async () => {
     const isConfirm = await form.trigger();
-    console.log(isConfirm, form.formState.errors);
 
     if (!isConfirm) {
       const errors = form.formState.errors;
