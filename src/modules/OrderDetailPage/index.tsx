@@ -47,9 +47,21 @@ const OrderDetailPage = () => {
     }
   };
 
+  // Simplified status display function
   const getStatusBadge = () => {
     if (!order) return null;
 
+    // Check if order is fully completed (delivered and paid)
+    if (order.shippingStatus === 'DELIVERED' && order.paymentStatus === 'COMPLETED') {
+      return (
+        <span className={cn('flex items-center gap-1.5 rounded-full px-3 py-1 font-medium text-sm', 'bg-green-100 text-green-800')}>
+          <CheckCircle className="h-5 w-5" />
+          Completed
+        </span>
+      );
+    }
+
+    // Status config based on shipping status
     const statusConfig = {
       PENDING: {
         color: 'bg-yellow-100 text-yellow-800',
@@ -61,15 +73,10 @@ const OrderDetailPage = () => {
         icon: <Package className="h-5 w-5" />,
         text: 'Processing',
       },
-      SHIPPING: {
+      SHIPPED: {
         color: 'bg-blue-100 text-blue-800',
         icon: <Truck className="h-5 w-5" />,
         text: 'Shipping',
-      },
-      COMPLETED: {
-        color: 'bg-green-100 text-green-800',
-        icon: <CheckCircle className="h-5 w-5" />,
-        text: 'Completed',
       },
       CANCELLED: {
         color: 'bg-red-100 text-red-800',
@@ -78,7 +85,18 @@ const OrderDetailPage = () => {
       },
     };
 
-    const config = statusConfig[order.status] || statusConfig.PENDING;
+    // If payment failed, show that first
+    if (order.paymentStatus === 'FAILED') {
+      return (
+        <span className={cn('flex items-center gap-1.5 rounded-full px-3 py-1 font-medium text-sm', 'bg-red-100 text-red-800')}>
+          <AlertCircle className="h-5 w-5" />
+          Payment Failed
+        </span>
+      );
+    }
+
+    // Otherwise show shipping status
+    const config = (statusConfig as any)[order.shippingStatus] || statusConfig.PENDING;
 
     return (
       <span className={cn('flex items-center gap-1.5 rounded-full px-3 py-1 font-medium text-sm', config.color)}>
@@ -111,7 +129,7 @@ const OrderDetailPage = () => {
         breadcrumbs={[
           { name: 'Home', path: ROUTER.HOME },
           { name: 'My Orders', path: ROUTER.ORDERS },
-          { name: order ? `Order #${order.orderNumber}` : 'Order Details' },
+          { name: order ? `Order #${order.orderCode}` : 'Order Details' },
         ]}
       />
 
@@ -123,7 +141,7 @@ const OrderDetailPage = () => {
               Back to Orders
             </Button>
           </Link>
-          {order?.status === 'PENDING' && (
+          {order?.shippingStatus === 'PENDING' && (
             <Button variant="destructive" onClick={handleCancelOrder} disabled={isCancelling}>
               {isCancelling && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Cancel Order
@@ -143,7 +161,7 @@ const OrderDetailPage = () => {
             <div className="border-gray-200 border-b p-6">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <H2 className="mb-1">Order #{order?.orderNumber}</H2>
+                  <H2 className="mb-1">Order #{order?.orderCode}</H2>
                   <p className="text-gray-500 text-sm">Placed on {format(new Date(order?.createdAt || ''), 'dd/MM/yyyy')}</p>
                 </div>
                 <div className="flex items-center gap-4">{getStatusBadge()}</div>
@@ -163,8 +181,8 @@ const OrderDetailPage = () => {
                         className={cn('flex items-start gap-4 p-4', index !== order.items.length - 1 && 'border-gray-200 border-b')}
                       >
                         <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                          {item.image ? (
-                            <Image src={item.image} alt={item.productName} fill className="object-cover object-center" />
+                          {item.productImage ? (
+                            <Image src={item.productImage} alt={item.productName} fill className="object-cover object-center" />
                           ) : (
                             <div className="flex h-full w-full items-center justify-center bg-gray-100">
                               <Package className="h-8 w-8 text-gray-400" />
@@ -232,11 +250,93 @@ const OrderDetailPage = () => {
                       {order?.paymentMethod === 'CASH_ON_DELIVERY' ? 'Cash On Delivery' : 'Online Payment'}
                     </p>
 
-                    {order?.paidAt && (
-                      <div className="mt-2 p-2 bg-green-50 rounded-md">
-                        <p className="text-sm text-green-600 font-medium">Paid on {format(new Date(order.paidAt), 'dd/MM/yyyy HH:mm')}</p>
+                    {/* Payment status */}
+                    <div className="mt-4">
+                      <h4 className="mb-2 font-medium text-sm">Payment Status</h4>
+                      {order?.paymentStatus === 'COMPLETED' ? (
+                        <div className="mt-2 rounded-md bg-green-50 p-2">
+                          <p className="flex items-center font-medium text-green-600 text-sm">
+                            <CheckCircle className="mr-2 h-4 w-4" />
+                            {order.updatedAt ? format(new Date(order.updatedAt), 'dd/MM/yyyy HH:mm') : 'N/A'}
+                          </p>
+                        </div>
+                      ) : order?.paymentStatus === 'FAILED' ? (
+                        <div className="mt-2 rounded-md bg-red-50 p-2">
+                          <p className="flex items-center font-medium text-red-600 text-sm">
+                            <X className="mr-2 h-4 w-4" />
+                            Payment Failed
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="mt-2 rounded-md bg-yellow-50 p-2">
+                          <p className="flex items-center font-medium text-sm text-yellow-600">
+                            <AlertCircle className="mr-2 h-4 w-4" />
+                            Payment Pending
+                          </p>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Shipping status */}
+                    <div className="mt-4">
+                      <h4 className="mb-2 font-medium text-sm">Shipping Status</h4>
+                      <div className="mt-2 space-y-2">
+                        {/* Shipping timeline */}
+                        <div className="flex items-center">
+                          <div
+                            className={cn(
+                              'mr-2 h-4 w-4 rounded-full',
+                              order?.shippingStatus !== 'CANCELLED' ? 'bg-green-500' : 'bg-gray-300'
+                            )}
+                          ></div>
+                          <p className="text-sm">Order Placed</p>
+                          <p className="ml-auto text-gray-500 text-xs">{format(new Date(order?.createdAt || ''), 'dd/MM/yyyy')}</p>
+                        </div>
+
+                        <div className="flex items-center">
+                          <div
+                            className={cn(
+                              'mr-2 h-4 w-4 rounded-full',
+                              ['PROCESSING', 'SHIPPED', 'DELIVERED'].includes(order?.shippingStatus || '') ? 'bg-green-500' : 'bg-gray-300'
+                            )}
+                          ></div>
+                          <p className="text-sm">Processing</p>
+                        </div>
+
+                        <div className="flex items-center">
+                          <div
+                            className={cn(
+                              'mr-2 h-4 w-4 rounded-full',
+                              ['SHIPPED', 'DELIVERED'].includes(order?.shippingStatus || '') ? 'bg-green-500' : 'bg-gray-300'
+                            )}
+                          ></div>
+                          <p className="text-sm">Shipping</p>
+                        </div>
+
+                        <div className="flex items-center">
+                          <div
+                            className={cn(
+                              'mr-2 h-4 w-4 rounded-full',
+                              order?.shippingStatus === 'DELIVERED' ? 'bg-green-500' : 'bg-gray-300'
+                            )}
+                          ></div>
+                          <p className="text-sm">Delivered</p>
+                          {order?.shippingStatus === 'DELIVERED' && order.updatedAt && (
+                            <p className="ml-auto text-gray-500 text-xs">{format(new Date(order.updatedAt), 'dd/MM/yyyy')}</p>
+                          )}
+                        </div>
+
+                        {order?.shippingStatus === 'CANCELLED' && (
+                          <div className="flex items-center">
+                            <div className="mr-2 h-4 w-4 rounded-full bg-red-500"></div>
+                            <p className="text-red-600 text-sm">Cancelled</p>
+                            <p className="ml-auto text-gray-500 text-xs">
+                              {order.updatedAt ? format(new Date(order.updatedAt), 'dd/MM/yyyy') : ''}
+                            </p>
+                          </div>
+                        )}
                       </div>
-                    )}
+                    </div>
                   </div>
                 </div>
               </div>
