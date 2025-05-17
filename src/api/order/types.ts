@@ -39,7 +39,10 @@ export interface IOrder {
   shippingAddress: IShippingAddress;
   createdAt: string;
   updatedAt: string;
-  paymentUrl?: string;
+  paymentSession?: {
+    url: string;
+    paymentId: string;
+  };
 }
 
 export interface IOrderResponse {

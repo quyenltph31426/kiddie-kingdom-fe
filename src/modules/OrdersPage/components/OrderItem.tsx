@@ -430,16 +430,16 @@ const OrderItem = ({ order, onCancelSuccess }: OrderItemProps) => {
                 <div className="rounded-full bg-gray-100 p-2">{getPaymentMethodIcon(order.paymentMethod)}</div>
                 <div>
                   <p className="font-medium text-sm">{getPaymentMethodText(order.paymentMethod)}</p>
-                  {order.paymentMethod === 'ONLINE_PAYMENT' && order.paymentUrl && (
+                  {/* {order.paymentMethod === 'ONLINE_PAYMENT' && order.paymentSession && (
                     <a
-                      href={order.paymentUrl}
+                      href={order.paymentSession?.url}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-primary-600 text-xs hover:underline"
                     >
                       Payment Link
                     </a>
-                  )}
+                  )} */}
                 </div>
               </div>
 
