@@ -1,5 +1,6 @@
 'use client';
 
+import { deleteBrand } from '@/api/brand/requests';
 import { deleteCategory } from '@/api/category/requests';
 import type { ICategory } from '@/api/category/types';
 import { Icons } from '@/assets/icons';
@@ -12,7 +13,7 @@ import { toast } from 'react-toastify';
 
 const ButtonDeleteBrand = ({ _id, name, refetch }: Partial<ICategory> & { refetch: any }) => {
   const [isDeleteConfirm, setIsDeleteConfirm] = useState<boolean>(false);
-  const { mutate, isLoading } = useMutation(deleteCategory);
+  const { mutate, isLoading } = useMutation(deleteBrand);
 
   const handleRemoveBattle = () => {
     mutate(String(_id), {
