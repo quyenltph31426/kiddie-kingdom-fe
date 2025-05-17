@@ -1,111 +1,115 @@
 'use client';
 
+import {
+  useCreateAddressMutation,
+  useDeleteAddressMutation,
+  useSetDefaultAddressMutation,
+  useUserAddressesQuery,
+} from '@/api/address/queries';
 import { Icons } from '@/assets/icons';
-import { TextField } from '@/components/form';
+import { CheckboxField, TextField } from '@/components/form';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { FormWrapper } from '@/components/ui/form';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { useCheckoutStore } from '@/stores/CheckoutStore';
+import { VStack } from '@/components/utilities';
+import { onMutateError } from '@/libs/common';
 import { useUserStore } from '@/stores/UserStore';
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Trash } from 'lucide-react';
+import { useState } from 'react';
+import { useForm, useFormContext } from 'react-hook-form';
 import { toast } from 'react-toastify';
-
-// Mock user addresses - replace with actual API call
-interface Address {
-  id: string;
-  fullName: string;
-  phoneNumber: string;
-  email: string;
-  address: string;
-  city: string;
-  state: string;
-  zipCode: string;
-  country: string;
-  isDefault: boolean;
-}
+import { type ShippingSchema, shippingSchema } from '../libs/validators';
 
 const ShippingForm = () => {
   const { user } = useUserStore();
-  const { shippingAddress, setShippingAddress } = useCheckoutStore();
-  const [addresses, setAddresses] = useState<Address[]>([]);
   const [selectedAddressId, setSelectedAddressId] = useState<string>('');
   const [isAddingAddress, setIsAddingAddress] = useState(false);
-  const form = useForm();
-  const newAddressForm = useForm();
 
-  // Fetch user addresses - replace with actual API call
-  useEffect(() => {
-    // Mock data - replace with API call
-    const mockAddresses: Address[] = [
-      {
-        id: '1',
-        fullName: user?.name || '',
-        phoneNumber: user?.phone || '',
-        email: user?.email || '',
-        address: '123 Main St',
-        city: 'New York',
-        state: 'NY',
-        zipCode: '10001',
-        country: 'USA',
-        isDefault: true,
-      },
-      {
-        id: '2',
-        fullName: user?.name || '',
-        phoneNumber: user?.phone || '',
-        email: user?.email || '',
-        address: '456 Park Ave',
-        city: 'Los Angeles',
-        state: 'CA',
-        zipCode: '90001',
-        country: 'USA',
-        isDefault: false,
-      },
-    ];
+  const formOrder = useFormContext();
+  const form = useForm<ShippingSchema>({
+    defaultValues: {
+      fullName: '',
+      phone: '',
+      addressLine1: '',
+      addressLine2: '',
+      city: '',
+      district: '',
+      postalCode: '',
+      ward: '',
+      isDefault: true,
+    },
+    resolver: zodResolver(shippingSchema),
+  });
 
-    setAddresses(mockAddresses);
+  // Fetch user addresses from API
+  const {
+    data: addressData,
+    isLoading,
+    refetch,
+  } = useUserAddressesQuery({
+    enabled: !!user?.id,
+    onError: onMutateError,
+    refetchOnMount: true,
+    onSuccess: (data) => {
+      const defaultAddress = data.find((addr) => addr.isDefault);
+      if (defaultAddress) {
+        setSelectedAddressId(defaultAddress._id);
 
-    // Select default address if available
-    const defaultAddress = mockAddresses.find((addr) => addr.isDefault);
-    if (defaultAddress) {
-      setSelectedAddressId(defaultAddress.id);
-      setShippingAddress({
-        fullName: defaultAddress.fullName,
-        phoneNumber: defaultAddress.phoneNumber,
-        email: defaultAddress.email,
-        address: defaultAddress.address,
-        city: defaultAddress.city,
-        state: defaultAddress.state,
-        zipCode: defaultAddress.zipCode,
-        country: defaultAddress.country,
-      });
-    }
-  }, [user]);
+        const { _id, isDefault, ...rest } = defaultAddress;
+        formOrder.setValue('shippingAddress', rest);
+      }
+    },
+  });
+
+  // Mutations
+  const { mutate: createAddress } = useCreateAddressMutation({
+    onSuccess: () => {
+      refetch();
+      setIsAddingAddress(false);
+      form.reset();
+      toast.success('New address added successfully');
+    },
+    onError: (error) => {
+      toast.error('Failed to add address');
+      console.error(error);
+    },
+  });
+
+  const { mutate: deleteAddress } = useDeleteAddressMutation({
+    onSuccess: () => {
+      refetch();
+      toast.success('Address deleted successfully');
+    },
+    onError: (error) => {
+      toast.error('Failed to delete address');
+      console.error(error);
+    },
+  });
+
+  const { mutate: setDefaultAddress } = useSetDefaultAddressMutation({
+    onSuccess: () => {
+      refetch();
+      toast.success('Default address updated');
+    },
+    onError: (error) => {
+      toast.error('Failed to update default address');
+      console.error(error);
+    },
+  });
 
   const handleSelectAddress = (addressId: string) => {
     setSelectedAddressId(addressId);
-    const selectedAddress = addresses.find((addr) => addr.id === addressId);
-    if (selectedAddress) {
-      setShippingAddress({
-        fullName: selectedAddress.fullName,
-        phoneNumber: selectedAddress.phoneNumber,
-        email: selectedAddress.email,
-        address: selectedAddress.address,
-        city: selectedAddress.city,
-        state: selectedAddress.state,
-        zipCode: selectedAddress.zipCode,
-        country: selectedAddress.country,
-      });
-    }
+    const selectedAddress = addressData?.find((addr) => addr._id === addressId);
+
+    if (!selectedAddress) return;
+    const { _id, isDefault, ...rest } = selectedAddress;
+    formOrder.setValue('shippingAddress', rest);
   };
 
   const handleDeleteAddress = (addressId: string) => {
-    // Replace with actual API call to delete address
-    setAddresses(addresses.filter((addr) => addr.id !== addressId));
-    toast.success('Address deleted successfully');
+    deleteAddress(addressId);
 
     // If the deleted address was selected, clear selection
     if (selectedAddressId === addressId) {
@@ -113,37 +117,12 @@ const ShippingForm = () => {
     }
   };
 
-  const handleAddNewAddress = (data: any) => {
-    // Replace with actual API call to add new address
-    const newAddress: Address = {
-      id: Date.now().toString(), // temporary ID
-      fullName: data.fullName,
-      phoneNumber: data.phoneNumber,
-      email: data.email,
-      address: data.address,
-      city: data.city,
-      state: data.state || '',
-      zipCode: data.zipCode || '',
-      country: data.country || '',
-      isDefault: data.isDefault || false,
-    };
+  const handleAddNewAddress = (formData: ShippingSchema) => {
+    createAddress(formData);
+  };
 
-    setAddresses([...addresses, newAddress]);
-    setSelectedAddressId(newAddress.id);
-    setShippingAddress({
-      fullName: newAddress.fullName,
-      phoneNumber: newAddress.phoneNumber,
-      email: newAddress.email,
-      address: newAddress.address,
-      city: newAddress.city,
-      state: newAddress.state,
-      zipCode: newAddress.zipCode,
-      country: newAddress.country,
-    });
-
-    setIsAddingAddress(false);
-    newAddressForm.reset();
-    toast.success('New address added successfully');
+  const handleSetDefault = (addressId: string) => {
+    setDefaultAddress(addressId);
   };
 
   return (
@@ -161,54 +140,39 @@ const ShippingForm = () => {
             <DialogHeader>
               <DialogTitle>Add New Address</DialogTitle>
             </DialogHeader>
-            <FormWrapper form={newAddressForm} onSubmit={handleAddNewAddress}>
+            <FormWrapper form={form} onSubmit={handleAddNewAddress}>
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <TextField label="Full Name" placeholder="Enter your full name" control={newAddressForm.control} name="fullName" required />
+                <TextField label="Full Name" placeholder="Enter your full name" control={form.control} name="fullName" required />
+                <TextField label="Phone Number" placeholder="Enter your phone number" control={form.control} name="phone" required />
                 <TextField
-                  label="Phone Number"
-                  placeholder="Enter your phone number"
-                  control={newAddressForm.control}
-                  name="phoneNumber"
-                  required
-                />
-                <TextField
-                  label="Email"
-                  placeholder="Enter your email"
-                  control={newAddressForm.control}
-                  name="email"
-                  className="md:col-span-2"
-                  required
-                />
-                <TextField
-                  label="Address"
+                  label="Address Line 1"
                   placeholder="Enter your address"
-                  control={newAddressForm.control}
-                  name="address"
+                  control={form.control}
+                  name="addressLine1"
                   className="md:col-span-2"
                   required
                 />
-                <TextField label="City" placeholder="Enter your city" control={newAddressForm.control} name="city" required />
                 <TextField
-                  label="State/Province"
-                  placeholder="Enter your state or province"
-                  control={newAddressForm.control}
-                  name="state"
+                  label="Address Line 2 (Optional)"
+                  placeholder="Apartment, suite, etc."
+                  control={form.control}
+                  name="addressLine2"
+                  className="md:col-span-2"
                 />
-                <TextField label="Zip/Postal Code" placeholder="Enter your zip code" control={newAddressForm.control} name="zipCode" />
-                <TextField label="Country" placeholder="Enter your country" control={newAddressForm.control} name="country" />
+                <TextField label="City" placeholder="Enter your city" control={form.control} name="city" required />
+                <TextField label="District" placeholder="Enter your district" control={form.control} name="district" required />
+                <TextField label="Ward" placeholder="Enter your ward" control={form.control} name="ward" required />
+                <TextField label="Postal Code" placeholder="Enter your postal code" control={form.control} name="postalCode" />
 
-                <div className="flex items-center space-x-2 md:col-span-2">
-                  <Checkbox id="isDefault" {...newAddressForm.register('isDefault')} />
-                  <label htmlFor="isDefault" className="text-sm">
-                    Set as default address
-                  </label>
-                </div>
+                <CheckboxField label="Set as default address" control={form.control} name="isDefault" />
 
                 <div className="flex justify-end gap-2 md:col-span-2">
                   <Button type="button" variant="outline" onClick={() => setIsAddingAddress(false)}>
                     Cancel
                   </Button>
-                  <Button type="submit">Save Address</Button>
+                  <Button type="button" onClick={() => form.handleSubmit(handleAddNewAddress)()}>
+                    Save Address
+                  </Button>
                 </div>
               </div>
             </FormWrapper>
@@ -216,7 +180,11 @@ const ShippingForm = () => {
         </Dialog>
       </div>
 
-      {addresses.length === 0 ? (
+      {isLoading ? (
+        <div className="flex justify-center py-8">
+          <Icons.spinner className="h-8 w-8 animate-spin text-primary-500" />
+        </div>
+      ) : addressData?.length === 0 ? (
         <div className="rounded-md border border-dashed p-6 text-center">
           <p className="text-gray-500">You don't have any saved addresses.</p>
           <Button variant="outline" className="mt-2" onClick={() => setIsAddingAddress(true)}>
@@ -224,78 +192,64 @@ const ShippingForm = () => {
           </Button>
         </div>
       ) : (
-        <FormWrapper form={form} onSubmit={() => {}}>
-          <RadioGroup value={selectedAddressId} onValueChange={handleSelectAddress} className="space-y-4">
-            {addresses.map((address) => (
-              <div
-                key={address.id}
-                className={`relative rounded-md border p-4 transition-all ${
-                  selectedAddressId === address.id ? 'border-primary-500 bg-primary-50' : 'border-gray-200'
-                }`}
-              >
-                <div className="flex items-start justify-between">
-                  <div className="flex items-start space-x-3">
-                    <RadioGroupItem value={address.id} id={`address-${address.id}`} />
-                    <div>
-                      <div className="flex items-center">
-                        <label htmlFor={`address-${address.id}`} className="font-medium">
-                          {address.fullName}
-                        </label>
-                        {address.isDefault && (
-                          <span className="ml-2 rounded-full bg-primary-100 px-2 py-0.5 text-primary-700 text-xs">Default</span>
-                        )}
+        <RadioGroup value={selectedAddressId} onValueChange={handleSelectAddress}>
+          <VStack className="max-h-[300px] overflow-y-auto pr-2">
+            {addressData
+              ?.sort((a, b) => (a.isDefault ? -1 : b.isDefault ? 1 : 0))
+              ?.map((address) => (
+                <div
+                  key={address._id}
+                  className={`relative rounded-md border p-3 transition-all ${
+                    selectedAddressId === address._id ? 'border-primary-500 bg-primary-50' : 'border-gray-200'
+                  }`}
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-start space-x-3">
+                      <RadioGroupItem value={address._id} id={address._id} />
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <label htmlFor={address._id} className="font-medium text-sm">
+                            {address.fullName}
+                          </label>
+                          {address.isDefault && (
+                            <span className="rounded-full bg-primary-100 px-2 py-0.5 text-primary-700 text-xs">Default</span>
+                          )}
+                        </div>
+                        <p className="mt-1 text-gray-600 text-sm">{address.phone}</p>
+                        <p className="mt-1 text-sm">
+                          {address.addressLine1}
+                          {address.addressLine2 && `, ${address.addressLine2}`}
+                        </p>
+                        <p className="text-sm">
+                          {address.ward}, {address.district}, {address.city}, {address.postalCode}
+                        </p>
                       </div>
-                      <p className="mt-1 text-gray-600 text-sm">{address.phoneNumber}</p>
-                      <p className="text-gray-600 text-sm">{address.email}</p>
-                      <p className="mt-1 text-sm">
-                        {address.address}, {address.city}, {address.state} {address.zipCode}, {address.country}
-                      </p>
+                    </div>
+                    <div className="flex space-x-2">
+                      {!address.isDefault && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleSetDefault(address._id)}
+                          className="text-gray-500 hover:text-primary-500"
+                        >
+                          Set Default
+                        </Button>
+                      )}
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleDeleteAddress(address._id)}
+                        className="text-gray-500 hover:text-red-500"
+                      >
+                        <Trash className="h-4 w-4" />
+                      </Button>
                     </div>
                   </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleDeleteAddress(address.id)}
-                    className="text-gray-500 hover:text-red-500"
-                  >
-                    <Icons.trash className="h-4 w-4" />
-                  </Button>
                 </div>
-              </div>
-            ))}
-          </RadioGroup>
-        </FormWrapper>
-      )}
-
-      {/* Manual address entry form - shown when no address is selected */}
-      {addresses.length > 0 && !selectedAddressId && (
-        <div className="mt-6">
-          <h5 className="mb-4 font-medium">Or Enter a New Address</h5>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            <TextField label="Full Name" placeholder="Enter your full name" control={form.control} name="fullName" required />
-            <TextField label="Phone Number" placeholder="Enter your phone number" control={form.control} name="phoneNumber" required />
-            <TextField
-              label="Email"
-              placeholder="Enter your email"
-              control={form.control}
-              name="email"
-              className="md:col-span-2"
-              required
-            />
-            <TextField
-              label="Address"
-              placeholder="Enter your address"
-              control={form.control}
-              name="address"
-              className="md:col-span-2"
-              required
-            />
-            <TextField label="City" placeholder="Enter your city" control={form.control} name="city" required />
-            <TextField label="State/Province" placeholder="Enter your state or province" control={form.control} name="state" />
-            <TextField label="Zip/Postal Code" placeholder="Enter your zip code" control={form.control} name="zipCode" />
-            <TextField label="Country" placeholder="Enter your country" control={form.control} name="country" />
-          </div>
-        </div>
+              ))}
+          </VStack>
+        </RadioGroup>
       )}
     </div>
   );

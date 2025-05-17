@@ -2,11 +2,12 @@
 import { useCategoriesQuery } from '@/api/category/queries';
 import H2 from '@/components/text/H2';
 import { Show } from '@/components/utilities';
+import { onMutateError } from '@/libs/common';
 import React from 'react';
 import CategoryItem from './components/CategoryItem';
 
 const Category = () => {
-  const { data, isFetching } = useCategoriesQuery({});
+  const { data, isFetching } = useCategoriesQuery({ variables: { limit: 10 }, onError: onMutateError });
   return (
     <section className="mt-10">
       <H2 className="mb-8 text-center text-primary-500">List categories</H2>

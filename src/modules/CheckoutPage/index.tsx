@@ -1,5 +1,6 @@
 'use client';
 
+import { useCreateOrderMutation } from '@/api/order/queries';
 import NotFound from '@/components/404';
 import Breadcrumb from '@/components/Breadcrumb';
 import H3 from '@/components/text/H3';
@@ -9,7 +10,6 @@ import Container from '@/components/wrapper/Container';
 import { ROUTER } from '@/libs/router';
 import { formatNumber } from '@/libs/utils';
 import { useCheckoutStore } from '@/stores/CheckoutStore';
-import { useUserStore } from '@/stores/UserStore';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -18,30 +18,72 @@ import { toast } from 'react-toastify';
 import OrderSummary from './components/OrderSummary';
 import PaymentMethod from './components/PaymentMethod';
 import ShippingForm from './components/ShippingForm';
+import { type OrderSchema, orderSchema } from './libs/validators';
 
 const CheckoutPage = () => {
   const router = useRouter();
-  const form = useForm();
-  const { user } = useUserStore();
-  const { items, shippingAddress, paymentMethod, subtotal, shippingFee, discount, total } = useCheckoutStore();
+  const form = useForm<OrderSchema>({
+    defaultValues: {
+      items: [],
+      paymentMethod: 'CASH_ON_DELIVERY',
+      shippingAddress: {
+        fullName: '',
+        phone: '',
+        addressLine1: '',
+        addressLine2: '',
+        city: '',
+        district: '',
+        ward: '',
+        postalCode: '',
+        isDefault: true,
+      },
+      voucherId: '',
+    },
+  });
+  const { items, clearCheckout } = useCheckoutStore();
 
-  // If no items in checkout, show NotFound page
+  const { mutate: createOrder, isLoading } = useCreateOrderMutation({
+    onSuccess: (data) => {
+      if (data.paymentMethod === 'ONLINE_PAYMENT' && data?.paymentSession) {
+        clearCheckout();
+        window.location.href = data.paymentSession?.url;
+      } else {
+        toast.success('Order placed successfully!');
+        clearCheckout();
+        router.push(`${ROUTER.ORDERS}/${data._id}`);
+      }
+    },
+    onError: (error) => {
+      toast.error('Failed to place order. Please try again.');
+      console.error('Order creation error:', error);
+    },
+  });
 
-  const handleSubmitOrder = () => {
-    // Validate shipping address
-    const requiredFields = ['fullName', 'phoneNumber', 'email', 'address', 'city'];
-    const missingFields = requiredFields.filter((field) => !shippingAddress[field as keyof typeof shippingAddress]);
+  const handleSubmitOrder = (formData: OrderSchema) => {
+    const orderData = {
+      items: items.map((item) => ({
+        productId: item.productId,
+        variantId: item.variantId,
+        quantity: item.quantity,
+      })),
+      paymentMethod: formData.paymentMethod,
+      shippingAddress: formData.shippingAddress,
+    };
 
-    if (missingFields.length > 0) {
-      toast.error('Please complete all required shipping information');
+    const validationResult = orderSchema.safeParse(orderData);
+
+    if (!validationResult.success) {
+      const formattedErrors = validationResult.error.format();
+      console.error('Validation errors:', formattedErrors);
+
+      // Hiển thị thông báo lỗi
+      const firstError = validationResult.error.errors[0];
+      toast.error(firstError?.message || 'Please check your order information');
       return;
     }
 
-    // Here you would submit the order to your API
-    toast.success('Order placed successfully!');
-
-    // Navigate to confirmation page or order status page
-    // router.push(ROUTER.ORDER_CONFIRMATION);
+    // Nếu validation thành công, gửi request tạo đơn hàng
+    createOrder(orderData);
   };
 
   if (items.length === 0) {
@@ -112,8 +154,8 @@ const CheckoutPage = () => {
                 <h4 className="mb-4 font-medium text-lg">Order Summary</h4>
                 <OrderSummary />
 
-                <Button type="submit" className="mt-6 w-full">
-                  Place Order
+                <Button type="submit" className="mt-6 w-full" disabled={isLoading}>
+                  {isLoading ? 'Processing...' : 'Place Order'}
                 </Button>
 
                 <Link href={ROUTER.CART} className="mt-4 block text-center text-gray-500 text-sm hover:text-primary-600">

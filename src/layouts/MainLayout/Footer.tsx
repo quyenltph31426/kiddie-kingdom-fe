@@ -7,7 +7,7 @@ import React from 'react';
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-100 pt-12 pb-8">
+    <footer className="mt-32 bg-gray-100 pt-12 pb-8">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           {/* Logo and About */}

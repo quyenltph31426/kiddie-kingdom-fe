@@ -1,6 +1,6 @@
 import { createMutation, createQuery } from 'react-query-kit';
-import { cancelOrder, getOrderById, getOrders } from './requests';
-import type { IOrder, IOrderQuery, IOrderResponse } from './types';
+import { cancelOrder, createOrder, getOrderById, getOrders } from './requests';
+import type { ICreateOrderRequest, IOrder, IOrderQuery, IOrderResponse } from './types';
 
 export const useOrdersQuery = createQuery<IOrderResponse, Partial<IOrderQuery>>({
   queryKey: ['orders'],
@@ -10,6 +10,11 @@ export const useOrdersQuery = createQuery<IOrderResponse, Partial<IOrderQuery>>(
 export const useOrderByIdQuery = createQuery<IOrder, string>({
   queryKey: ['orders/detail'],
   fetcher: (orderId) => getOrderById(orderId),
+});
+
+export const useCreateOrderMutation = createMutation<IOrder, ICreateOrderRequest>({
+  mutationKey: ['orders/create'],
+  mutationFn: (orderData) => createOrder(orderData),
 });
 
 export const useCancelOrderMutation = createMutation<IOrder, string>({

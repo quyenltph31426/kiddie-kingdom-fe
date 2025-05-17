@@ -1,66 +1,30 @@
 'use client';
 
 import { RadioGroupField } from '@/components/form';
-import { useCheckoutStore } from '@/stores/CheckoutStore';
-import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
-import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import * as z from 'zod';
-
-const paymentSchema = z.object({
-  paymentMethod: z.string().min(1, 'Please select a payment method'),
-});
-
-type PaymentFormValues = z.infer<typeof paymentSchema>;
 
 const paymentMethods = [
   {
-    value: 'credit_card',
-    label: 'Credit Card',
-    image: '/images/payment/credit-card.png',
-  },
-  {
-    value: 'paypal',
-    label: 'PayPal',
-    image: '/images/payment/paypal.png',
-  },
-  {
-    value: 'bank_transfer',
-    label: 'Bank Transfer',
-    image: '/images/payment/bank-transfer.png',
-  },
-  {
-    value: 'cash_on_delivery',
-    label: 'Cash on Delivery',
+    value: 'CASH_ON_DELIVERY',
+    label: 'Cash On Delivery',
     image: '/images/payment/cod.png',
+  },
+  {
+    value: 'ONLINE_PAYMENT',
+    label: 'VNPay',
+    image: '/images/payment/vnpay.png',
   },
 ];
 
 const PaymentMethod = () => {
-  const { paymentMethod, setPaymentMethod } = useCheckoutStore();
-
-  const form = useForm<PaymentFormValues>({
-    resolver: zodResolver(paymentSchema),
-    defaultValues: {
-      paymentMethod: paymentMethod.type || 'credit_card',
-    },
-  });
-
-  useEffect(() => {
-    const subscription = form.watch((value) => {
-      if (value.paymentMethod) {
-        // setPaymentMethod(value.paymentMethod.);
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, [form.watch, setPaymentMethod]);
+  const formOrder = useFormContext();
 
   return (
     <div>
       <RadioGroupField
-        control={form.control}
+        control={formOrder.control}
         name="paymentMethod"
         data={paymentMethods.map((method) => ({
           value: method.value,

@@ -1,34 +1,81 @@
-import type { IMetaResponse, ITableQuery } from '@/types';
-import type { ICartItem } from '../cart/types';
-import type { IShippingAddress } from '@/stores/CheckoutStore';
+import type { IMetaResponse } from '@/types';
 
-export type OrderStatus = 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+export type PaymentMethod = 'CASH_ON_DELIVERY' | 'ONLINE_PAYMENT';
+export type OrderStatus = 'PENDING' | 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED';
+export type PaymentStatus = 'PENDING' | 'COMPLETED' | 'FAILED' | 'REFUNDED';
+export interface IOrderItem {
+  _id: string;
+  productId: string;
+  variantId: string;
+  quantity: number;
+  price: number;
+  productName: string;
+  productImage?: string;
+  attributes?: Record<string, string>;
+}
 
-export interface IOrderQuery extends ITableQuery {
-  status?: OrderStatus;
+export interface IShippingAddress {
+  fullName: string;
+  phone: string;
+  addressLine1: string;
+  addressLine2?: string;
+  city: string;
+  district?: string;
+  ward?: string;
+  postalCode: string;
 }
 
 export interface IOrder {
   _id: string;
-  orderNumber: string;
   userId: string;
-  items: ICartItem[];
+  orderCode: string;
+  items: IOrderItem[];
+  totalAmount: number;
+  discountAmount: number;
+  voucherId: string | null;
+  paymentStatus: PaymentStatus;
+  shippingStatus: OrderStatus;
+  paymentMethod: PaymentMethod;
   shippingAddress: IShippingAddress;
-  paymentMethod: {
-    type: string;
-    details?: Record<string, any>;
-  };
-  status: OrderStatus;
-  subtotal: number;
-  shippingFee: number;
-  discount: number;
-  total: number;
-  notes?: string;
   createdAt: string;
   updatedAt: string;
+  paymentUrl?: string;
 }
 
 export interface IOrderResponse {
   items: IOrder[];
   meta: IMetaResponse;
+}
+
+export interface ICreateOrderItem {
+  productId: string;
+  variantId: string;
+  quantity: number;
+}
+
+export interface ICreateOrderShippingAddress {
+  fullName: string;
+  phone: string;
+  addressLine1: string;
+  addressLine2?: string;
+  city: string;
+  district?: string;
+  ward?: string;
+  postalCode: string;
+  isDefault?: boolean;
+}
+
+export interface ICreateOrderRequest {
+  items: ICreateOrderItem[];
+  paymentMethod: PaymentMethod;
+  shippingAddress: ICreateOrderShippingAddress;
+  voucherId?: string;
+  notes?: string;
+}
+
+export interface IOrderQuery {
+  page: number;
+  limit: number;
+  shippingStatus?: OrderStatus;
+  paymentStatus?: PaymentStatus;
 }

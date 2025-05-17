@@ -1,21 +1,45 @@
 'use client';
 import { useBrands } from '@/api/brand/queries';
 import H2 from '@/components/text/H2';
+import { Button } from '@/components/ui/button';
 import { Show } from '@/components/utilities';
+import { onMutateError } from '@/libs/common';
+import { ROUTER } from '@/libs/router';
+import { ArrowRight } from 'lucide-react';
+import Link from 'next/link';
 import React from 'react';
 import BrandItem from './components/BrandItem';
 
 const Brand = () => {
-  const { data, isFetching } = useBrands({});
+  const { data, isFetching } = useBrands({ variables: { limit: 10 }, onError: onMutateError });
   return (
-    <section className="mt-10 bg-[#FEF373]">
-      <H2 className="mb-8 text-center text-primary-500">List Brand</H2>
+    <section className="mt-10 rounded-lg bg-[#FEF373] pt-8 pb-16">
+      <div className="mb-8 flex items-center justify-between px-4">
+        <H2 className="text-primary-500">Our Brands</H2>
+        <Link href={ROUTER.COLLECTIONS}>
+          <Button variant="ghost" className="group">
+            View All
+            <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+          </Button>
+        </Link>
+      </div>
 
-      <Show when={!isFetching && data?.items.length === 0}>
-        <div>Brand</div>
+      <Show when={isFetching}>
+        <div className="grid grid-cols-2 gap-5 px-4 md:grid-cols-3 lg:grid-cols-6">
+          {Array.from({ length: 6 }).map((_, index) => (
+            <BrandItem key={index} loading />
+          ))}
+        </div>
       </Show>
+
+      <Show when={!isFetching && (!data?.items || data?.items.length === 0)}>
+        <div className="flex justify-center py-8">
+          <p className="text-gray-500">No brands available</p>
+        </div>
+      </Show>
+
       <Show when={!isFetching && data && data?.items?.length > 0}>
-        <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-6">
+        <div className="grid grid-cols-2 gap-5 px-4 md:grid-cols-3 lg:grid-cols-6">
           {data?.items?.map((item) => (
             <BrandItem key={item._id} {...item} />
           ))}

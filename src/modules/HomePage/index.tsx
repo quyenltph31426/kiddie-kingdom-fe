@@ -21,9 +21,9 @@ const HomePage = () => {
 
         <ProductBestSeller />
 
-        <FeaturedProducts />
-
         <Brand />
+
+        <FeaturedProducts />
       </VStack>
 
       <div className="h-[100px]"></div>

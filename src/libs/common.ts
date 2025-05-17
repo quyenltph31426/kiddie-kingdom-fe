@@ -8,6 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function onMutateError(error: any) {
+  console.log('first', error);
   if (!error) return;
   return toast.error(error?.response?.data?.message || error?.message || error?.statusText);
 }

@@ -1,18 +1,8 @@
+import type { ICartItem } from '@/api/cart/types';
+import type { IShippingAddress } from '@/api/order/types';
 import { createSelectorFunctions } from 'auto-zustand-selectors-hook';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
-import type { ICartItem } from '@/api/cart/types';
-
-export interface IShippingAddress {
-  fullName: string;
-  phoneNumber: string;
-  email: string;
-  address: string;
-  city: string;
-  state: string;
-  zipCode: string;
-  country: string;
-}
 
 export interface IPaymentMethod {
   type: 'credit_card' | 'paypal' | 'bank_transfer' | 'cod';
@@ -40,13 +30,13 @@ export interface ICheckoutStore {
 
 const initialShippingAddress: IShippingAddress = {
   fullName: '',
-  phoneNumber: '',
-  email: '',
-  address: '',
+  phone: '',
+  addressLine1: '',
+  addressLine2: '',
   city: '',
-  state: '',
-  zipCode: '',
-  country: '',
+  district: '',
+  ward: '',
+  postalCode: '',
 };
 
 const initialPaymentMethod: IPaymentMethod = {
