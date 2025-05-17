@@ -3,7 +3,7 @@
 import { ROUTER } from '@/libs/router';
 
 import { Icons } from '@/assets/icons';
-import { Brain, Cake, User, User2, Package } from 'lucide-react';
+import { Banana, Brain, Cake, Package, User, User2 } from 'lucide-react';
 
 export const sidebars: {
   iconActive?: React.ReactNode;
@@ -28,6 +28,12 @@ export const sidebars: {
     icon: <User />,
     title: 'User Management',
     link: ROUTER.USER_MANAGEMENT,
+    iconActive: null,
+  },
+  {
+    title: 'Banner Management',
+    link: ROUTER.BANNERS_MANAGEMENT,
+    icon: <Banana />,
     iconActive: null,
   },
 
