@@ -15,7 +15,7 @@ const FormBrand = () => {
       <TextAreaField required control={form.control} name="description" label="Description" className="h" fullWidth />
 
       <UploadButtonField
-        accept={['png', 'jpg', 'jpeg']}
+        accept={['png', 'jpg', 'jpeg', 'svg', 'webp']}
         control={form.control}
         name="logo"
         label="Logo"

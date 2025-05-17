@@ -17,7 +17,7 @@ const BasicInformationTab = () => {
 
       <VStack className="mt-6" spacing={24}>
         <div className=""></div>
-        <UploadImagesField control={form.control} name="images" label="Images" accept={['png', 'jpeg', 'webp']} />
+        <UploadImagesField control={form.control} name="images" label="Images" accept={['png', 'jpg', 'jpeg', 'svg', 'webp']} />
 
         <TextField required control={form.control} placeholder="Enter product name" name="name" label="Name" className="h-11" fullWidth />
 
