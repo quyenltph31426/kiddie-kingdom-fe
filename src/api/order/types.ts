@@ -8,7 +8,24 @@ export const OrderStatus = {
   EXPIRED: 'EXPIRED',
 };
 
+export const ShippingStatus = {
+  PENDING: 'PENDING',
+  PROCESSING: 'PROCESSING',
+  SHIPPED: 'SHIPPED',
+  DELIVERED: 'DELIVERED',
+  CANCELED: 'CANCELED',
+};
+
+export const PaymentStatus = {
+  PENDING: 'PENDING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  REFUNDED: 'REFUNDED',
+};
+
 export type OrderStatusType = keyof typeof OrderStatus;
+export type ShippingStatusType = keyof typeof ShippingStatus;
+export type PaymentStatusType = keyof typeof PaymentStatus;
 export type PaymentMethod = 'ONLINE_PAYMENT' | 'COD' | 'BANK_TRANSFER';
 
 export interface IOrderItem {
@@ -16,15 +33,21 @@ export interface IOrderItem {
   variantId: string;
   quantity: number;
   price: number;
+  _id: string;
   productName: string;
+  productImage: string;
+  attributes: Record<string, string>;
 }
 
 export interface IShippingAddress {
   fullName: string;
-  address: string;
-  city: string;
-  postalCode: string;
   phone: string;
+  addressLine1: string;
+  addressLine2?: string;
+  city: string;
+  district: string;
+  ward: string;
+  postalCode?: string;
 }
 
 export interface IOrderUser {
@@ -36,20 +59,28 @@ export interface IOrderUser {
 export interface IOrder {
   _id: string;
   userId: IOrderUser;
-  orderNumber: string;
+  orderCode: string;
   items: IOrderItem[];
   totalAmount: number;
   discountAmount: number;
   voucherId: string | null;
   status: OrderStatusType;
   paymentMethod: PaymentMethod;
+  paymentStatus: PaymentStatusType;
+  shippingStatus: ShippingStatusType;
   shippingAddress: IShippingAddress;
   createdAt: string;
   updatedAt: string;
+  paidAt?: string;
+  shippedAt?: string;
+  deliveredAt?: string;
 }
 
 export interface IOrderQuery extends ITableQuery {
   status?: OrderStatusType;
+  paymentStatus?: PaymentStatusType;
+  shippingStatus?: ShippingStatusType;
+  paymentMethod?: string;
   orderNumber?: string;
   userId?: string;
   startDate?: string;

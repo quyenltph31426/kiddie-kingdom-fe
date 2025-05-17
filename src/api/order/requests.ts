@@ -26,9 +26,39 @@ export const updateOrderStatus = async ({
   status: string;
 }): Promise<IOrder> => {
   const { data } = await client({
-    url: `/api/admin/orders/${id}/status`,
+    url: `/api/admin/orders/${id}`,
     method: 'PATCH',
     data: { status },
+  });
+  return data?.data;
+};
+
+export const updateShippingStatus = async ({
+  id,
+  status,
+}: {
+  id: string;
+  status: string;
+}): Promise<IOrder> => {
+  const { data } = await client({
+    url: `/api/admin/orders/${id}`,
+    method: 'PATCH',
+    data: { shippingStatus: status },
+  });
+  return data?.data;
+};
+
+export const updatePaymentStatus = async ({
+  id,
+  status,
+}: {
+  id: string;
+  status: string;
+}): Promise<IOrder> => {
+  const { data } = await client({
+    url: `/api/admin/orders/${id}`,
+    method: 'PATCH',
+    data: { paymentStatus: status },
   });
   return data?.data;
 };

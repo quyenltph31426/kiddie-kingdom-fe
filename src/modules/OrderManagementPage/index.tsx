@@ -4,18 +4,22 @@ import type { IOrderQuery } from '@/api/order/types';
 import SearchTable from '@/components/SearchTable';
 import H3 from '@/components/text/H3';
 import { DateRangePicker } from '@/components/ui/date-range-picker/index';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import SelectCustom from '@/components/ui/select-custom';
 import TableBase, { TablePagination } from '@/components/ui/table';
 import { HStack, VStack } from '@/components/utilities';
 import Container from '@/components/wrapper/Container';
 import { format } from 'date-fns';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { COLUMNS, ORDER_STATUS_OPTIONS, defaultQuery } from './libs/consts';
+import {
+  COLUMNS,
+  ORDER_STATUS_OPTIONS,
+  PAYMENT_METHOD_LABELS,
+  PAYMENT_STATUS_OPTIONS,
+  SHIPPING_STATUS_OPTIONS,
+  defaultQuery,
+} from './libs/consts';
 
 const OrderManagementPage = () => {
-  const router = useRouter();
-  const [searchText, setSearchText] = useState('');
   const [paramsQuery, setParamsQuery] = useState<Partial<IOrderQuery>>(defaultQuery);
 
   const { data, isFetching, refetch } = useOrdersQuery({
@@ -37,18 +41,34 @@ const OrderManagementPage = () => {
     }));
   };
 
-  const handleSearch = () => {
+  const handleOrderStatusChange = (selected: any) => {
     setParamsQuery((prev) => ({
       ...prev,
-      orderNumber: searchText || undefined,
+      status: selected.value === 'ALL' ? undefined : selected.value,
       page: 1,
     }));
   };
 
-  const handleStatusChange = (status: string) => {
+  const handlePaymentStatusChange = (selected: any) => {
     setParamsQuery((prev) => ({
       ...prev,
-      status: status === 'ALL' ? undefined : (status as any),
+      paymentStatus: selected.value === 'ALL' ? undefined : selected.value,
+      page: 1,
+    }));
+  };
+
+  const handleShippingStatusChange = (selected: any) => {
+    setParamsQuery((prev) => ({
+      ...prev,
+      shippingStatus: selected.value === 'ALL' ? undefined : selected.value,
+      page: 1,
+    }));
+  };
+
+  const handlePaymentMethodChange = (selected: any) => {
+    setParamsQuery((prev) => ({
+      ...prev,
+      paymentMethod: selected.value === 'ALL' ? undefined : selected.value,
       page: 1,
     }));
   };
@@ -68,14 +88,35 @@ const OrderManagementPage = () => {
     }
   };
 
+  // Prepare data for SelectCustom components
+  const orderStatusOptions = [
+    { label: 'All Order Status', value: 'ALL' },
+    ...ORDER_STATUS_OPTIONS.map((option) => ({ label: option.label, value: option.value })),
+  ];
+
+  const paymentStatusOptions = [
+    { label: 'All Payment Status', value: 'ALL' },
+    ...PAYMENT_STATUS_OPTIONS.map((option) => ({ label: option.label, value: option.value })),
+  ];
+
+  const shippingStatusOptions = [
+    { label: 'All Shipping Status', value: 'ALL' },
+    ...SHIPPING_STATUS_OPTIONS.map((option) => ({ label: option.label, value: option.value })),
+  ];
+
+  const paymentMethodOptions = [
+    { label: 'All Payment Methods', value: 'ALL' },
+    ...Object.entries(PAYMENT_METHOD_LABELS).map(([value, label]) => ({ label, value })),
+  ];
+
   return (
     <Container>
-      <VStack spacing={24}>
+      <VStack spacing={32}>
         <HStack pos="apart">
           <H3>Order Management</H3>
         </HStack>
 
-        <VStack spacing={12}>
+        <VStack spacing={16}>
           <HStack pos="apart" className="flex-col gap-4 sm:flex-row">
             <SearchTable
               listFilter={[]}
@@ -106,31 +147,48 @@ const OrderManagementPage = () => {
             <HStack pos="apart" className="flex-col gap-4 sm:flex-row">
               <DateRangePicker
                 onUpdate={handleDateRangeChange}
-                initialDateFrom={paramsQuery.startDate ? new Date(paramsQuery.startDate) : undefined}
-                initialDateTo={paramsQuery.endDate ? new Date(paramsQuery.endDate) : undefined}
+                initialDateFrom={paramsQuery.startDate ? format(new Date(paramsQuery.startDate), 'yyyy-MM-dd') : undefined}
+                initialDateTo={paramsQuery.endDate ? format(new Date(paramsQuery.endDate), 'yyyy-MM-dd') : undefined}
                 align="start"
                 locale="en-US"
                 btnProps={{
                   variant: 'outline',
                   className: 'h-10 w-full sm:w-[300px]',
                 }}
-                prefix="Date Range:"
               />
-
-              <Select defaultValue="ALL" onValueChange={handleStatusChange} value={paramsQuery.status || 'ALL'}>
-                <SelectTrigger className="h-10 w-full sm:w-[180px]">
-                  <SelectValue placeholder="Filter by status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="ALL">All Orders</SelectItem>
-                  {ORDER_STATUS_OPTIONS.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
             </HStack>
+          </HStack>
+
+          <HStack className="flex-wrap gap-4" pos="right">
+            {/* Payment Method Filter */}
+            <div className="w-full sm:w-[180px]">
+              <SelectCustom
+                data={paymentMethodOptions}
+                value={paramsQuery.paymentMethod || 'ALL'}
+                onChange={handlePaymentMethodChange}
+                placeholder="Payment Method"
+              />
+            </div>
+
+            {/* Payment Status Filter */}
+            <div className="w-full sm:w-[180px]">
+              <SelectCustom
+                data={paymentStatusOptions}
+                value={paramsQuery.paymentStatus || 'ALL'}
+                onChange={handlePaymentStatusChange}
+                placeholder="Payment Status"
+              />
+            </div>
+
+            {/* Shipping Status Filter */}
+            <div className="w-full sm:w-[180px]">
+              <SelectCustom
+                data={shippingStatusOptions}
+                value={paramsQuery.shippingStatus || 'ALL'}
+                onChange={handleShippingStatusChange}
+                placeholder="Shipping Status"
+              />
+            </div>
           </HStack>
         </VStack>
 

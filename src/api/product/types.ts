@@ -1,3 +1,4 @@
+import type { ICategory } from '../category/types';
 import type { IMetaResponse, ITableQuery } from './../../types/index';
 
 export interface IProductQuery extends ITableQuery {}
@@ -18,20 +19,20 @@ export interface IProduct {
   _id: string;
   name: string;
   description: string;
-  type: 'simple' | 'variable';
+  type: string;
   images: string[];
   categories: string[];
-  primaryCategoryId: string | null;
-  brandId: string | null;
+  primaryCategory?: ICategory;
+  // brand: IBrandInfo;
+  brand?: any;
   variants: IProductVariant[];
   viewCount: number;
   totalSoldCount: number;
   averageRating: number;
   reviewCount: number;
+  originalPrice: number;
+  currentPrice: number;
   tags: string[];
-  specifications: Record<string, string>;
-  availableFrom: string;
-  availableTo: string;
   isActive: boolean;
   isFeatured: boolean;
   isOnSale: boolean;
@@ -40,8 +41,9 @@ export interface IProduct {
   createdAt: string;
   updatedAt: string;
   slug: string;
+  totalQuantity: number;
+  specifications: Record<string, string>;
 }
-
 export interface IProductResponse {
   items: IProduct[];
   meta: IMetaResponse;
