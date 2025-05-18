@@ -6,7 +6,7 @@ import { SkeletonWrapper } from '@/components/ui/skeleton-wrapper';
 import { HStack, VStack } from '@/components/utilities';
 import { ROUTER } from '@/libs/router';
 import { formatNumber } from '@/libs/utils';
-import { Heart } from 'lucide-react';
+import { Package, ShoppingBag } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
@@ -15,7 +15,7 @@ type Props = {
   loading?: boolean;
 } & Partial<IProduct>;
 
-const ProductItem = ({ _id, loading, name, brand, slug, images, originalPrice, currentPrice }: Props) => {
+const ProductItem = ({ _id, loading, name, brand, slug, images, originalPrice, currentPrice, totalQuantity, totalSoldCount }: Props) => {
   const _originalPrice = originalPrice ? originalPrice : Number(currentPrice) + 10000;
   return (
     <Link href={`${ROUTER.PRODUCTS}/${slug}`}>
@@ -49,10 +49,20 @@ const ProductItem = ({ _id, loading, name, brand, slug, images, originalPrice, c
           </SkeletonWrapper>
         </HStack>
 
+        <SkeletonWrapper className="h-4 w-full" loading={loading}>
+          <HStack className="mt-1 w-full justify-between text-gray-500 text-xs">
+            <HStack spacing={4}>
+              <Package className="h-3 w-3" />
+              <span>In stock: {formatNumber(totalQuantity || 0)}</span>
+            </HStack>
+            <HStack spacing={4}>
+              <ShoppingBag className="h-3 w-3" />
+              <span>Sold: {formatNumber(totalSoldCount || 0)}</span>
+            </HStack>
+          </HStack>
+        </SkeletonWrapper>
+
         <HStack>
-          <span className="p-1 hover:text-primary-500 ">
-            <Heart className="hover:fill-primary-500" />
-          </span>
           <FavoriteButton productId={_id} />
         </HStack>
 
