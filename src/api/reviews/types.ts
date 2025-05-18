@@ -8,7 +8,6 @@ export interface IReviewQueryParams extends ITableQuery {
 
 export interface IReviewRequest {
   productId: string;
-  orderId: string;
   rating: number;
   comment: string;
   images?: string[];
