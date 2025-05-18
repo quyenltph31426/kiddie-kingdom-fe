@@ -79,9 +79,11 @@ const OrderSummary = () => {
         </div>
       </div>
 
-      <div className="mb-6">
-        <Input placeholder="Enter voucher code" value={couponCode} onChange={(e) => setCouponCode(e.target.value)} className="flex-1" />
-        <Button type="button" variant="outline" disabled={isApplyingCoupon} onClick={handleApplyCoupon}>
+      <div className="mb-6 flex items-center">
+        <div className="mr-2 flex-1">
+          <Input placeholder="Enter voucher code" value={couponCode} onChange={(e) => setCouponCode(e.target.value)} className="flex-1" />
+        </div>
+        <Button type="button" size="sm" variant="shadow" disabled={isApplyingCoupon} onClick={handleApplyCoupon}>
           {isApplyingCoupon ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />

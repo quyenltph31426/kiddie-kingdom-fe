@@ -25,7 +25,7 @@ import { toast } from 'react-toastify';
 const CartPage = () => {
   const form = useForm();
   const { carts, isLoading, removeFromCart, updateCartItem } = useCartStore();
-  const { user } = useUserStore();
+  const { user, isLoggedIn } = useUserStore();
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [isAllSelected, setIsAllSelected] = useState(false);
   const router = useRouter();
@@ -39,9 +39,6 @@ const CartPage = () => {
       }
     },
   });
-
-  console.log(carts);
-  console.log(isCartLoading);
 
   // Calculate total price
   const totalPrice = carts
@@ -209,9 +206,15 @@ const CartPage = () => {
                   <div className="font-semibold text-lg text-primary-600">{formatNumber(totalPrice)}</div>
                 </div>
 
-                <Button type="submit" disabled={selectedItems.length === 0}>
-                  Checkout
-                </Button>
+                {isLoggedIn ? (
+                  <Button type="submit" disabled={selectedItems.length === 0}>
+                    Checkout
+                  </Button>
+                ) : (
+                  <Link href={ROUTER.SIGN_IN}>
+                    <Button type="button">Login to checkout</Button>
+                  </Link>
+                )}
               </div>
             </div>
           </FormWrapper>
