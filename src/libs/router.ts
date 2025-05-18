@@ -17,4 +17,5 @@ export const ROUTER = {
   NOT_FOUND: '/404',
   COLLECTIONS: '/collections',
   PAYMENT_CALLBACK: '/payment/callback',
+  VOUCHERS: '/vouchers',
 } as const;

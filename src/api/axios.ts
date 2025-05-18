@@ -25,9 +25,9 @@ const onRefreshToken = async (refreshToken: string) => {
     isRefreshPending = false;
     refreshTokenPromise = null;
 
-    store.logout();
-    deleteCookie('access_token');
-    deleteCookie('refresh_token');
+    // store.logout();
+    // deleteCookie('access_token');
+    // deleteCookie('refresh_token');
   }
 
   return null;

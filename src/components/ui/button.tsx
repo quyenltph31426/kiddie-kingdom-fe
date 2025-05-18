@@ -53,7 +53,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, rounded, children, loading, ...props }, ref) => {
+  ({ className, variant, size, asChild = false, rounded, children, loading, type = 'button', ...props }, ref) => {
     const Comp = asChild ? Slot : 'button';
     return (
       <Comp
@@ -61,6 +61,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           'pointer-events-none opacity-80': loading,
         })}
         ref={ref}
+        type={type}
         {...props}
       >
         {asChild ? (

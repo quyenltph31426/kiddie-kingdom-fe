@@ -9,6 +9,7 @@ import { FormWrapper } from '@/components/ui/form';
 import Container from '@/components/wrapper/Container';
 import { ROUTER } from '@/libs/router';
 import { formatNumber } from '@/libs/utils';
+import { useCartStore } from '@/stores/CartStore';
 import { useCheckoutStore } from '@/stores/CheckoutStore';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -41,9 +42,18 @@ const CheckoutPage = () => {
     },
   });
   const { items, clearCheckout } = useCheckoutStore();
+  const { removeMultipleFromCart } = useCartStore(); // Import removeMultipleFromCart from CartStore
 
   const { mutate: createOrder, isLoading } = useCreateOrderMutation({
     onSuccess: (data) => {
+      // Get the IDs of items that were successfully ordered
+      const orderedItemIds = items.map((item) => item._id).filter(Boolean);
+
+      // Remove these items from the cart
+      if (orderedItemIds.length > 0) {
+        removeMultipleFromCart(orderedItemIds);
+      }
+
       if (data.paymentMethod === 'ONLINE_PAYMENT' && data?.paymentSession) {
         clearCheckout();
         window.location.href = data.paymentSession?.url;
@@ -60,6 +70,8 @@ const CheckoutPage = () => {
   });
 
   const handleSubmitOrder = (formData: OrderSchema) => {
+    const { items } = useCheckoutStore.getState();
+
     const orderData = {
       items: items.map((item) => ({
         productId: item.productId,
@@ -68,6 +80,7 @@ const CheckoutPage = () => {
       })),
       paymentMethod: formData.paymentMethod,
       shippingAddress: formData.shippingAddress,
+      voucherId: formData.voucherId || undefined,
     };
 
     const validationResult = orderSchema.safeParse(orderData);

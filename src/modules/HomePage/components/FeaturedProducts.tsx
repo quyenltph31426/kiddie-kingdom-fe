@@ -28,7 +28,7 @@ const FeaturedProducts = () => {
       </div>
 
       <Show when={isFetching}>
-        <div className="grid grid-cols-2 gap-5 px-4 md:grid-cols-3 lg:grid-cols-6">
+        <div className="grid grid-cols-2 gap-5 px-4 md:grid-cols-3 lg:grid-cols-4">
           {Array.from({ length: 6 }).map((_, index) => (
             <ProductItem key={index} loading />
           ))}
@@ -42,7 +42,7 @@ const FeaturedProducts = () => {
       </Show>
 
       <Show when={!isFetching && data && data?.items?.length > 0}>
-        <div className="grid grid-cols-2 gap-5 px-4 md:grid-cols-3 lg:grid-cols-6">
+        <div className="grid grid-cols-2 gap-5 px-4 md:grid-cols-3 lg:grid-cols-4">
           {data?.items?.map((item) => (
             <ProductItem key={item._id} {...item} />
           ))}

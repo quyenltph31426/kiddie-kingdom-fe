@@ -1,5 +1,5 @@
 import { createMutation, createQuery } from 'react-query-kit';
-import { addToCart, clearCart, getCart, mergeCart, removeFromCart, updateCartItem } from './requests';
+import { addToCart, clearCart, getCart, mergeCart, updateCartItem } from './requests';
 import type { IAddToCartRequest, ICartItem, ICartResponse, IMergeCartRequest, IUpdateCartRequest } from './types';
 
 export const useCartQuery = createQuery<ICartResponse, void>({
@@ -15,11 +15,6 @@ export const useAddToCartMutation = createMutation<ICartItem, IAddToCartRequest>
 export const useUpdateCartItemMutation = createMutation<ICartItem, IUpdateCartRequest>({
   mutationKey: ['cart/update'],
   mutationFn: (data) => updateCartItem(data),
-});
-
-export const useRemoveFromCartMutation = createMutation<boolean, string>({
-  mutationKey: ['cart/remove'],
-  mutationFn: (cartItemId) => removeFromCart(cartItemId),
 });
 
 export const useMergeCartMutation = createMutation<ICartResponse, IMergeCartRequest>({

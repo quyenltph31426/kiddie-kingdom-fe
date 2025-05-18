@@ -1,4 +1,4 @@
-import { addToCart, mergeCart, removeFromCart, updateCartItem } from '@/api/cart/requests';
+import { addToCart, mergeCart, removeItemsFromCart, updateCartItem } from '@/api/cart/requests';
 import type { ICartItem } from '@/api/cart/types';
 import { createSelectorFunctions } from 'auto-zustand-selectors-hook';
 import { getCookie } from 'cookies-next';
@@ -11,6 +11,7 @@ export interface ICartStore {
   addToCart: (data: ICartItem) => Promise<void>;
   updateCartItem: (cartItemId: string, quantity: number) => Promise<void>;
   removeFromCart: (cartItemId: string) => Promise<void>;
+  removeMultipleFromCart: (cartItemIds: string[]) => Promise<void>;
   mergeCart: () => Promise<void>;
   clearCart: () => void;
   setCart: (carts: ICartItem[]) => void;
@@ -118,10 +119,30 @@ const useBaseCartStore = create<ICartStore>()(
 
           // Sync with server if logged in
           if (typeof window !== 'undefined' && getCookie('access_token')) {
-            await removeFromCart(cartItemId);
+            await removeItemsFromCart({ itemIds: [cartItemId] });
           }
         } catch (error) {
           console.error('Failed to remove from cart:', error);
+        } finally {
+          set({ isLoading: false });
+        }
+      },
+
+      removeMultipleFromCart: async (cartItemIds: string[]) => {
+        set({ isLoading: true });
+        try {
+          // Update local state first
+          set((state) => ({
+            carts: state.carts.filter((item) => !cartItemIds.includes(item._id || '')),
+          }));
+
+          // Sync with server if logged in
+          if (typeof window !== 'undefined' && getCookie('access_token')) {
+            // Remove each item one by one
+            await removeItemsFromCart({ itemIds: cartItemIds });
+          }
+        } catch (error) {
+          console.error('Failed to remove multiple items from cart:', error);
         } finally {
           set({ isLoading: false });
         }

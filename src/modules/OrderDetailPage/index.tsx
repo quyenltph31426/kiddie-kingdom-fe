@@ -123,6 +123,38 @@ const OrderDetailPage = () => {
     );
   }
 
+  const formatDate = (dateString?: string | null) => {
+    if (!dateString) return 'N/A';
+
+    try {
+      const date = new Date(dateString);
+      // Kiểm tra xem date có hợp lệ không
+      if (isNaN(date.getTime())) {
+        return 'N/A';
+      }
+      return format(date, 'dd/MM/yyyy');
+    } catch (error) {
+      console.error('Error formatting date:', error);
+      return 'N/A';
+    }
+  };
+
+  const formatDateTime = (dateString?: string | null) => {
+    if (!dateString) return 'N/A';
+
+    try {
+      const date = new Date(dateString);
+      // Kiểm tra xem date có hợp lệ không
+      if (isNaN(date.getTime())) {
+        return 'N/A';
+      }
+      return format(date, 'dd/MM/yyyy HH:mm');
+    } catch (error) {
+      console.error('Error formatting date time:', error);
+      return 'N/A';
+    }
+  };
+
   return (
     <div>
       <Breadcrumb
@@ -162,7 +194,7 @@ const OrderDetailPage = () => {
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <H2 className="mb-1">Order #{order?.orderCode}</H2>
-                  <p className="text-gray-500 text-sm">Placed on {format(new Date(order?.createdAt || ''), 'dd/MM/yyyy')}</p>
+                  <p className="text-gray-500 text-sm">Placed on {formatDate(order?.createdAt)}</p>
                 </div>
                 <div className="flex items-center gap-4">{getStatusBadge()}</div>
               </div>
@@ -257,7 +289,7 @@ const OrderDetailPage = () => {
                         <div className="mt-2 rounded-md bg-green-50 p-2">
                           <p className="flex items-center font-medium text-green-600 text-sm">
                             <CheckCircle className="mr-2 h-4 w-4" />
-                            {order.updatedAt ? format(new Date(order.updatedAt), 'dd/MM/yyyy HH:mm') : 'N/A'}
+                            {formatDateTime(order.updatedAt)}
                           </p>
                         </div>
                       ) : order?.paymentStatus === 'FAILED' ? (
@@ -290,7 +322,7 @@ const OrderDetailPage = () => {
                             )}
                           ></div>
                           <p className="text-sm">Order Placed</p>
-                          <p className="ml-auto text-gray-500 text-xs">{format(new Date(order?.createdAt || ''), 'dd/MM/yyyy')}</p>
+                          <p className="ml-auto text-gray-500 text-xs">{formatDate(order?.createdAt)}</p>
                         </div>
 
                         <div className="flex items-center">
@@ -322,7 +354,7 @@ const OrderDetailPage = () => {
                           ></div>
                           <p className="text-sm">Delivered</p>
                           {order?.shippingStatus === 'DELIVERED' && order.updatedAt && (
-                            <p className="ml-auto text-gray-500 text-xs">{format(new Date(order.updatedAt), 'dd/MM/yyyy')}</p>
+                            <p className="ml-auto text-gray-500 text-xs">{formatDate(order.updatedAt)}</p>
                           )}
                         </div>
 
@@ -330,9 +362,7 @@ const OrderDetailPage = () => {
                           <div className="flex items-center">
                             <div className="mr-2 h-4 w-4 rounded-full bg-red-500"></div>
                             <p className="text-red-600 text-sm">Cancelled</p>
-                            <p className="ml-auto text-gray-500 text-xs">
-                              {order.updatedAt ? format(new Date(order.updatedAt), 'dd/MM/yyyy') : ''}
-                            </p>
+                            <p className="ml-auto text-gray-500 text-xs">{formatDate(order.updatedAt)}</p>
                           </div>
                         )}
                       </div>

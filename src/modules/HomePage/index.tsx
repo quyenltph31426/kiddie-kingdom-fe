@@ -8,6 +8,7 @@ import Category from './components/Category';
 import FeaturedProducts from './components/FeaturedProducts';
 import NewArrivals from './components/NewArrivals';
 import ProductBestSeller from './components/ProductBestSeller';
+import AvailableVouchers from './components/AvailableVouchers';
 
 const HomePage = () => {
   return (
@@ -20,6 +21,8 @@ const HomePage = () => {
         <NewArrivals />
 
         <ProductBestSeller />
+
+        <AvailableVouchers />
 
         <Brand />
 

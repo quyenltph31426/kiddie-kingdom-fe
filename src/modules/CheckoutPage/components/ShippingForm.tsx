@@ -230,6 +230,7 @@ const ShippingForm = () => {
                         <Button
                           variant="ghost"
                           size="sm"
+                          type="button"
                           onClick={() => handleSetDefault(address._id)}
                           className="text-gray-500 hover:text-primary-500"
                         >
