@@ -15,7 +15,19 @@ type Props = {
   loading?: boolean;
 } & Partial<IProduct>;
 
-const ProductItem = ({ _id, loading, name, brand, slug, images, originalPrice, currentPrice, totalQuantity, totalSoldCount }: Props) => {
+const ProductItem = ({
+  _id,
+  loading,
+  name,
+  brand,
+  slug,
+  images,
+  originalPrice,
+  currentPrice,
+  totalQuantity,
+  totalSoldCount,
+  isFavorite,
+}: Props) => {
   const _originalPrice = originalPrice ? originalPrice : Number(currentPrice) + 10000;
   return (
     <Link href={`${ROUTER.PRODUCTS}/${slug}`}>
@@ -63,7 +75,7 @@ const ProductItem = ({ _id, loading, name, brand, slug, images, originalPrice, c
         </SkeletonWrapper>
 
         <HStack>
-          <FavoriteButton productId={_id} />
+          <FavoriteButton productId={_id} active={isFavorite} />
         </HStack>
 
         <div className="text-xs">

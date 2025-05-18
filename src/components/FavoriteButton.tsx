@@ -16,19 +16,20 @@ interface FavoriteButtonProps {
   variant?: 'default' | 'outline' | 'ghost';
   size?: 'default' | 'sm' | 'lg' | 'icon';
   showText?: boolean;
+  active?: boolean;
 }
 
-const FavoriteButton = ({ productId, className, variant = 'ghost', size = 'icon', showText = false }: FavoriteButtonProps) => {
+const FavoriteButton = ({
+  active = false,
+  productId,
+  className,
+  variant = 'ghost',
+  size = 'icon',
+  showText = false,
+}: FavoriteButtonProps) => {
   const router = useRouter();
   const { isLoggedIn } = useUserStore();
   const [isFavorite, setIsFavorite] = useState(false);
-
-  // Check if product is in favorites
-  const { data: isFavoriteData, refetch } = useCheckIsFavoriteQuery({
-    variables: productId,
-    enabled: isLoggedIn && Boolean(productId),
-    onError: onMutateError,
-  });
 
   // Toggle favorite mutation
   const { mutate: toggleFavorite, isLoading } = useToggleFavoriteMutation({
@@ -42,10 +43,10 @@ const FavoriteButton = ({ productId, className, variant = 'ghost', size = 'icon'
   });
 
   useEffect(() => {
-    if (isFavoriteData !== undefined) {
-      setIsFavorite(isFavoriteData);
+    if (active !== undefined) {
+      setIsFavorite(active);
     }
-  }, [isFavoriteData]);
+  }, [active]);
 
   const handleToggleFavorite = () => {
     if (!isLoggedIn || !productId) {

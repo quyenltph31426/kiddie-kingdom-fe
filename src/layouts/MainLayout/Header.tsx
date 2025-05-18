@@ -5,15 +5,28 @@ import { useMobile } from '@/hooks/breakpoint';
 import { useUserLogin } from '@/hooks/useUserLogin';
 import { cn } from '@/libs/common';
 import { ROUTER } from '@/libs/router';
+import { Package } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 import Cart from './Cart';
 import SearchComponent from './SearchComponent';
 import UserInfo from './UserInfo';
 
 const Header = () => {
   const isMobile = useMobile();
-  const { user } = useUserLogin();
+  const { user, isLoggedIn } = useUserLogin();
+  const router = useRouter();
+
+  const handleOrdersClick = () => {
+    if (!isLoggedIn) {
+      toast.info('Please sign in to view your orders');
+      router.push(ROUTER.SIGN_IN);
+      return;
+    }
+    router.push(ROUTER.ORDERS);
+  };
 
   return (
     <header
@@ -31,7 +44,12 @@ const Header = () => {
           <SearchComponent />
         </HStack>
 
-        <HStack pos="right" spacing={isMobile ? 8 : 48} className="">
+        <HStack pos="right" spacing={isMobile ? 4 : 16} className="">
+          <Button variant="transparent" className="relative" onClick={handleOrdersClick}>
+            <Package className="text-white" />
+            <span className="ml-3">Orders</span>
+          </Button>
+
           <Cart />
 
           {!user ? (

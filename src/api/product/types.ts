@@ -43,6 +43,7 @@ export interface IProduct {
   isOnSale: boolean;
   isNewArrival: boolean;
   isBestSeller: boolean;
+  isFavorite?: boolean;
   createdAt: string;
   updatedAt: string;
   slug: string;

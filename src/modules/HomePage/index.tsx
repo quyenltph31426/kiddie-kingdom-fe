@@ -2,13 +2,13 @@
 import { VStack } from '@/components/utilities';
 import Container from '@/components/wrapper/Container';
 import React from 'react';
+import AvailableVouchers from './components/AvailableVouchers';
 import Banner from './components/Banner';
 import Brand from './components/Brand';
 import Category from './components/Category';
 import FeaturedProducts from './components/FeaturedProducts';
 import NewArrivals from './components/NewArrivals';
 import ProductBestSeller from './components/ProductBestSeller';
-import AvailableVouchers from './components/AvailableVouchers';
 
 const HomePage = () => {
   return (
@@ -28,8 +28,6 @@ const HomePage = () => {
 
         <FeaturedProducts />
       </VStack>
-
-      <div className="h-[100px]"></div>
     </Container>
   );
 };
