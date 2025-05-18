@@ -4,7 +4,7 @@ import { useCancelOrderMutation } from '@/api/order/queries';
 import type { IOrder, IOrderItem, OrderStatus, PaymentMethod, PaymentStatus } from '@/api/order/types';
 import H4 from '@/components/text/H4';
 import { Button } from '@/components/ui/button';
-import { HStack, VStack } from '@/components/utilities';
+import { HStack, Show, VStack } from '@/components/utilities';
 import { cn, onMutateError } from '@/libs/common';
 import { ROUTER } from '@/libs/router';
 import { formatNumber } from '@/libs/utils';
@@ -338,19 +338,27 @@ const OrderItem = ({ order, onCancelSuccess }: OrderItemProps) => {
       </div>
 
       {/* Review Dialog */}
-      {selectedItemForReview && (
-        <ReviewDialog
-          isOpen={isReviewDialogOpen}
-          onClose={() => setIsReviewDialogOpen(false)}
-          productId={selectedItemForReview.productId}
-          productName={selectedItemForReview.productName || 'Product'}
-          productImage={selectedItemForReview.productImage || '/images/no-image.svg'}
-          orderId={order._id}
-          onSubmitSuccess={() => {
-            toast.success('Thank you for your review!');
-          }}
-        />
-      )}
+      <Show when={false}>
+        {selectedItemForReview && (
+          <ReviewDialog
+            isOpen={isReviewDialogOpen}
+            onClose={() => setIsReviewDialogOpen(false)}
+            productId={selectedItemForReview.productId}
+            productName={selectedItemForReview.productName || 'Product'}
+            productImage={selectedItemForReview.productImage || '/images/no-image.svg'}
+            orderId={order._id}
+            onSubmitSuccess={() => {
+              toast.success('Thank you for your review!');
+            }}
+          />
+        )}
+      </Show>
+
+      <Show when={order.reviewStatus?.someItemsReviewed}>
+        <div className="p-4">
+          <p className="text-gray-500 text-sm">Reviewed</p>
+        </div>
+      </Show>
 
       {/* Expanded details with improved sections and visual hierarchy */}
       {isExpanded && (

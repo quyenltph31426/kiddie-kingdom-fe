@@ -45,6 +45,10 @@ export interface IOrder {
     paymentId: string;
   };
   product?: IProduct;
+  reviewStatus: {
+    allItemsReviewed: boolean;
+    someItemsReviewed: boolean;
+  };
 }
 
 export interface IOrderResponse {

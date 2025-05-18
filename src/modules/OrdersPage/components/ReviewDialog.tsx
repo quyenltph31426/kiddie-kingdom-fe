@@ -22,6 +22,7 @@ interface ReviewFormValues {
   rating: number;
   comment: string;
   productId: string;
+  orderId: string;
   images: string[];
 }
 
@@ -45,6 +46,7 @@ const ReviewDialog = ({ isOpen, onClose, productId, productName, productImage, o
       rating: 5,
       comment: '',
       productId,
+      orderId,
       images: [],
     },
   });
@@ -85,6 +87,7 @@ const ReviewDialog = ({ isOpen, onClose, productId, productName, productImage, o
     // Prepare the data according to the API requirements
     const reviewData = {
       productId: values.productId,
+      orderId: values.orderId,
       rating: values.rating,
       comment: values.comment,
       images: values.images,
