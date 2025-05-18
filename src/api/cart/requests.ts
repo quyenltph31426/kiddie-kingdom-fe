@@ -27,10 +27,19 @@ export const updateCartItem = async (updateData: IUpdateCartRequest): Promise<IC
   return data?.data;
 };
 
-export const removeFromCart = async (cartItemId: string): Promise<boolean> => {
+export const removeFromCart = async (formData: { productId: string; variantId: string }): Promise<boolean> => {
   const { data } = await client({
-    url: `/api/cart/${cartItemId}`,
+    url: `/api/cart/item`,
     method: 'DELETE',
+    data: formData,
+  });
+  return data?.success || false;
+};
+export const removeItemsFromCart = async (formData: { itemIds: string[] }): Promise<boolean> => {
+  const { data } = await client({
+    url: `/api/cart/items`,
+    method: 'DELETE',
+    data: formData,
   });
   return data?.success || false;
 };
