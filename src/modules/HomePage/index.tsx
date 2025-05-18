@@ -16,7 +16,7 @@ const HomePage = () => {
     <Container>
       <H1 className="mb-6 font-orbitron">Dashboard</H1>
 
-      {/* Stats Cards */}
+      {/* Stats Cards with real API data */}
       <StatsCards />
 
       {/* Charts Section */}

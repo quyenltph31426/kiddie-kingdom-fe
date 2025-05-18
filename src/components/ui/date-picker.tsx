@@ -89,7 +89,7 @@ const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
           <div
             ref={refs.setFloating}
             style={floatingStyles}
-            className={cn('left-0 z-[100] min-h-[40px] w-fit overflow-hidden rounded-md bg-popover shadow-popover outline-none ')}
+            className={cn('left-0 z-[100] min-h-[40px] w-fit overflow-hidden rounded-md bg-popover shadow-card-2 outline-none ')}
             onClick={open}
           >
             <div ref={popoverRef}>
