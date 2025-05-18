@@ -4,7 +4,7 @@ import H2 from '@/components/text/H2';
 import H3 from '@/components/text/H3';
 import Container from '@/components/wrapper/Container';
 import React from 'react';
-import ProductDescription from './components/ProductComment';
+import ProductComment from './components/ProductComment';
 import ProductDetail from './components/ProductDetail';
 import ProductInfo from './components/ProductInfo';
 import ProductRelated from './components/ProductRelated';
@@ -35,7 +35,7 @@ const ProductDetailPage = async ({ params }: Props) => {
           <div className="text-base" dangerouslySetInnerHTML={{ __html: data?.description || '' }}></div>
         </div>
 
-        <ProductDescription />
+        <ProductComment productId={data?._id} />
 
         <ProductRelated productId={data?._id} />
       </Container>

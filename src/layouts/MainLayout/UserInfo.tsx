@@ -10,8 +10,10 @@ import { ROUTER } from '@/libs/router';
 import { useUserStore } from '@/stores/UserStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteCookie } from 'cookies-next';
+import { Heart, Package, ShoppingBag, Ticket } from 'lucide-react';
 import { useRouter } from 'next-nprogress-bar';
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react';
 
 const UserInfo = () => {
@@ -49,21 +51,61 @@ const UserInfo = () => {
           </Button>
         </PopoverTrigger>
 
-        <PopoverContent className="flex flex-col gap-6 p-3">
+        <PopoverContent className="flex w-64 flex-col gap-4 p-4">
           <VStack spacing={16}>
-            <HStack spacing={20}>
+            <HStack spacing={20} noWrap>
               <Image src={user?.avatar || '/images/no-image.svg'} alt="Avatar" width={40} height={40} className="h-10 w-10 rounded-full" />
 
-              <VStack className=" text-base">
-                <span className="">{user?.username || '--'}</span>
+              <VStack className="text-base">
+                <span className="font-medium">{user?.username || '--'}</span>
+                <span className="text-gray-500 text-sm">{user?.email || '--'}</span>
               </VStack>
             </HStack>
           </VStack>
 
-          <Button className="flex w-full items-center gap-2" onClick={handleLogout}>
-            <Icons.logout />
-            Log Out
-          </Button>
+          <div className="grid gap-2 pt-2">
+            {/* <Link href={ROUTER.PROFILE}>
+              <Button variant="ghost" className="w-full justify-start gap-2 text-gray-700">
+                <User className="h-4 w-4" />
+                My Profile
+              </Button>
+            </Link> */}
+
+            <Link href={ROUTER.ORDERS}>
+              <Button variant="ghost" className="w-full justify-start gap-2 text-gray-700">
+                <Package className="h-4 w-4" />
+                My Orders
+              </Button>
+            </Link>
+
+            <Link href={ROUTER.WISHLIST}>
+              <Button variant="ghost" className="w-full justify-start gap-2 text-gray-700">
+                <Heart className="h-4 w-4" />
+                My Favorites
+              </Button>
+            </Link>
+
+            <Link href={ROUTER.VOUCHERS}>
+              <Button variant="ghost" className="w-full justify-start gap-2 text-gray-700">
+                <Ticket className="h-4 w-4" />
+                Vouchers
+              </Button>
+            </Link>
+
+            <Link href={ROUTER.CART}>
+              <Button variant="ghost" className="w-full justify-start gap-2 text-gray-700">
+                <ShoppingBag className="h-4 w-4" />
+                My Cart
+              </Button>
+            </Link>
+          </div>
+
+          <div className="pt-2">
+            <Button className="w-full items-center gap-2" size="sm" onClick={handleLogout}>
+              <Icons.logout />
+              Log Out
+            </Button>
+          </div>
         </PopoverContent>
       </Popover>
     </div>

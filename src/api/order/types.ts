@@ -1,4 +1,5 @@
 import type { IMetaResponse } from '@/types';
+import type { IProduct } from '../product/types';
 
 export type PaymentMethod = 'CASH_ON_DELIVERY' | 'ONLINE_PAYMENT';
 export type OrderStatus = 'PENDING' | 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED';
@@ -43,6 +44,7 @@ export interface IOrder {
     url: string;
     paymentId: string;
   };
+  product?: IProduct;
 }
 
 export interface IOrderResponse {

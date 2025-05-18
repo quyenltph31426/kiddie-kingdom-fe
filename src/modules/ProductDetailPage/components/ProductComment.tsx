@@ -1,180 +1,186 @@
 'use client';
 
-import NoDataAvailable from '@/components/NoDataAvailable';
+import { useProductReviewsQuery } from '@/api/reviews/queries';
+import type { IReview, IReviewQueryParams } from '@/api/reviews/types';
 import Tabs from '@/components/tabs/Tabs';
-import H2 from '@/components/text/H2';
-import { Button } from '@/components/ui/button';
 import { Rating } from '@/components/ui/rating';
-import { ReviewCard, type ReviewProps } from '@/components/ui/review-card';
-import { Show, VStack } from '@/components/utilities';
-import { MessageSquare } from 'lucide-react';
+import { TablePagination } from '@/components/ui/table';
+import { HStack, Show, VStack } from '@/components/utilities';
+import { onMutateError } from '@/libs/common';
+import { formatDistanceToNow } from 'date-fns';
+import { Star } from 'lucide-react';
+import Image from 'next/image';
 import { useState } from 'react';
 
-// Mock data for demonstration
-const MOCK_REVIEWS: ReviewProps[] = [
-  {
-    id: '1',
-    userName: 'John Doe',
-    rating: 5,
-    comment: 'Great product! Exactly as described and arrived quickly.',
-    date: '2023-05-15T10:30:00Z',
-    helpful: 12,
-    verified: true,
-  },
-  {
-    id: '2',
-    userName: 'Jane Smith',
-    rating: 4,
-    comment: 'Good quality but the color is slightly different from what I expected.',
-    date: '2023-05-10T14:20:00Z',
-    images: [
-      'https://images.unsplash.com/photo-1505740420928-5e560c06d30e',
-      'https://images.unsplash.com/photo-1572635196237-14b3f281503f',
-    ],
-    helpful: 5,
-    verified: true,
-  },
-  {
-    id: '3',
-    userName: 'Michael Johnson',
-    rating: 3,
-    comment: 'Average product. Works as expected but nothing special.',
-    date: '2023-05-05T09:15:00Z',
-    verified: false,
-  },
-  {
-    id: '4',
-    userName: 'Sarah Williams',
-    rating: 5,
-    comment: 'Absolutely love it! Will definitely buy again.',
-    date: '2023-04-28T16:45:00Z',
-    helpful: 8,
-    verified: true,
-  },
-  {
-    id: '5',
-    userName: 'Robert Brown',
-    rating: 2,
-    comment: 'Disappointed with the quality. Not worth the price.',
-    date: '2023-04-20T11:10:00Z',
-    images: ['https://images.unsplash.com/photo-1523275335684-37898b6baf30'],
-    helpful: 3,
-    verified: true,
-  },
-];
+interface ProductCommentProps {
+  productId: string;
+}
 
-const ProductComment = () => {
+const ITEMS_PER_PAGE = 5;
+
+const ProductComment = ({ productId }: ProductCommentProps) => {
   const [activeTab, setActiveTab] = useState('all');
-  const [isLoading, setIsLoading] = useState(false);
 
-  // Filter reviews based on active tab
-  const getFilteredReviews = () => {
-    switch (activeTab) {
-      case '5':
-        return MOCK_REVIEWS.filter((review) => review.rating === 5);
-      case '4':
-        return MOCK_REVIEWS.filter((review) => review.rating === 4);
-      case '3':
-        return MOCK_REVIEWS.filter((review) => review.rating === 3);
-      case '2':
-        return MOCK_REVIEWS.filter((review) => review.rating === 2);
-      case '1':
-        return MOCK_REVIEWS.filter((review) => review.rating === 1);
-      case 'all':
-      default:
-        return MOCK_REVIEWS;
-    }
+  // Query params for the API
+  const [queryParams, setQueryParams] = useState<Partial<IReviewQueryParams>>({
+    page: 1,
+    limit: 10,
+    rating: activeTab !== 'all' ? parseInt(activeTab) : undefined,
+  });
+
+  // Use the query hook to fetch reviews from the API endpoint
+  const { data, isLoading } = useProductReviewsQuery({
+    variables: { ...queryParams, productId },
+    enabled: Boolean(productId),
+    onError: onMutateError,
+    keepPreviousData: true,
+  });
+
+  // Extract reviews and stats from the response
+  const reviews = data?.items || [];
+  const ratingStats = data?.ratingStats || {
+    totalReviews: 0,
+    averageRating: 0,
+    ratingDistribution: { '1': 0, '2': 0, '3': 0, '4': 0, '5': 0 },
+  };
+  const pagination = data?.meta || {
+    total: 0,
+    page: 1,
+    limit: ITEMS_PER_PAGE,
+    totalPages: 0,
   };
 
-  const filteredReviews = getFilteredReviews();
-
-  // Calculate average rating
-  const averageRating = MOCK_REVIEWS.reduce((acc, review) => acc + review.rating, 0) / MOCK_REVIEWS.length;
-
-  // Calculate rating distribution
-  const ratingCounts = MOCK_REVIEWS.reduce(
-    (acc, review) => {
-      acc[review.rating] = (acc[review.rating] || 0) + 1;
-      return acc;
-    },
-    {} as Record<number, number>
-  );
+  // Create rating counts array from distribution
+  const ratingCounts = [5, 4, 3, 2, 1].map((rating) => ({
+    rating,
+    count: (ratingStats.ratingDistribution as any)[rating as any] || 0,
+    percentage:
+      ratingStats.totalReviews > 0
+        ? Math.round(((ratingStats.ratingDistribution as any)[rating as any] / ratingStats.totalReviews) * 100)
+        : 0,
+  }));
 
   const tabOptions = [
     { label: 'All Reviews', value: 'all' },
-    { label: '5 Star', value: '5' },
-    { label: '4 Star', value: '4' },
-    { label: '3 Star', value: '3' },
-    { label: '2 Star', value: '2' },
-    { label: '1 Star', value: '1' },
+    { label: '5', value: '5', icon: <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" /> },
+    { label: '4', value: '4', icon: <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" /> },
+    { label: '3', value: '3', icon: <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" /> },
+    { label: '2', value: '2', icon: <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" /> },
+    { label: '1', value: '1', icon: <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" /> },
   ];
 
   return (
-    <div className="mt-16">
-      <H2 className="font-orbitron">Customer Reviews</H2>
+    <div className="mt-8">
+      <h2 className="mb-6 font-bold text-2xl">Customer Reviews</h2>
 
-      <div className="mt-8 grid grid-cols-1 gap-8 lg:grid-cols-4">
+      <div className="grid gap-8 md:grid-cols-[300px_1fr]">
         {/* Rating summary */}
         <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
           <div className="text-center">
-            <div className="mb-2 font-bold text-3xl">{averageRating.toFixed(1)}</div>
-            <Rating value={averageRating} size="lg" readOnly showValue />
-            <p className="mt-2 text-gray-500 text-sm">{MOCK_REVIEWS.length} reviews</p>
+            <div className="font-bold text-5xl">{ratingStats.averageRating.toFixed(1)}</div>
+            <Rating value={Math.round(ratingStats.averageRating)} readOnly size="md" className="mt-2 justify-center" />
+            <div className="mt-1 text-gray-500 text-sm">{ratingStats.totalReviews} reviews</div>
           </div>
 
           <div className="mt-6 space-y-3">
-            {[5, 4, 3, 2, 1].map((star) => (
-              <div key={star} className="flex items-center gap-2">
-                <span className="min-w-8 text-sm">{star} star</span>
+            {ratingCounts.map(({ rating, count, percentage }) => (
+              <div key={rating} className="flex items-center gap-2">
+                <div className="w-12 text-sm">{rating} stars</div>
                 <div className="h-2 flex-1 overflow-hidden rounded-full bg-gray-200">
-                  <div
-                    className="h-full bg-yellow-500"
-                    style={{
-                      width: `${((ratingCounts[star] || 0) / MOCK_REVIEWS.length) * 100}%`,
-                    }}
-                  />
+                  <div className="h-full rounded-full bg-yellow-400" style={{ width: `${percentage}%` }} />
                 </div>
-                <span className="min-w-8 text-right text-gray-500 text-sm">{ratingCounts[star] || 0}</span>
+                <div className="w-8 text-right text-gray-500 text-sm">{count}</div>
               </div>
             ))}
           </div>
-
-          <Button className="mt-6 w-full">Write a Review</Button>
         </div>
 
         {/* Reviews list */}
-        <div className="lg:col-span-3">
-          <Tabs data={tabOptions} value={activeTab} onChange={(value) => setActiveTab(value.toString())} layoutId="product-reviews-tabs" />
+        <div>
+          <div className="mb-6 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+            <div className="w-full sm:w-auto">
+              <Tabs
+                data={tabOptions}
+                value={activeTab}
+                onChange={(value: any) => {
+                  setActiveTab(value.toString());
+                  setQueryParams((prev) => ({ ...prev, page: 1, rating: value !== 'all' ? parseInt(value) : undefined }));
+                }}
+                layoutId="review-tabs"
+                className="overflow-x-auto"
+                activeTabClassName="bg-primary-50"
+              />
+            </div>
+          </div>
 
-          <Show when={isLoading}>
-            <VStack spacing={16} className="mt-6">
-              {Array.from({ length: 3 }).map((_, index) => (
-                <div key={index} className="h-32 w-full animate-pulse rounded-lg bg-gray-200"></div>
-              ))}
-            </VStack>
-          </Show>
-
-          <Show when={!isLoading && filteredReviews.length === 0}>
-            <NoDataAvailable
-              title="No reviews yet"
-              description={`There are no ${activeTab !== 'all' ? activeTab + ' star ' : ''}reviews for this product.`}
-              icon={<MessageSquare className="h-16 w-16 text-gray-400" />}
-            />
-          </Show>
-
-          <Show when={!isLoading && filteredReviews.length > 0}>
-            <VStack spacing={16} className="mt-6">
-              {filteredReviews.map((review) => (
-                <ReviewCard key={review.id} review={review} />
-              ))}
-            </VStack>
-
-            {filteredReviews.length > 5 && (
-              <div className="mt-8 flex justify-center">
-                <Button variant="outline">Load More Reviews</Button>
+          {isLoading ? (
+            <div className="flex h-40 items-center justify-center">
+              <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary-500 border-t-transparent" />
+            </div>
+          ) : reviews.length > 0 ? (
+            <>
+              <div className="space-y-6">
+                {reviews.map((review) => (
+                  <ReviewItem key={review._id} review={review} />
+                ))}
               </div>
-            )}
-          </Show>
+
+              <div className="mt-8 flex justify-center">
+                <TablePagination pagination={data?.meta} onPageChange={(page) => setQueryParams((prev) => ({ ...prev, page }))} />
+              </div>
+            </>
+          ) : (
+            <div className="flex h-40 flex-col items-center justify-center text-center text-gray-500">
+              <div className="font-medium text-lg">No reviews yet</div>
+              <p className="mt-2">Be the first to review this product</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+interface ReviewItemProps {
+  review: IReview;
+}
+
+const ReviewItem = ({ review }: ReviewItemProps) => {
+  return (
+    <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
+      <HStack pos="apart">
+        <HStack spacing={12}>
+          <Image
+            width={40}
+            height={40}
+            src={review.user?.avatar || '/images/no-image.svg'}
+            alt={review.user?.username || 'User'}
+            className="h-10 w-10"
+          />
+          <VStack spacing={4}>
+            <span className="font-medium">{review.user?.username || 'Anonymous'}</span>
+            <Rating value={review.rating} readOnly size="sm" />
+          </VStack>
+        </HStack>
+        <div className="text-gray-500 text-sm">{formatDistanceToNow(new Date(review.createdAt), { addSuffix: true })}</div>
+      </HStack>
+
+      <div className="mt-4">{review.comment}</div>
+
+      <Show when={review.images && review.images.length > 0}>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {review.images.map((image, index) => (
+            <div key={index} className="relative h-20 w-20 overflow-hidden rounded-md">
+              <Image src={image} alt={`Review image ${index + 1}`} fill className="object-cover" />
+            </div>
+          ))}
+        </div>
+      </Show>
+
+      <div className="mt-4 flex items-center justify-between">
+        <div className="flex gap-2">
+          {review.isPurchased && <span className="rounded-full bg-blue-100 px-2 py-1 font-medium text-blue-800 text-xs">Purchased</span>}
+          {review.isVerified && <span className="rounded-full bg-green-100 px-2 py-1 font-medium text-green-800 text-xs">Verified</span>}
         </div>
       </div>
     </div>
