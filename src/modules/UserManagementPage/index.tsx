@@ -1,5 +1,4 @@
 'use client';
-import { useAdminsQuery } from '@/api/admin/queries';
 import type { IAdminQuery } from '@/api/admin/types';
 import { useUsersQuery } from '@/api/user/queries';
 import SearchTable from '@/components/SearchTable';
@@ -9,7 +8,6 @@ import { HStack } from '@/components/utilities';
 import Container from '@/components/wrapper/Container';
 import { onMutateError } from '@/libs/common';
 import React, { useState } from 'react';
-import FormCreateCategory from './components/FormCreateAdmin';
 import { COLUMNS } from './libs/consts';
 
 const defaultQuery = {
@@ -53,8 +51,6 @@ const UserManagementPage = () => {
             }
           }}
         />
-
-        <FormCreateCategory refetch={refetch} />
       </HStack>
 
       <div className="my-6 min-h-[400px]">

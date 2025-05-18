@@ -50,6 +50,7 @@ const UpdateProductPage = () => {
   const { data: product, isLoading: isLoadingProduct } = useProductByIdQuery({
     variables: productId,
     enabled: !!productId,
+    refetchOnMount: true,
   });
 
   useEffect(() => {
@@ -57,13 +58,16 @@ const UpdateProductPage = () => {
       // Format the data to match the form structure
       const formattedProduct = {
         ...product,
-        // originalPrice: String(product.originalPrice),
         variants:
           product.variants?.map((variant) => ({
             ...variant,
             price: String(variant.price),
             quantity: String(variant.quantity),
           })) || [],
+        originalPrice: String(product.originalPrice),
+        primaryCategoryId: (product as any)?.primaryCategoryId?._id,
+        brandId: (product as any)?.brandId?._id,
+        categories: (product as any)?.categories?.map((x: any) => x._id) || [],
       };
       form.reset(formattedProduct as any);
     }

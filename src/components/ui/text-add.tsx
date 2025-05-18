@@ -50,7 +50,7 @@ const TextAdd = ({ className, childMaxLength, onChange, value }: Props) => {
               onClick={() => handleRemoveText(item)}
               className="ml-2 hidden h-5 w-5 cursor-pointer rounded-full bg-[#E0384B33] hover:opacity-75 group-hover:flex"
             >
-              <Icons.X className="m-auto h-4 w-4 text-amaranth-600" />
+              <Icons.X className="m-auto h-4 w-4 text-red-600" />
             </div>
           </div>
         ))}

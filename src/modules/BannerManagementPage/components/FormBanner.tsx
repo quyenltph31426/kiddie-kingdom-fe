@@ -1,6 +1,5 @@
 import { TextField, UploadButtonField } from '@/components/form';
 import { SelectCustomField } from '@/components/form/SelectCustomField';
-import { TextAreaField } from '@/components/form/TextAreaField';
 import { Switch } from '@/components/ui/switch';
 import { VStack } from '@/components/utilities';
 import React from 'react';

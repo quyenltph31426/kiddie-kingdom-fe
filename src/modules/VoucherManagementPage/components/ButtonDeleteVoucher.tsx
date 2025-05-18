@@ -1,11 +1,11 @@
 'use client';
 
 import { deleteVoucher } from '@/api/voucher/requests';
-import { Icons } from '@/assets/icons';
 import { AlertDialogComponent } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { cn, onMutateError } from '@/libs/common';
 import { useMutation } from '@tanstack/react-query';
+import { Trash } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -34,7 +34,7 @@ const ButtonDeleteVoucher = ({ _id, refetch, className }: Props) => {
   return (
     <>
       <Button size="sm" variant="outline" className={cn('h-8 w-8 p-0', className)} onClick={() => setIsOpenModal(true)}>
-        <Icons.trash className="h-4 w-4" />
+        <Trash className="h-4 w-4" />
       </Button>
 
       <AlertDialogComponent

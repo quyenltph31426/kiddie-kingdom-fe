@@ -37,7 +37,7 @@ export const updateVoucher = async ({
 }): Promise<IVoucher> => {
   const { data } = await client({
     url: `/api/admin/vouchers/${id}`,
-    method: 'PUT',
+    method: 'PATCH',
     data: formData,
   });
   return data?.data;

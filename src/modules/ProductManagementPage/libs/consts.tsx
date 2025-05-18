@@ -2,6 +2,7 @@ import { Popover, PopoverContent } from '@/components/ui/popover';
 import type { ITableColumn } from '@/components/ui/table';
 import { HStack } from '@/components/utilities';
 import { PopoverTrigger } from '@radix-ui/react-popover';
+import { format } from 'date-fns';
 import { Eye, MoreHorizontal, Pen } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -15,17 +16,7 @@ export const COLUMNS = (refetch: any): ITableColumn[] => [
     align: 'left',
     className: 'w-[250px]',
   },
-  {
-    title: 'Description',
-    key: 'description',
-    align: 'left',
-    getCell: ({ row }) => (
-      <div
-        className="line-clamp-3 min-h-4 w-full px-2 py-1 font-medium text-[13px] text-grey-600"
-        dangerouslySetInnerHTML={{ __html: row.description }}
-      />
-    ),
-  },
+
   {
     title: 'Image',
     key: 'updated_by',
@@ -50,6 +41,9 @@ export const COLUMNS = (refetch: any): ITableColumn[] => [
     title: 'Created At',
     key: 'createdAt',
     align: 'left',
+    getCell: ({ row }) => (
+      <div className="px-2 py-1 text-center text-xs">{row?.createdAt ? format(new Date(row?.createdAt), 'dd/MM/yyyy HH:mm') : 'Never'}</div>
+    ),
   },
   {
     title: 'Action',
@@ -69,7 +63,7 @@ export const COLUMNS = (refetch: any): ITableColumn[] => [
           <PopoverContent className="w-36 p-2">
             <div className="flex flex-col gap-1">
               <Link
-                href={`/products/${row._id}`}
+                href={`/products/${row._id}/reviews`}
                 className="flex w-full items-center gap-2 rounded px-2 py-1.5 text-gray-700 text-sm hover:bg-gray-100"
               >
                 <Eye className="h-4 w-4" />

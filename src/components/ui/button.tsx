@@ -17,7 +17,7 @@ const buttonVariants = cva(
         alert: 'bg-amaranth-600 text-white hover:bg-amaranth-700',
         gray: 'bg-[#5832201A] hover:bg-[#58322080] text-tertiary-900 border text-tertiary-900 border-[#58322026]',
         transparent: 'hover:bg-primary-700 hover:text-white bg-transparent',
-        secondary: 'bg-secondary-500 text-white shadow-sm hover:bg-secondary-700',
+        secondary: 'bg-secondary-500 text-white hover:bg-secondary-700',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
         damask: 'text-white bg-red-damask-500 hover:bg-red-damask-600',

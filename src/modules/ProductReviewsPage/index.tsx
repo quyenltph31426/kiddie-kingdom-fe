@@ -46,7 +46,7 @@ const ProductReviewsPage = () => {
   return (
     <Container>
       <HStack className="mb-6" spacing={4}>
-        <Button variant="outline" size="icon" onClick={() => router.push(`${ROUTER.PRODUCT_MANAGEMENT}/${productId}`)}>
+        <Button variant="outline" size="icon" onClick={() => router.push(`${ROUTER.PRODUCT_MANAGEMENT}`)}>
           <ArrowLeft className="h-4 w-4" />
         </Button>
         <div>

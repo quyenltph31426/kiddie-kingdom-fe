@@ -11,6 +11,7 @@ import { type Control, type FieldPath, type FieldPathValue, type FieldValues, us
 import { toast } from 'react-toastify';
 import { Button, type ButtonProps } from '../ui/button';
 import { FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
+import { Progress } from '../ui/progress';
 import { Show, VStack } from '../utilities';
 
 interface Props<T extends FieldValues = FieldValues> extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'accept' | 'onChange'> {
@@ -122,11 +123,8 @@ const UploadButtonField = <T extends FieldValues>({
                 toast.error(error);
               }}
             >
+              {isLoading && <Progress value={progress} className="h-1 bg-primary-100" />}
               <VStack align="center" className="!bg-[#F3F3F3] rounded-md border-dotted py-4" spacing={4}>
-                {/* <div className="flex h-10 w-10 rounded-lg border border-[#8A51361A] bg-[#8A51360D] shadow-[0px_1px_2px_0px_#1018280D]">
-                  <Icons.upload className="m-auto" />
-                </div> */}
-
                 <div className="mt-2 text-center text-[#898989] text-sm">
                   <span className="mr-1 font-semibold text-[#131313]">Click to upload</span>
                   or drag and drop <br />
@@ -136,8 +134,6 @@ const UploadButtonField = <T extends FieldValues>({
                 <Button variant={'outline'} className="mt-3" size="xs">
                   Select Files
                 </Button>
-
-                {/* <div className="text-gray-800 text-sm">DOCX, PDF, CSV or XLSX (max. 25 MB)</div> */}
               </VStack>
             </FileUploader>
 

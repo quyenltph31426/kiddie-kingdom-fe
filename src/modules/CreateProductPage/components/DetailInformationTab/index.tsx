@@ -22,7 +22,7 @@ const DetailInformationTab = () => {
         </div>
         <div className="space-y-2">
           <FormLabel className={cn('mb-10 text-base')}>
-            Variants <span className="text-amaranth-600">*</span>
+            Variants <span className="text-red-600">*</span>
           </FormLabel>
           <VariantField className="mt-2" name="variants" control={form.control} />
         </div>

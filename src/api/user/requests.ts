@@ -67,3 +67,13 @@ export const changeAdminPassword = async ({
   });
   return data?.data;
 };
+
+// Thêm hàm để toggle trạng thái người dùng
+export const toggleUserStatus = async ({ id, isActive }: { id: string; isActive: boolean }): Promise<IAdmin> => {
+  const { data } = await client({
+    url: `/api/admin/users/${id}`,
+    method: 'PATCH',
+    data: { isActive },
+  });
+  return data?.data;
+};

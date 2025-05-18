@@ -1,5 +1,7 @@
 import type { ITableColumn } from '@/components/ui/table';
 import { HStack } from '@/components/utilities';
+import { cn } from '@/libs/common';
+import { formatNumber } from '@/libs/utils';
 import { format } from 'date-fns';
 import ButtonDeleteVoucher from '../components/ButtonDeleteVoucher';
 import FormEditVoucher from '../components/FormEditVoucher';
@@ -20,13 +22,15 @@ export const COLUMNS = (refetch: any): ITableColumn[] => [
     title: 'Type',
     key: 'type',
     align: 'center',
-    getCell: ({ row }) => <span className="rounded bg-blue-100 px-2 py-1 text-blue-800 text-xs">{row?.type}</span>,
+    getCell: ({ row }) => (
+      <span className={cn(row?.type === 'PERCENTAGE' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800')}>{row?.type}</span>
+    ),
   },
   {
     title: 'Value',
     key: 'value',
     align: 'center',
-    getCell: ({ row }) => <span>{row?.type === 'PERCENTAGE' ? `${row?.value}%` : `$${row?.value}`}</span>,
+    getCell: ({ row }) => <span>{row?.type === 'PERCENTAGE' ? `${row?.value}%` : `$${formatNumber(row?.value)}`}</span>,
   },
   {
     title: 'Usage Limit',
@@ -39,7 +43,7 @@ export const COLUMNS = (refetch: any): ITableColumn[] => [
     align: 'center',
     getCell: ({ row }) => (
       <span className="text-xs">
-        {format(new Date(row?.startDate), 'dd/MM/yyyy')} - {format(new Date(row?.endDate), 'dd/MM/yyyy')}
+        {format(new Date(row?.startDate), 'dd/MM/yyyy HH:mm')} - {format(new Date(row?.endDate), 'dd/MM/yyyy HH:mm')}
       </span>
     ),
   },

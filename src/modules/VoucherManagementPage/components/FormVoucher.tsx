@@ -13,7 +13,7 @@ const FormVoucher = () => {
 
   const voucherTypeOptions = [
     { label: 'Percentage', value: 'PERCENTAGE' },
-    { label: 'Fixed Amount', value: 'FIXED' },
+    { label: 'Fixed Amount', value: 'FIXED_AMOUNT' },
   ];
 
   return (

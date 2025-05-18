@@ -1,11 +1,11 @@
 'use client';
 
 import { deleteBanner } from '@/api/banner/requests';
-import { Icons } from '@/assets/icons';
 import { AlertDialogComponent } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import { cn, onMutateError } from '@/libs/common';
+import { onMutateError } from '@/libs/common';
 import { useMutation } from '@tanstack/react-query';
+import { Trash } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -41,7 +41,11 @@ const ButtonDeleteBanner = ({ _id, refetch, className }: Props) => {
       okText={<>Delete</>}
       cancelText={<>Back</>}
       loading={isLoading}
-    />
+    >
+      <Button size="sm" className="h-8">
+        <Trash />
+      </Button>
+    </AlertDialogComponent>
   );
 };
 

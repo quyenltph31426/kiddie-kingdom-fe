@@ -1,7 +1,7 @@
 import { validationMessages } from '@/libs/validation.utility';
 import { z } from 'zod';
 
-export const BANNER_TYPES = ['HOME_HERO', 'CATEGORY_TOP', 'SIDEBAR', 'POPUP'] as const;
+export const BANNER_TYPES = ['HOME_HERO'] as const;
 
 export const bannerSchema = z.object({
   title: z.string({ required_error: validationMessages.required() }).min(1, { message: validationMessages.required() }),

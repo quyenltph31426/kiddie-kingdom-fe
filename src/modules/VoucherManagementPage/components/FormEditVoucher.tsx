@@ -32,7 +32,16 @@ const FormEditVoucher = ({ refetch, _id }: Props) => {
     variables: String(_id),
     enabled: Boolean(_id && isOpenModal),
     onSuccess: (data) => {
-      form.reset(data as any);
+      const formData = {
+        ...data,
+        startDate: new Date(data.startDate),
+        endDate: new Date(data.endDate),
+        value: String(data.value),
+        minOrderValue: String(data.minOrderValue),
+        maxDiscountValue: String(data.maxDiscountValue),
+        usageLimit: String(data.usageLimit),
+      };
+      form.reset(formData as any);
     },
     onError: onMutateError,
   });
@@ -47,8 +56,8 @@ const FormEditVoucher = ({ refetch, _id }: Props) => {
       minOrderValue: '0',
       maxDiscountValue: '0',
       usageLimit: '0',
-      startDate: '',
-      endDate: '',
+      startDate: new Date(),
+      endDate: new Date(),
       isActive: true,
     },
     resolver: zodResolver(voucherSchema),

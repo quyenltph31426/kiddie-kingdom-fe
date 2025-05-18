@@ -1,5 +1,5 @@
-import { useCategoryByIdQuery } from '@/api/category/queries';
-import { updateCategory } from '@/api/category/requests';
+import { useAdminByIdQuery } from '@/api/admin/queries';
+import { updateAdmin } from '@/api/admin/requests';
 import { Icons } from '@/assets/icons';
 import H3 from '@/components/text/H3';
 import { Button } from '@/components/ui/button';
@@ -16,8 +16,6 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { type AdminSchema, adminSchema } from '../libs/validators';
 import FormCategory from './FormAdmin';
-import { updateAdmin } from '@/api/admin/requests';
-import { useAdminByIdQuery } from '@/api/admin/queries';
 
 type Props = {
   refetch: any;
@@ -80,7 +78,7 @@ const FormEditCategory = ({ refetch, _id }: Props) => {
             </span>
           </HStack>
 
-          <H3 className="mt-4">Edit Category</H3>
+          <H3 className="mt-4">Edit Admin</H3>
 
           <div className="my-6">
             <FormWrapper form={form} onSubmit={handleSubmit}>
