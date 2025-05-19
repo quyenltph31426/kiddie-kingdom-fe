@@ -4,7 +4,7 @@ import { useSubmitReviewMutation } from '@/api/reviews/mutations';
 import { uploadSingleFile } from '@/api/upload/requests';
 import { Icons } from '@/assets/icons';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage, FormWrapper } from '@/components/ui/form';
 import { Rating } from '@/components/ui/rating';
 import { TextArea } from '@/components/ui/textarea';
@@ -27,16 +27,15 @@ interface ReviewFormValues {
 }
 
 interface ReviewDialogProps {
-  isOpen: boolean;
-  onClose: () => void;
   productId: string;
   productName: string;
-  productImage: string;
+  productImage?: string;
   orderId: string;
-  onSubmitSuccess: () => void;
 }
 
-const ReviewDialog = ({ isOpen, onClose, productId, productName, productImage, orderId, onSubmitSuccess }: ReviewDialogProps) => {
+const ReviewDialog = ({ productId, orderId, productImage, productName }: ReviewDialogProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -77,7 +76,7 @@ const ReviewDialog = ({ isOpen, onClose, productId, productName, productImage, o
   const { mutate: submitReview, isLoading: isSubmitting } = useSubmitReviewMutation({
     onSuccess: () => {
       toast.success('Review submitted successfully!');
-      onSubmitSuccess();
+
       handleClose();
     },
     onError: onMutateError,
@@ -99,7 +98,7 @@ const ReviewDialog = ({ isOpen, onClose, productId, productName, productImage, o
   const handleClose = () => {
     form.reset();
     setUploadedImages([]);
-    onClose();
+    setIsOpen(false);
   };
 
   const handleFileChange = (file: File) => {
@@ -114,7 +113,11 @@ const ReviewDialog = ({ isOpen, onClose, productId, productName, productImage, o
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={handleClose}>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild>
+        <Button size="xs">Reviews</Button>
+      </DialogTrigger>
+
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle>Write a Review</DialogTitle>

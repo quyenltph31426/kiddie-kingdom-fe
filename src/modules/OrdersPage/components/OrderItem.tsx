@@ -4,12 +4,12 @@ import { useCancelOrderMutation } from '@/api/order/queries';
 import type { IOrder, IOrderItem, OrderStatus, PaymentMethod, PaymentStatus } from '@/api/order/types';
 import H4 from '@/components/text/H4';
 import { Button } from '@/components/ui/button';
-import { HStack, Show, VStack } from '@/components/utilities';
+import { HStack, VStack } from '@/components/utilities';
 import { cn, onMutateError } from '@/libs/common';
 import { ROUTER } from '@/libs/router';
 import { formatNumber } from '@/libs/utils';
 import { format } from 'date-fns';
-import { AlertCircle, CheckCircle, Clock, CreditCard, DollarSign, Package, RefreshCw, Star, Truck, X } from 'lucide-react';
+import { AlertCircle, CheckCircle, Clock, CreditCard, DollarSign, Package, RefreshCw, Truck, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -225,9 +225,6 @@ const OrderItem = ({ order, onCancelSuccess }: OrderItemProps) => {
     };
   };
 
-  // Check if order can be reviewed
-  const canReview = order.shippingStatus === 'DELIVERED' && order.paymentStatus === 'COMPLETED';
-
   return (
     <div className="rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:shadow-md">
       {/* Order header - with gradient background for better visual hierarchy */}
@@ -283,18 +280,6 @@ const OrderItem = ({ order, onCancelSuccess }: OrderItemProps) => {
               </Button>
             </Link>
 
-            {canReview && (
-              <Button
-                variant="ghost"
-                size="sm"
-                className="w-full text-yellow-600 hover:bg-yellow-50 hover:text-yellow-700"
-                onClick={() => (order.items.length === 1 ? openReviewDialog(order.items[0]) : setIsExpanded(true))}
-              >
-                <Star className="mr-1 h-4 w-4" />
-                Review Products
-              </Button>
-            )}
-
             {order.shippingStatus === 'PENDING' && (
               <Button variant="destructive" size="sm" onClick={handleCancelOrder} disabled={isLoading}>
                 {isLoading ? 'Cancelling...' : 'Cancel Order'}
@@ -305,60 +290,55 @@ const OrderItem = ({ order, onCancelSuccess }: OrderItemProps) => {
       </div>
 
       {/* Product preview with improved layout and hover effects */}
-      <div className="px-4 pb-4">
-        <div className="flex flex-wrap gap-3">
-          {order.items.map((item, index) => (
-            <div
-              key={index}
-              className="group relative h-16 w-16 cursor-pointer overflow-hidden rounded-md border border-gray-200 transition-all hover:border-primary-300 hover:shadow-md"
-              onClick={() => canReview && openReviewDialog(item)}
-            >
-              <Image
-                src={item.productImage || '/images/no-image.svg'}
-                alt={item.productName}
-                fill
-                className="object-cover transition-transform group-hover:scale-110"
-                sizes="64px"
-              />
-              {item.quantity > 1 && (
-                <div className="absolute right-0 bottom-0 rounded-tl-md bg-black bg-opacity-70 px-1 text-white text-xs">
-                  x{item.quantity}
-                </div>
-              )}
+      <VStack spacing={4} className="px-4 pb-4">
+        {order.items.map((item, index) => {
+          const canReview = order.shippingStatus === 'DELIVERED' && order.paymentStatus === 'COMPLETED' && !item?.isReviewed;
 
-              {/* Review overlay for completed orders */}
-              {canReview && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 transition-opacity group-hover:opacity-100">
-                  <Star className="h-6 w-6 text-yellow-400" />
+          return (
+            <div className="flex items-center" key={index}>
+              <HStack className="flex-1">
+                <div
+                  className="group relative h-16 w-16 cursor-pointer overflow-hidden rounded-md border border-gray-200 transition-all hover:border-primary-300 hover:shadow-md"
+                  onClick={() => canReview && openReviewDialog(item)}
+                >
+                  <Image
+                    src={item.productImage || '/images/no-image.svg'}
+                    alt={item.productName}
+                    fill
+                    className="object-cover transition-transform group-hover:scale-110"
+                    sizes="64px"
+                  />
+                  {item.quantity > 1 && (
+                    <div className="absolute right-0 bottom-0 rounded-tl-md bg-black bg-opacity-70 px-1 text-white text-xs">
+                      x{item.quantity}
+                    </div>
+                  )}
                 </div>
-              )}
+
+                <VStack>
+                  <span className="line-clamp-1 font-medium text-sm">{item.productName}</span>
+                  <span className="text-gray-500 text-xs">Qty: {item.quantity}</span>
+                </VStack>
+              </HStack>
+
+              <VStack>
+                {canReview ? (
+                  <ReviewDialog
+                    productId={item.productId}
+                    productName={item.productName}
+                    productImage={item.productImage}
+                    orderId={order._id}
+                  />
+                ) : (
+                  <Button size="xs" disabled>
+                    Reviewed
+                  </Button>
+                )}
+              </VStack>
             </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Review Dialog */}
-      <Show when={false}>
-        {selectedItemForReview && (
-          <ReviewDialog
-            isOpen={isReviewDialogOpen}
-            onClose={() => setIsReviewDialogOpen(false)}
-            productId={selectedItemForReview.productId}
-            productName={selectedItemForReview.productName || 'Product'}
-            productImage={selectedItemForReview.productImage || '/images/no-image.svg'}
-            orderId={order._id}
-            onSubmitSuccess={() => {
-              toast.success('Thank you for your review!');
-            }}
-          />
-        )}
-      </Show>
-
-      <Show when={order.reviewStatus?.someItemsReviewed}>
-        <div className="p-4">
-          <p className="text-gray-500 text-sm">Reviewed</p>
-        </div>
-      </Show>
+          );
+        })}
+      </VStack>
 
       {/* Expanded details with improved sections and visual hierarchy */}
       {isExpanded && (
@@ -453,17 +433,6 @@ const OrderItem = ({ order, onCancelSuccess }: OrderItemProps) => {
                             </HStack>
 
                             {/* Review button for completed orders */}
-                            {canReview && (
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                className="mt-1 text-yellow-600 hover:bg-yellow-50 hover:text-yellow-700"
-                                onClick={() => openReviewDialog(item)}
-                              >
-                                <Star className="mr-1 h-4 w-4" />
-                                Review
-                              </Button>
-                            )}
                           </VStack>
                         </HStack>
                       </HStack>

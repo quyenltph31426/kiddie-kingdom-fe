@@ -13,6 +13,7 @@ export interface IOrderItem {
   productName: string;
   productImage?: string;
   attributes?: Record<string, string>;
+  isReviewed?: boolean;
 }
 
 export interface IShippingAddress {
@@ -45,10 +46,6 @@ export interface IOrder {
     paymentId: string;
   };
   product?: IProduct;
-  reviewStatus: {
-    allItemsReviewed: boolean;
-    someItemsReviewed: boolean;
-  };
 }
 
 export interface IOrderResponse {
