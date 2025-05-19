@@ -4,7 +4,7 @@ import { useCancelOrderMutation } from '@/api/order/queries';
 import type { IOrder, IOrderItem, OrderStatus, PaymentMethod, PaymentStatus } from '@/api/order/types';
 import H4 from '@/components/text/H4';
 import { Button } from '@/components/ui/button';
-import { HStack, VStack } from '@/components/utilities';
+import { HStack, Show, VStack } from '@/components/utilities';
 import { cn, onMutateError } from '@/libs/common';
 import { ROUTER } from '@/libs/router';
 import { formatNumber } from '@/libs/utils';
@@ -225,6 +225,8 @@ const OrderItem = ({ order, onCancelSuccess }: OrderItemProps) => {
     };
   };
 
+  const canReview = order.shippingStatus === 'DELIVERED' && order.paymentStatus === 'COMPLETED';
+
   return (
     <div className="rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:shadow-md">
       {/* Order header - with gradient background for better visual hierarchy */}
@@ -292,7 +294,7 @@ const OrderItem = ({ order, onCancelSuccess }: OrderItemProps) => {
       {/* Product preview with improved layout and hover effects */}
       <VStack spacing={4} className="px-4 pb-4">
         {order.items.map((item, index) => {
-          const canReview = order.shippingStatus === 'DELIVERED' && order.paymentStatus === 'COMPLETED' && !item?.isReviewed;
+          // && !item?.isReviewed;
 
           return (
             <div className="flex items-center" key={index}>
@@ -322,18 +324,20 @@ const OrderItem = ({ order, onCancelSuccess }: OrderItemProps) => {
               </HStack>
 
               <VStack>
-                {canReview ? (
-                  <ReviewDialog
-                    productId={item.productId}
-                    productName={item.productName}
-                    productImage={item.productImage}
-                    orderId={order._id}
-                  />
-                ) : (
-                  <Button size="xs" disabled>
-                    Reviewed
-                  </Button>
-                )}
+                <Show when={canReview}>
+                  {item.isReviewed ? (
+                    <ReviewDialog
+                      productId={item.productId}
+                      productName={item.productName}
+                      productImage={item.productImage}
+                      orderId={order._id}
+                    />
+                  ) : (
+                    <Button size="xs" disabled>
+                      Reviewed
+                    </Button>
+                  )}
+                </Show>
               </VStack>
             </div>
           );

@@ -1,10 +1,10 @@
 'use client';
 
 import { useSubmitReviewMutation } from '@/api/reviews/mutations';
-import { uploadSingleFile } from '@/api/upload/requests';
+import { uploadMultiFile } from '@/api/upload/requests';
 import { Icons } from '@/assets/icons';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage, FormWrapper } from '@/components/ui/form';
 import { Rating } from '@/components/ui/rating';
 import { TextArea } from '@/components/ui/textarea';
@@ -52,15 +52,18 @@ const ReviewDialog = ({ productId, orderId, productImage, productName }: ReviewD
 
   // Upload image mutation
   const { mutate: uploadImage } = useMutation(
-    (file: File) => {
+    (files: File[]) => {
+      const filesArray = Array.from(files);
       setIsUploading(true);
       const formData = new FormData();
-      formData.append('file', file);
-      return uploadSingleFile(formData);
+      filesArray.forEach((file) => {
+        formData.append('files', file);
+      });
+      return uploadMultiFile(formData);
     },
     {
       onSuccess: (data) => {
-        const newImages = [...uploadedImages, data.url];
+        const newImages = data?.map((x) => x.url);
         setUploadedImages(newImages);
         form.setValue('images', newImages);
         setIsUploading(false);
@@ -101,8 +104,8 @@ const ReviewDialog = ({ productId, orderId, productImage, productName }: ReviewD
     setIsOpen(false);
   };
 
-  const handleFileChange = (file: File) => {
-    uploadImage(file);
+  const handleFileChange = (files: File[]) => {
+    uploadImage(files);
   };
 
   const removeImage = (index: number) => {
@@ -119,12 +122,18 @@ const ReviewDialog = ({ productId, orderId, productImage, productName }: ReviewD
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-[500px]">
-        <DialogHeader>
-          <DialogTitle>Write a Review</DialogTitle>
-        </DialogHeader>
+        <div className="flex justify-between">
+          <DialogHeader>
+            <DialogTitle>Write a Review</DialogTitle>
+          </DialogHeader>
+
+          <DialogClose asChild>
+            <X className="h-4 w-4 cursor-pointer" />
+          </DialogClose>
+        </div>
 
         <FormWrapper form={form} onSubmit={handleSubmit}>
-          <div className="grid gap-6 py-4">
+          <div className="grid gap-6 py-4 text-sm">
             {/* Product info */}
             <HStack className="gap-4">
               <div className="relative h-16 w-16 overflow-hidden rounded-md">
@@ -174,6 +183,7 @@ const ReviewDialog = ({ productId, orderId, productImage, productName }: ReviewD
                 minSize={0.001}
                 ref={fileRef}
                 name="file"
+                multiple
                 types={['JPG', 'PNG', 'JPEG']}
                 handleChange={handleFileChange}
                 onSizeError={() => toast.error('Image size must be less than 5MB')}
@@ -213,7 +223,7 @@ const ReviewDialog = ({ productId, orderId, productImage, productName }: ReviewD
             </div>
 
             {/* Submit button */}
-            <Button type="submit" className="w-full" disabled={isSubmitting || isUploading}>
+            <Button type="submit" className="w-full" size="sm" disabled={isSubmitting || isUploading}>
               {isSubmitting ? (
                 <>
                   <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
