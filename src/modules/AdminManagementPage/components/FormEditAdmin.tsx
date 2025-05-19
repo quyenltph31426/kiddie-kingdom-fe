@@ -46,7 +46,7 @@ const FormEditAdmin = ({ refetch, _id }: Props) => {
 
   const handleSubmit: SubmitHandler<UpdateAdminSchema> = async (formData) => {
     mutate(
-      { formData, id: String(_id) },
+      { formData: { ...formData, password: (formData.password ? formData.password : undefined) as any }, id: String(_id) },
       {
         onSuccess: () => {
           toast.success('Update the admin successfully!');
