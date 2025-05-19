@@ -3,7 +3,7 @@ import type { ITableColumn } from '@/components/ui/table';
 import { HStack } from '@/components/utilities';
 import { PopoverTrigger } from '@radix-ui/react-popover';
 import { format } from 'date-fns';
-import { Eye, MoreHorizontal, Pen } from 'lucide-react';
+import { Eye, MoreHorizontal, Pen, Star } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import ButtonDeleteProduct from '../components/ButtonDeleteProduct';
@@ -38,6 +38,21 @@ export const COLUMNS = (refetch: any): ITableColumn[] => [
     align: 'center',
   },
   {
+    title: 'Average Rating',
+    key: 'averageRating',
+    align: 'center',
+    getCell: ({ row }) => (
+      <div className="flex items-center px-2 py-1 text-center">
+        {row?.averageRating?.toFixed(1) || '0.0'} <Star className="ml-1 h-4 w-4 text-yellow-400" />{' '}
+      </div>
+    ),
+  },
+  {
+    title: 'Review Count',
+    key: 'reviewCount',
+    align: 'center',
+  },
+  {
     title: 'Created At',
     key: 'createdAt',
     align: 'left',
@@ -67,7 +82,7 @@ export const COLUMNS = (refetch: any): ITableColumn[] => [
                 className="flex w-full items-center gap-2 rounded px-2 py-1.5 text-gray-700 text-sm hover:bg-gray-100"
               >
                 <Eye className="h-4 w-4" />
-                <span>View Detail</span>
+                <span>View Reviewer</span>
               </Link>
               <Link
                 href={`/products/${row._id}/edit`}

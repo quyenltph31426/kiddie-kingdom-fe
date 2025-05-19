@@ -210,7 +210,7 @@ const TableBase = ({ columns, dataSource, loading }: TableBaseProps) => {
                         })}
                         style={column.color ? { color: column.color } : undefined}
                       >
-                        {row[column.key]}
+                        {row[column.key] || 'N/A'}
                       </div>
                     )}
                   </TableCell>

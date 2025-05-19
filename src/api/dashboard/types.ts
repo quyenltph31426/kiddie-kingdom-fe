@@ -30,3 +30,17 @@ export interface RevenueParams {
   endDate?: string;
   productIds?: string[];
 }
+
+export interface TopProduct {
+  id: string;
+  name: string;
+  sales: number;
+  revenue: number;
+  stock: number;
+  image: string;
+  slug: string;
+}
+
+export interface TopProductsParams {
+  limit?: number;
+}

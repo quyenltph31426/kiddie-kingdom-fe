@@ -1,11 +1,11 @@
 'use client';
 import { deleteProduct } from '@/api/product/requests';
 import type { IProduct } from '@/api/product/types';
-import { Icons } from '@/assets/icons';
 import { AlertDialogComponent } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { cn, onMutateError } from '@/libs/common';
 import { useMutation } from '@tanstack/react-query';
+import { Trash } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -54,7 +54,7 @@ const ButtonDeleteProduct = ({ _id, name, refetch, totalSoldCount }: Partial<IPr
         size="xs"
         type="button"
       >
-        <Icons.trash className="ml-1" />
+        <Trash className="h-5 w-5" />
       </Button>
     </AlertDialogComponent>
   );

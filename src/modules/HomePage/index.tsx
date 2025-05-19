@@ -1,15 +1,13 @@
 'use client';
 
 import H1 from '@/components/text/H1';
+import { VStack } from '@/components/utilities';
 import Container from '@/components/wrapper/Container';
 import React from 'react';
-import PerformanceMetrics from './components/PerformanceMetrics';
-import RecentOrders from './components/RecentOrders';
 import RevenueChart from './components/RevenueChart';
-import SalesByCategoryChart from './components/SalesByCategoryChart';
 import StatsCards from './components/StatsCards';
 import TopProducts from './components/TopProducts';
-import WeeklyOrdersChart from './components/WeeklyOrdersChart';
+import TopProductsChart from './components/TopProductsChart';
 
 const HomePage = () => {
   return (
@@ -20,26 +18,12 @@ const HomePage = () => {
       <StatsCards />
 
       {/* Revenue Chart with real API data */}
-      <div className="mt-8">
+      <VStack spacing={24} className="mt-8">
         <RevenueChart />
-      </div>
 
-      {/* Charts Section */}
-      <div className="mt-8 grid gap-6 md:grid-cols-2">
-        <SalesByCategoryChart />
-        <WeeklyOrdersChart />
-      </div>
-
-      {/* Recent Orders & Activity */}
-      <div className="mt-8 grid gap-6 md:grid-cols-2">
-        <RecentOrders />
         <TopProducts />
-      </div>
-
-      {/* Additional Metrics */}
-      <div className="mt-8">
-        <PerformanceMetrics />
-      </div>
+        <TopProductsChart />
+      </VStack>
     </Container>
   );
 };
