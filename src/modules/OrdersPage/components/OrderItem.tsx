@@ -325,7 +325,7 @@ const OrderItem = ({ order, onCancelSuccess }: OrderItemProps) => {
 
               <VStack>
                 <Show when={canReview}>
-                  {item.isReviewed ? (
+                  {!item.isReviewed ? (
                     <ReviewDialog
                       productId={item.productId}
                       productName={item.productName}
