@@ -59,7 +59,7 @@ const SelectCustom = ({ isError, value, defaultValue, onChangeValue, onChange, d
         }),
         singleValue: (baseStyles, state) => ({
           ...baseStyles,
-          color: '#8a5136 !important',
+          color: '#333333 !important',
         }),
         indicatorSeparator: (baseStyles, state) => ({
           display: 'none',
@@ -69,7 +69,7 @@ const SelectCustom = ({ isError, value, defaultValue, onChangeValue, onChange, d
             ...defaultStyles,
             fontSize: '14px',
             fontWeight: 400,
-            color: '#8A513659',
+            color: '#333333',
           };
         },
       }}

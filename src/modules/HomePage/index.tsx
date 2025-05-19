@@ -19,11 +19,13 @@ const HomePage = () => {
       {/* Stats Cards with real API data */}
       <StatsCards />
 
+      {/* Revenue Chart with real API data */}
+      <div className="mt-8">
+        <RevenueChart />
+      </div>
+
       {/* Charts Section */}
       <div className="mt-8 grid gap-6 md:grid-cols-2">
-        <div className="col-span-2">
-          <RevenueChart />
-        </div>
         <SalesByCategoryChart />
         <WeeklyOrdersChart />
       </div>

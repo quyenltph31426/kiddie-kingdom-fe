@@ -81,17 +81,6 @@ const UploadImagesField = <T extends FieldValues>({
         return true;
       });
 
-      // const uniqueFiles = filteredE.filter(
-      //   (newFile) => !uploadedFiles.some((file) => file.originalName === newFile.name && file.size === newFile.size)
-      // );
-
-      // if (e.length > uniqueFiles.length) {
-      //   toast.error(`Duplicate name. Please check again!`);
-      //   return;
-      // }
-
-      // if (uniqueFiles.length === 0) return;
-
       setFiles(filteredE);
 
       filteredE.forEach((file) => {
