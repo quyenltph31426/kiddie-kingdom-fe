@@ -44,3 +44,26 @@ export interface TopProduct {
 export interface TopProductsParams {
   limit?: number;
 }
+
+// Thêm interface cho top customers
+export interface TopCustomer {
+  id: string;
+  name: string;
+  email: string;
+  username: string;
+  avatar: string | null;
+  totalSpent: number;
+  orderCount: number;
+  lastOrderDate: string;
+}
+
+export interface TopCustomersParams {
+  limit?: number;
+  startDate?: string;
+  endDate?: string;
+  period?: 'day' | 'week' | 'month' | 'year';
+}
+
+export interface TopCustomersResponse {
+  data: TopCustomer[];
+}

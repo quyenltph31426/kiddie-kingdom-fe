@@ -1,5 +1,13 @@
 import client from '../axios';
-import type { DashboardStat, RevenueParams, RevenueResponse, TopProduct, TopProductsParams } from './types';
+import type {
+  DashboardStat,
+  RevenueParams,
+  RevenueResponse,
+  TopCustomer,
+  TopCustomersParams,
+  TopProduct,
+  TopProductsParams,
+} from './types';
 
 export const getDashboardStats = async (period: 'day' | 'week' | 'month' | 'year' = 'week'): Promise<DashboardStat[]> => {
   const { data } = await client({
@@ -22,6 +30,15 @@ export const getRevenueData = async (params: Partial<RevenueParams>): Promise<Re
 export const getTopProducts = async (params: Partial<TopProductsParams> = {}): Promise<TopProduct[]> => {
   const { data } = await client({
     url: '/api/admin/dashboard/top-products',
+    method: 'GET',
+    params,
+  });
+  return data?.data || [];
+};
+
+export const getTopCustomers = async (params: Partial<TopCustomersParams> = {}): Promise<TopCustomer[]> => {
+  const { data } = await client({
+    url: '/api/admin/dashboard/top-customers',
     method: 'GET',
     params,
   });

@@ -169,7 +169,7 @@ export const COLUMNS = (refetch: any): ITableColumn[] => [
     getCell: ({ row }) => (
       <HStack pos="center" noWrap>
         {getPaymentStatusBadge(row.paymentStatus)}
-        {row.paymentMethod === 'COD' && row.paymentStatus !== PaymentStatus.COMPLETED && (
+        {row.paymentMethod === 'CASH_ON_DELIVERY' && row.paymentStatus !== PaymentStatus.COMPLETED && (
           <UpdatePaymentStatus orderId={row._id} currentStatus={row.paymentStatus} refetch={refetch} />
         )}
       </HStack>

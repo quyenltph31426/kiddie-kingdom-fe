@@ -4,20 +4,14 @@ import type { IOrderQuery } from '@/api/order/types';
 import SearchTable from '@/components/SearchTable';
 import H3 from '@/components/text/H3';
 import { DateRangePicker } from '@/components/ui/date-range-picker/index';
+import { Label } from '@/components/ui/label';
 import SelectCustom from '@/components/ui/select-custom';
 import TableBase, { TablePagination } from '@/components/ui/table';
 import { HStack, VStack } from '@/components/utilities';
 import Container from '@/components/wrapper/Container';
 import { format } from 'date-fns';
 import { useState } from 'react';
-import {
-  COLUMNS,
-  ORDER_STATUS_OPTIONS,
-  PAYMENT_METHOD_LABELS,
-  PAYMENT_STATUS_OPTIONS,
-  SHIPPING_STATUS_OPTIONS,
-  defaultQuery,
-} from './libs/consts';
+import { COLUMNS, PAYMENT_METHOD_LABELS, PAYMENT_STATUS_OPTIONS, SHIPPING_STATUS_OPTIONS, defaultQuery } from './libs/consts';
 
 const OrderManagementPage = () => {
   const [paramsQuery, setParamsQuery] = useState<Partial<IOrderQuery>>(defaultQuery);
@@ -88,12 +82,6 @@ const OrderManagementPage = () => {
     }
   };
 
-  // Prepare data for SelectCustom components
-  const orderStatusOptions = [
-    { label: 'All Order Status', value: 'ALL' },
-    ...ORDER_STATUS_OPTIONS.map((option) => ({ label: option.label, value: option.value })),
-  ];
-
   const paymentStatusOptions = [
     { label: 'All Payment Status', value: 'ALL' },
     ...PAYMENT_STATUS_OPTIONS.map((option) => ({ label: option.label, value: option.value })),
@@ -153,7 +141,7 @@ const OrderManagementPage = () => {
                 locale="en-US"
                 btnProps={{
                   variant: 'outline',
-                  className: 'h-10 w-full sm:w-[300px]',
+                  className: 'h-9 w-full sm:w-[300px]',
                 }}
               />
             </HStack>
@@ -162,7 +150,9 @@ const OrderManagementPage = () => {
           <HStack className="flex-wrap gap-4" pos="right">
             {/* Payment Method Filter */}
             <div className="w-full sm:w-[180px]">
+              <Label className="font-medium text-grey-500 text-xs">Payment Method</Label>
               <SelectCustom
+                height="36px"
                 data={paymentMethodOptions}
                 value={paramsQuery.paymentMethod || 'ALL'}
                 onChange={handlePaymentMethodChange}
@@ -172,7 +162,9 @@ const OrderManagementPage = () => {
 
             {/* Payment Status Filter */}
             <div className="w-full sm:w-[180px]">
+              <Label className="font-medium text-grey-500 text-xs">Payment Status</Label>
               <SelectCustom
+                height="36px"
                 data={paymentStatusOptions}
                 value={paramsQuery.paymentStatus || 'ALL'}
                 onChange={handlePaymentStatusChange}
@@ -182,7 +174,9 @@ const OrderManagementPage = () => {
 
             {/* Shipping Status Filter */}
             <div className="w-full sm:w-[180px]">
+              <Label className="font-medium text-grey-500 text-xs">Shipping Status</Label>
               <SelectCustom
+                height="36px"
                 data={shippingStatusOptions}
                 value={paramsQuery.shippingStatus || 'ALL'}
                 onChange={handleShippingStatusChange}

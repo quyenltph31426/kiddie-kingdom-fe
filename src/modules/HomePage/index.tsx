@@ -6,6 +6,7 @@ import Container from '@/components/wrapper/Container';
 import React from 'react';
 import RevenueChart from './components/RevenueChart';
 import StatsCards from './components/StatsCards';
+import TopCustomersChart from './components/TopCustomersChart';
 import TopProducts from './components/TopProducts';
 import TopProductsChart from './components/TopProductsChart';
 
@@ -22,7 +23,10 @@ const HomePage = () => {
         <RevenueChart />
 
         <TopProducts />
+
         <TopProductsChart />
+
+        <TopCustomersChart />
       </VStack>
     </Container>
   );
