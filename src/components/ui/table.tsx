@@ -196,7 +196,7 @@ const TableBase = ({ columns, dataSource, loading }: TableBaseProps) => {
         <TableBody>
           <Show when={!loading && dataSource && dataSource?.length > 0}>
             {dataSource?.map((row: any, index: number) => (
-              <TableRow key={index} className={cn('bg-white hover:bg-grey-100', { 'bg-grey-50': index % 2 === 0 })}>
+              <TableRow key={index} className={cn('bg-white hover:bg-grey-100', { 'bg-grey-50': index % 2 !== 0 })}>
                 {columns.map((column) => (
                   <TableCell key={column.key}>
                     {column.getCell ? (

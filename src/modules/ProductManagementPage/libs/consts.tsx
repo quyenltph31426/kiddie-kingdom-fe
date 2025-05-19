@@ -1,9 +1,10 @@
 import { Popover, PopoverContent } from '@/components/ui/popover';
 import type { ITableColumn } from '@/components/ui/table';
+import { TooltipComponent } from '@/components/ui/tooltip';
 import { HStack } from '@/components/utilities';
 import { PopoverTrigger } from '@radix-ui/react-popover';
 import { format } from 'date-fns';
-import { Eye, MoreHorizontal, Pen, Star } from 'lucide-react';
+import { Eye, Info, MoreHorizontal, Pen, Star } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import ButtonDeleteProduct from '../components/ButtonDeleteProduct';
@@ -67,7 +68,16 @@ export const COLUMNS = (refetch: any): ITableColumn[] => [
     className: 'w-[200px]',
     getCell: ({ row }) => (
       <HStack pos="center" noWrap spacing={20}>
-        <ButtonDeleteProduct {...row} refetch={refetch} />
+        {row.totalSoldCount > 0 ? (
+          <>
+            <TooltipComponent content="Cannot delete product that has been sold!">
+              <Info />
+            </TooltipComponent>
+          </>
+        ) : (
+          <ButtonDeleteProduct {...row} refetch={refetch} />
+        )}
+
         <Popover>
           <PopoverTrigger asChild>
             <div className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full hover:bg-gray-100">
