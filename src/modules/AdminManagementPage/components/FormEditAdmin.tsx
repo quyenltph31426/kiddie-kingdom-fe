@@ -14,14 +14,14 @@ import { useState } from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { type AdminSchema, adminSchema } from '../libs/validators';
-import FormCategory from './FormAdmin';
+import { type UpdateAdminSchema, updateAdminSchema } from '../libs/validators';
+import FormAdmin from './FormAdmin';
 
 type Props = {
   refetch: any;
   _id: string;
 };
-const FormEditCategory = ({ refetch, _id }: Props) => {
+const FormEditAdmin = ({ refetch, _id }: Props) => {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
 
   const { mutate, isLoading } = useMutation(updateAdmin);
@@ -34,17 +34,17 @@ const FormEditCategory = ({ refetch, _id }: Props) => {
     onError: onMutateError,
   });
 
-  const form = useForm<AdminSchema>({
+  const form = useForm<UpdateAdminSchema>({
     defaultValues: {
       username: '',
       email: '',
       password: '',
       role: 'ADMIN',
     },
-    resolver: zodResolver(adminSchema),
+    resolver: zodResolver(updateAdminSchema),
   });
 
-  const handleSubmit: SubmitHandler<AdminSchema> = async (formData) => {
+  const handleSubmit: SubmitHandler<UpdateAdminSchema> = async (formData) => {
     mutate(
       { formData, id: String(_id) },
       {
@@ -82,7 +82,7 @@ const FormEditCategory = ({ refetch, _id }: Props) => {
 
           <div className="my-6">
             <FormWrapper form={form} onSubmit={handleSubmit}>
-              <FormCategory />
+              <FormAdmin mode="edit" />
               <HStack pos="center" spacing={20} className="mt-10">
                 <Button size="sm" variant="outline" className="flex-1 px-6" onClick={() => setIsOpenModal(false)}>
                   Cancel
@@ -100,4 +100,4 @@ const FormEditCategory = ({ refetch, _id }: Props) => {
   );
 };
 
-export default FormEditCategory;
+export default FormEditAdmin;

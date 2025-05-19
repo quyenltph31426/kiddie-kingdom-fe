@@ -28,29 +28,6 @@ export const createAdmin = async (formData: AdminSchema): Promise<IAdmin> => {
   return data?.data;
 };
 
-export const updateAdmin = async ({
-  id,
-  formData,
-}: {
-  id: string;
-  formData: AdminSchema;
-}): Promise<IAdmin> => {
-  const { data } = await client({
-    url: `/api/admin/users/${id}`,
-    method: 'PUT',
-    data: formData,
-  });
-  return data?.data;
-};
-
-export const deleteAdmin = async (id: string): Promise<void> => {
-  const { data } = await client({
-    url: `/api/admin/users/${id}`,
-    method: 'DELETE',
-  });
-  return data?.data;
-};
-
 export const changeAdminPassword = async ({
   id,
   currentPassword,
@@ -68,7 +45,6 @@ export const changeAdminPassword = async ({
   return data?.data;
 };
 
-// Thêm hàm để toggle trạng thái người dùng
 export const toggleUserStatus = async ({ id, isActive }: { id: string; isActive: boolean }): Promise<IAdmin> => {
   const { data } = await client({
     url: `/api/admin/users/${id}`,

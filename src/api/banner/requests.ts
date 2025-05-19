@@ -37,7 +37,7 @@ export const updateBanner = async ({
 }): Promise<IBanner> => {
   const { data } = await client({
     url: `/api/admin/banners/${id}`,
-    method: 'PUT',
+    method: 'PATCH',
     data: formData,
   });
   return data?.data;

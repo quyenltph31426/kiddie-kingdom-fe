@@ -1,6 +1,6 @@
 'use client';
 
-import { deleteCategory } from '@/api/category/requests';
+import { deleteAdmin } from '@/api/admin/requests';
 import type { ICategory } from '@/api/category/types';
 import { Icons } from '@/assets/icons';
 import { AlertDialogComponent } from '@/components/ui/alert-dialog';
@@ -12,7 +12,7 @@ import { toast } from 'react-toastify';
 
 const ButtonDeleteAdmin = ({ _id, name, refetch }: Partial<ICategory> & { refetch: any }) => {
   const [isDeleteConfirm, setIsDeleteConfirm] = useState<boolean>(false);
-  const { mutate, isLoading } = useMutation(deleteCategory);
+  const { mutate, isLoading } = useMutation(deleteAdmin);
 
   const handleRemoveBattle = () => {
     mutate(String(_id), {

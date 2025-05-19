@@ -1,4 +1,4 @@
-import type { AdminSchema } from '@/modules/AdminManagementPage/libs/validators';
+import type { AdminSchema, UpdateAdminSchema } from '@/modules/AdminManagementPage/libs/validators';
 import client from '../axios';
 import type { IAdmin, IAdminQuery, IAdminResponse } from './types';
 
@@ -33,11 +33,11 @@ export const updateAdmin = async ({
   formData,
 }: {
   id: string;
-  formData: AdminSchema;
+  formData: UpdateAdminSchema;
 }): Promise<IAdmin> => {
   const { data } = await client({
     url: `/api/admin/admins/${id}`,
-    method: 'PUT',
+    method: 'PATCH',
     data: formData,
   });
   return data?.data;
