@@ -24,9 +24,11 @@ const ProductPage = () => {
   const searchParams = useSearchParams();
   const brand = searchParams.get('brand');
   const category = searchParams.get('category');
-  console.log({ brand, category });
 
-  const { data, isFetching } = useProductsQuery({ variables: paramsQuery, onError: onMutateError });
+  const { data, isFetching } = useProductsQuery({
+    variables: { ...paramsQuery, brandId: String(brand), categoryId: String(category) },
+    onError: onMutateError,
+  });
 
   return (
     <section>

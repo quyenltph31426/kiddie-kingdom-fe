@@ -11,9 +11,9 @@ import React from 'react';
 type Props = {
   loading?: boolean;
 } & Partial<IBrand>;
-const BrandItem = ({ loading, name, slug, logo }: Props) => {
+const BrandItem = ({ loading, name, slug, _id, logo }: Props) => {
   return (
-    <Link href={`${ROUTER.COLLECTIONS}?brand=${slug}`} className="group h-full">
+    <Link href={`${ROUTER.COLLECTIONS}?brand=${_id}`} className="group h-full">
       <div className="relative flex h-full w-full overflow-hidden rounded-lg border">
         <Image
           src={logo || ''}

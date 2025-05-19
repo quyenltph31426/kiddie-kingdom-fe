@@ -1,17 +1,17 @@
 'use client';
 
+import { useCartQuery } from '@/api/cart/queries';
 import { Icons } from '@/assets/icons';
 import { Button } from '@/components/ui/button';
+import { useUserLogin } from '@/hooks/useUserLogin';
 import { ROUTER } from '@/libs/router';
 import { useCartStore } from '@/stores/CartStore';
-import { useCartQuery } from '@/api/cart/queries';
-import { useUserStore } from '@/stores/UserStore';
-import { useEffect } from 'react';
 import Link from 'next/link';
+import { useEffect } from 'react';
 
 const Cart = () => {
   const { carts, mergeCart } = useCartStore();
-  const { user } = useUserStore();
+  const { user } = useUserLogin();
 
   // Fetch cart from API if user is logged in
   const { data: cartData } = useCartQuery({

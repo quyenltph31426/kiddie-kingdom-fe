@@ -11,9 +11,9 @@ import React from 'react';
 type Props = {
   loading?: boolean;
 } & Partial<ICategory>;
-const CategoryItem = ({ loading, name, slug, image }: Props) => {
+const CategoryItem = ({ loading, _id, name, slug, image }: Props) => {
   return (
-    <Link href={`${ROUTER.COLLECTIONS}?category=${slug}`} className="group h-full">
+    <Link href={`${ROUTER.COLLECTIONS}?category=${_id}`} className="group h-full">
       <div className="relative flex h-full w-full overflow-hidden rounded-lg border">
         <Image
           src={image || ''}

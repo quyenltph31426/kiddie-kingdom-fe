@@ -1,7 +1,14 @@
 import type { ICategory } from '../category/types';
 import type { IMetaResponse, ITableQuery } from './../../types/index';
 
-export interface IProductQuery extends ITableQuery {}
+export interface IProductQuery extends ITableQuery {
+  brandId: string;
+  categoryId: string;
+  minPrice?: number;
+  maxPrice?: number;
+  sortBy: string;
+  sortOrder: string;
+}
 
 export interface IProductVariant {
   _id: string;
