@@ -7,6 +7,7 @@ import TableBase, { TablePagination } from '@/components/ui/table';
 import { HStack } from '@/components/utilities';
 import Container from '@/components/wrapper/Container';
 import { onMutateError } from '@/libs/common';
+import { formatNumber } from '@/libs/utils';
 import React, { useState } from 'react';
 import { COLUMNS } from './libs/consts';
 
@@ -24,7 +25,10 @@ const UserManagementPage = () => {
 
   return (
     <Container>
-      <H1 className="mb-8 font-orbitron">User management</H1>
+      <H1 className="font-orbitron">User management</H1>
+      <p className="my-4 font-semibold text-grey-500 text-sm">
+        Total Users: <span>{formatNumber(data?.meta?.total)}</span>
+      </p>
       <HStack pos="apart">
         <SearchTable
           listFilter={[]}
