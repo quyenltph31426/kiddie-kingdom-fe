@@ -85,7 +85,7 @@ export const COLUMNS = (refetch: any): ITableColumn[] => [
             </div>
           </PopoverTrigger>
 
-          <PopoverContent className="w-36 p-2">
+          <PopoverContent className="w-40 p-2">
             <div className="flex flex-col gap-1">
               <Link
                 href={`/products/${row._id}/reviews`}

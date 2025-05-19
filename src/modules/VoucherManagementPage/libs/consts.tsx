@@ -62,7 +62,7 @@ export const COLUMNS = (refetch: any): ITableColumn[] => [
     key: 'actions',
     align: 'center',
     getCell: ({ row }) => (
-      <HStack spacing={8}>
+      <HStack spacing={8} noWrap>
         <FormEditVoucher _id={row?._id} refetch={refetch} />
         <ButtonDeleteVoucher _id={row?._id} refetch={refetch} />
       </HStack>
