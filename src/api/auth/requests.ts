@@ -97,3 +97,13 @@ export const createAccount = async ({ formData, token }: { formData: CreateAccou
 
   return data?.data;
 };
+
+export const verifyEmail = async (token: string): Promise<boolean> => {
+  const { data } = await client({
+    url: `/api/auth/verify-email`,
+    method: 'POST',
+    params: { token },
+  });
+
+  return data?.data;
+};
