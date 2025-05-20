@@ -158,6 +158,7 @@ const AIChatAssistant = () => {
                           content={message.content}
                           isComplete={streamingMessageId !== message.id}
                           speed={15}
+                          htmlMode
                         />
                       )}
                     </div>

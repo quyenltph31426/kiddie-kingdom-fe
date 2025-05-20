@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
 import DOMPurify from 'dompurify';
+import React, { useEffect, useState } from 'react';
 
 interface StreamTextProps {
   content: string;
@@ -21,23 +21,23 @@ const StreamText: React.FC<StreamTextProps> = ({ content, isComplete = false, cl
       setDisplayedContent('');
     }
 
+    // If complete or not streaming, show full content immediately
     if (isComplete || !isStreaming) {
       setDisplayedContent(content);
       return;
     }
 
-    // Check if content contains code blocks or complex formatting
-    const hasCodeBlocks = content.includes('```') || content.includes('`');
-    const hasComplexHtml = content.includes('<pre') || content.includes('<code');
+    // Always check for HTML content
+    const hasHtml = /<[a-z][\s\S]*>/i.test(content) || content.includes('&lt;') || content.includes('&gt;') || htmlMode;
 
-    // If content has code blocks or complex HTML, don't stream it
-    if (hasCodeBlocks || hasComplexHtml) {
+    // If content has HTML or htmlMode is true, don't stream it
+    if (hasHtml) {
       setDisplayedContent(content);
       setIsStreaming(false);
       return;
     }
 
-    // Simple character-by-character streaming for regular text
+    // For plain text, do character-by-character streaming
     let index = 0;
     const interval = setInterval(() => {
       if (index < content.length) {
@@ -57,7 +57,7 @@ const StreamText: React.FC<StreamTextProps> = ({ content, isComplete = false, cl
 
   return (
     <div className={className}>
-      {htmlMode ? <div dangerouslySetInnerHTML={{ __html: sanitizedContent }} /> : displayedContent}
+      <div dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
       {isStreaming && <span className="animate-pulse">▌</span>}
     </div>
   );
