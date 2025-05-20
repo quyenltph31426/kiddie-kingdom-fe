@@ -8,7 +8,7 @@ export const ROUTER = {
   SIGN_IN: '/sign-in',
   SIGN_UP: '/sign-up',
   PROFILE: '/profile',
-  WISHLIST: '/wishlist',
+  FAVORITES: '/product-favorites',
   ABOUT: '/about',
   CONTACT: '/contact',
   TERMS: '/terms',
