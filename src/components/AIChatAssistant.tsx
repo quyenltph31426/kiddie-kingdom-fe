@@ -126,7 +126,7 @@ const AIChatAssistant = () => {
         </PopoverTrigger>
 
         <PopoverContent className="w-80 rounded-xl border-none p-0 shadow-xl sm:w-96" align="end" side="top" sideOffset={16}>
-          <div className="flex h-full max-h-[400px] min-h-[300px] flex-col overflow-hidden rounded-xl text-xs">
+          <div className="flex h-full max-h-[440px] min-h-[300px] flex-col overflow-hidden rounded-xl text-xs">
             {/* Header */}
             <HStack className="bg-primary-500 p-2 text-white" pos="apart">
               <h3 className="font-semibold">AI Shopping Assistant</h3>
@@ -150,10 +150,15 @@ const AIChatAssistant = () => {
                         message.isUser ? 'rounded-tr-none bg-primary-500 text-white' : 'rounded-tl-none border bg-white shadow-sm'
                       }`}
                     >
-                      {message.isUser || message.content.includes('<') ? (
+                      {message.isUser ? (
                         <div dangerouslySetInnerHTML={{ __html: message.content }}></div>
                       ) : (
-                        <StreamText content={message.content} isComplete={streamingMessageId !== message.id} speed={15} />
+                        <StreamText
+                          className="leading-5"
+                          content={message.content}
+                          isComplete={streamingMessageId !== message.id}
+                          speed={15}
+                        />
                       )}
                     </div>
                   </div>
