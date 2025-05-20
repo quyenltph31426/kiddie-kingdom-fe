@@ -1,6 +1,6 @@
 'use client';
 
-import { loginRequest } from '@/api/auth/requests';
+import { loginRequest, loginWithGoogleRequest } from '@/api/auth/requests';
 import { TextField } from '@/components/form';
 import { Button } from '@/components/ui/button';
 import { FormWrapper } from '@/components/ui/form';
@@ -32,11 +32,29 @@ const LoginPage = () => {
       password: '',
     },
   });
-  const login = useGoogleLogin({
-    onSuccess: (codeResponse) => console.log(codeResponse),
-  });
 
   const { mutate: loginCredential, isLoading } = useMutation(loginRequest);
+  const { mutate: loginWithGoogle, isLoading: isGoogleLoading } = useMutation(loginWithGoogleRequest);
+
+  const login = useGoogleLogin({
+    onSuccess: ({ access_token }) => {
+      loginWithGoogle(
+        { token: access_token },
+        {
+          onSuccess: ({ user, accessToken, refreshToken, accessTokenTtl, refreshTokenTtl }) => {
+            setCookie('access_token', accessToken, { maxAge: accessTokenTtl * 60 });
+            setCookie('refresh_token', refreshToken, {
+              maxAge: refreshTokenTtl * 60,
+            });
+            setUser(user);
+            router.replace(ROUTER.HOME);
+            toast.success('You have logged in successfully!');
+          },
+          onError: onMutateError,
+        }
+      );
+    },
+  });
 
   const handleSubmit: SubmitHandler<AuthSchema> = async (formData) => {
     loginCredential(formData, {
