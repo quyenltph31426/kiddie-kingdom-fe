@@ -53,7 +53,7 @@ const LoginPage = () => {
         <Image width={600} height={348} src="/images/logo.png" alt="battle logo" className="h-auto w-[14rem]" />
       </HStack>
       <VStack className="w-full max-w-[450px] rounded-lg border border-grey-100 px-6 py-6 shadow-card-2 md:px-8" spacing={16}>
-        <h1 className="mb-5 text-center font-semibold text-2xl md:text-3xl">User Sign Up</h1>
+        <h1 className="mb-4 text-center font-semibold text-2xl md:text-3xl">User Sign Up</h1>
 
         <FormWrapper form={form} onSubmit={handleSubmit}>
           <VStack spacing={16}>
