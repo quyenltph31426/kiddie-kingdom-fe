@@ -1,9 +1,13 @@
 'use client';
 
+import { getProductRecommendations } from '@/api/ai-agent/requests';
+import StreamText from '@/components/StreamText';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { HStack, VStack } from '@/components/utilities';
+import { formatNumber } from '@/libs/utils';
+import { useMutation } from '@tanstack/react-query';
 import { MessageCircle, Send, X } from 'lucide-react';
 import React, { useRef, useState } from 'react';
 
@@ -19,7 +23,11 @@ const AIChatAssistant = () => {
   const [messages, setMessages] = useState<Message[]>([
     { id: '1', content: 'Hello! How can I help you find products today?', isUser: false },
   ]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [chatHistory, setChatHistory] = useState<string[]>([]);
+  const [streamingMessageId, setStreamingMessageId] = useState<string | null>(null);
+
+  const { mutate, isLoading } = useMutation(getProductRecommendations);
+
   const inputRef = useRef<HTMLInputElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -40,59 +48,87 @@ const AIChatAssistant = () => {
     };
 
     setMessages((prev) => [...prev, userMessage]);
+    setChatHistory((prev) => [...prev, prompt]);
+
+    setTimeout(scrollToBottom, 100);
     setPrompt('');
-    setIsLoading(true);
+
+    mutate(
+      { prompt, limit: 3, chatHistory },
+      {
+        onSuccess: ({ responseText, isProductRecommendation, items }) => {
+          let newMessage: any;
+          const messageId = Date.now().toString();
+          setStreamingMessageId(messageId);
+          setChatHistory((prev) => [...prev, responseText]);
+
+          if (!isProductRecommendation) {
+            newMessage = {
+              id: messageId,
+              content: responseText,
+              isUser: false,
+            };
+          } else {
+            const listProductHtml = items
+              .map(
+                (item) => `
+                <a href="/products/${item.slug}" target="_blank">
+                  <div class="flex items-center space-x-2 py-1">
+                    <img src="${item.images[0]}" alt="${item.name}" class="h-10 w-10 rounded-md object-cover" />
+                    <div>
+                      <p class="font-medium">${item.name}</p>
+                      <p class="text-xs text-gray-500">${formatNumber(item.currentPrice)} vnđ</p>
+                    </div>
+                  </div>
+                </a>
+                <hr/>
+              `
+              )
+              .join('');
+
+            const text = responseText + '<br/><br/>' + listProductHtml;
+
+            newMessage = {
+              id: messageId,
+              content: text,
+              isUser: false,
+            };
+          }
+          setMessages((prev) => [...prev, newMessage]);
+
+          setTimeout(
+            () => {
+              setStreamingMessageId(null);
+              setTimeout(scrollToBottom, 100);
+            },
+            responseText.length * 10 + 500
+          );
+        },
+        onError: () => {
+          setMessages((prev) => [
+            ...prev,
+            { id: Date.now().toString(), content: 'Sorry, I encountered an error. Please try again.', isUser: false },
+          ]);
+        },
+      }
+    );
 
     // Scroll to bottom after adding user message
-    setTimeout(scrollToBottom, 100);
-
-    try {
-      // Mock AI response - replace with actual API call
-      setTimeout(() => {
-        const aiResponse: Message = {
-          id: (Date.now() + 1).toString(),
-          content: `Here are some products matching "${prompt}". You might like our premium collection.`,
-          isUser: false,
-        };
-
-        setMessages((prev) => [...prev, aiResponse]);
-        setIsLoading(false);
-
-        // Scroll to bottom after adding AI response
-        setTimeout(scrollToBottom, 100);
-      }, 1000);
-
-      // Actual API call would look something like:
-      // const response = await fetch('/api/ai-search', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ prompt }),
-      // });
-      // const data = await response.json();
-      // setMessages(prev => [...prev, { id: Date.now().toString(), content: data.message, isUser: false }]);
-    } catch (error) {
-      console.error('Error getting AI response:', error);
-      setMessages((prev) => [
-        ...prev,
-        { id: Date.now().toString(), content: 'Sorry, I encountered an error. Please try again.', isUser: false },
-      ]);
-      setIsLoading(false);
-    }
   };
 
   return (
     <div className="fixed right-6 bottom-6 z-50">
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
-          <Button className="h-14 w-14 rounded-full bg-primary-500 shadow-lg hover:bg-primary-600" onClick={() => setIsOpen(true)}>
+          <Button className="h-12 w-12 rounded-full bg-primary-500 p-1 shadow-lg hover:bg-primary-600" onClick={() => setIsOpen(true)}>
             <MessageCircle className="h-6 w-6 text-white" />
           </Button>
         </PopoverTrigger>
 
         <PopoverContent className="w-80 rounded-xl border-none p-0 shadow-xl sm:w-96" align="end" side="top" sideOffset={16}>
-          <div className="flex h-[450px] flex-col overflow-hidden rounded-xl">
+          <div className="flex h-full max-h-[400px] min-h-[300px] flex-col overflow-hidden rounded-xl text-xs">
             {/* Header */}
-            <HStack className="bg-primary-500 p-3 text-white" pos="apart">
+            <HStack className="bg-primary-500 p-2 text-white" pos="apart">
               <h3 className="font-semibold">AI Shopping Assistant</h3>
               <Button
                 variant="ghost"
@@ -110,11 +146,15 @@ const AIChatAssistant = () => {
                 {messages.map((message) => (
                   <div key={message.id} className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}>
                     <div
-                      className={`max-w-[80%] rounded-lg p-3 ${
+                      className={`max-w-[80%] rounded-lg p-2 ${
                         message.isUser ? 'rounded-tr-none bg-primary-500 text-white' : 'rounded-tl-none border bg-white shadow-sm'
                       }`}
                     >
-                      {message.content}
+                      {message.isUser || message.content.includes('<') ? (
+                        <div dangerouslySetInnerHTML={{ __html: message.content }}></div>
+                      ) : (
+                        <StreamText content={message.content} isComplete={streamingMessageId !== message.id} speed={15} />
+                      )}
                     </div>
                   </div>
                 ))}
@@ -136,15 +176,17 @@ const AIChatAssistant = () => {
             {/* Input */}
             <form onSubmit={handleSubmit} className="border-t bg-white p-3">
               <HStack spacing={8}>
-                <Input
-                  ref={inputRef}
-                  value={prompt}
-                  onChange={(e) => setPrompt(e.target.value)}
-                  placeholder="Ask about products..."
-                  className="flex-1"
-                  disabled={isLoading}
-                />
-                <Button type="submit" size="icon" className="h-10 w-10 rounded-full" disabled={isLoading || !prompt.trim()}>
+                <div className="flex-1">
+                  <Input
+                    ref={inputRef}
+                    value={prompt}
+                    onChange={(e) => setPrompt(e.target.value)}
+                    placeholder="Ask about products..."
+                    className="h-9 flex-1"
+                    disabled={isLoading}
+                  />
+                </div>
+                <Button type="submit" size="icon" className="h-9 w-9 rounded-full" disabled={isLoading || !prompt.trim()}>
                   <Send className="h-5 w-5" />
                 </Button>
               </HStack>

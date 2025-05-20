@@ -1,7 +1,6 @@
 import type { IVoucher } from '@/api/voucher/types';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/libs/common';
-import { ROUTER } from '@/libs/router';
 import { formatNumber } from '@/libs/utils';
 import { useCheckoutStore } from '@/stores/CheckoutStore';
 import { format, isAfter, isBefore } from 'date-fns';
@@ -61,7 +60,7 @@ const VoucherCard = ({ voucher }: VoucherCardProps) => {
   };
 
   return (
-    <div className="relative overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:shadow-md">
+    <div className="relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:shadow-md">
       {/* Voucher header with tear effect */}
       <div className="relative bg-primary-500 p-4 text-white">
         <div className="flex items-center justify-between">
@@ -81,7 +80,7 @@ const VoucherCard = ({ voucher }: VoucherCardProps) => {
       </div>
 
       {/* Voucher content */}
-      <div className="p-4">
+      <div className="flex flex-1 flex-col p-4">
         <div className="mb-4 flex items-center justify-between">
           <div>
             <span className="font-bold text-2xl text-primary-600">{formatDiscountValue()}</span>
@@ -90,7 +89,7 @@ const VoucherCard = ({ voucher }: VoucherCardProps) => {
           <span className={cn('rounded-full px-3 py-1 font-medium text-xs', statusInfo.color)}>{statusInfo.text}</span>
         </div>
 
-        <div className="mb-4 space-y-2 text-sm">
+        <div className="mb-4 flex-1 space-y-2 text-sm">
           <div className="flex justify-between">
             <span className="text-gray-600">Min. Order:</span>
             <span className="font-medium">{formatNumber(voucher.minOrderValue)}</span>
