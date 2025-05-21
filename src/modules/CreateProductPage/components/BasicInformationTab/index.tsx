@@ -13,15 +13,23 @@ const BasicInformationTab = () => {
   const form = useFormContext<ProductSchema>();
   return (
     <div>
-      <H3>Basic Information</H3>
+      <H3>Thông tin cơ bản</H3>
 
       <VStack className="mt-6" spacing={24}>
         <div className=""></div>
         <UploadImagesField control={form.control} name="images" label="Images" accept={['png', 'jpg', 'jpeg', 'svg', 'webp']} />
 
-        <TextField required control={form.control} placeholder="Enter product name" name="name" label="Name" className="h-11" fullWidth />
+        <TextField
+          required
+          control={form.control}
+          placeholder="Nhập tên sản phẩm"
+          name="name"
+          label="Tên sản phẩm"
+          className="h-11"
+          fullWidth
+        />
 
-        <QuillEditorField control={form.control} required name="description" label="Description" className="h" fullWidth />
+        <QuillEditorField control={form.control} required name="description" label="Mô tả sản phẩm" className="h" fullWidth />
       </VStack>
     </div>
   );

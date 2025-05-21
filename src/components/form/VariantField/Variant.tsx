@@ -47,7 +47,7 @@ const Variant = ({ value, onConfirm }: Props) => {
 
   const handleSubmit = (data: VariantSchema) => {
     onConfirm?.(data?.variants || []);
-    toast.success('Save variant successfully!');
+    toast.success('Lưu biến thể thành công!');
   };
   const keys = (form.watch('attributes') || []).map((x) => x.name);
 
@@ -111,8 +111,6 @@ const Variant = ({ value, onConfirm }: Props) => {
     }
   }, [value]);
 
-  console.log(value);
-
   return (
     <FormWrapper form={form} onSubmit={handleSubmit}>
       <div className="">
@@ -138,12 +136,12 @@ const Variant = ({ value, onConfirm }: Props) => {
         </VStack>
 
         <Button size="sm" type="button" variant="dashed" onClick={() => appendGroup({ name: '', values: [''] })} className="mt-6 w-full">
-          <Icons.plus /> Create Group
+          <Icons.plus /> Thêm thuộc tính
         </Button>
       </div>
 
       <div className="mt-10 flex">
-        <div className="mr-2 w-[120px] text-sm">Product Classification List</div>
+        <div className="mr-2 w-[120px] text-sm">Danh sách thuộc tính</div>
 
         <div className="flex-1 bg-grey-50 p-4">
           <div
@@ -156,9 +154,9 @@ const Variant = ({ value, onConfirm }: Props) => {
               </div>
             ))}
 
-            <div className="text-center">Price</div>
-            <div className="text-center">Quantity</div>
-            <div className="text-center">SKU</div>
+            <div className="text-center">Giá</div>
+            <div className="text-center">Số lượng</div>
+            <div className="text-center">SKU (mã)</div>
           </div>
           {form.watch('variants').map((variant, index) => (
             <div
@@ -172,13 +170,18 @@ const Variant = ({ value, onConfirm }: Props) => {
                 </div>
               ))}
               <div>
-                <TextField className="h-9 bg-white" placeholder="Enter price" control={form.control} name={`variants.${index}.price`} />
+                <TextField className="h-9 bg-white" placeholder="Nhập giá" control={form.control} name={`variants.${index}.price`} />
               </div>
               <div>
-                <TextField className="h-9 bg-white" placeholder="Enter price" control={form.control} name={`variants.${index}.quantity`} />
+                <TextField
+                  className="h-9 bg-white"
+                  placeholder="Nhập số lượng"
+                  control={form.control}
+                  name={`variants.${index}.quantity`}
+                />
               </div>
               <div>
-                <TextField className="h-9 bg-white" placeholder="Enter price" control={form.control} name={`variants.${index}.sku`} />
+                <TextField className="h-9 bg-white" placeholder="Nhập mã SKU" control={form.control} name={`variants.${index}.sku`} />
               </div>
             </div>
           ))}
@@ -186,11 +189,11 @@ const Variant = ({ value, onConfirm }: Props) => {
       </div>
 
       <Separator className="mt-6" />
-      <p className="mt-6 text-secondary-500 text-sm">Please save variant before continue</p>
+      <p className="mt-6 text-secondary-500 text-sm">Vui lòng lưu biến thể trước khi tiếp tục</p>
       <HStack pos="right">
         <Button disabled={!form.formState.isValid} type="button" onClick={() => form.handleSubmit(handleSubmit)()}>
           <Save className="mr-2 w-4" />
-          Save
+          Lưu
         </Button>
       </HStack>
     </FormWrapper>

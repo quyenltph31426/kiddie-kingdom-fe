@@ -32,21 +32,21 @@ const OtherInformationTab = () => {
 
   return (
     <div>
-      <H3>Other Information</H3>
+      <H3>Thông tin khác</H3>
 
       <VStack className="mt-6" spacing={24}>
         <SelectCustomField
           required
           control={form.control}
           name="brandId"
-          label="Brand"
+          label="Thương hiệu"
           data={(brands?.items || []).map((x) => ({ label: x.name, value: x._id }))}
         />
         <SelectCustomField
           required
           control={form.control}
           name="primaryCategoryId"
-          label="Primary Category"
+          label="Danh mục chính"
           data={(categories?.items || []).map((x) => ({ label: x.name, value: x._id }))}
         />
 
@@ -54,26 +54,26 @@ const OtherInformationTab = () => {
           required
           control={form.control}
           name="categories"
-          label="Categories"
+          label="Danh mục phụ"
           data={(categories?.items || [])
             .filter((x) => x._id !== form.getValues('primaryCategoryId'))
             .map((x) => ({ label: x.name, value: x._id }))}
         />
 
         <HStack pos="apart">
-          <SwitchField control={form.control} name="isNewArrival" label="Product New Arrival" />
-          <SwitchField control={form.control} name="isFeatured" label="Product Highlight" />
-          <SwitchField control={form.control} name="isOnSale" label="On Sale" />
+          <SwitchField control={form.control} name="isNewArrival" label="Đánh dấu sản phẩm mới" />
+          <SwitchField control={form.control} name="isFeatured" label="Đánh dấu sản phẩm nổi bật" />
+          <SwitchField control={form.control} name="isOnSale" label="Đánh dấu sản phẩm giảm giá" />
         </HStack>
 
-        <KeyValueDynamicField control={form.control} name="specifications" label="Specifications" />
+        <KeyValueDynamicField control={form.control} name="specifications" label="Thông số kỹ thuật" />
       </VStack>
 
       <Separator className="my-10" />
-      <p className="text-sm">My product is ready to publish</p>
+      <p className="text-sm">Sản phẩm của bạn đã sẵn sàng để xuất bản</p>
       <HStack pos="right">
         <Button type="submit" onClick={handleTrigger}>
-          Publish Product
+          Xuất bản sản phẩm
         </Button>
       </HStack>
     </div>

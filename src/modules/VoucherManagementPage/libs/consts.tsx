@@ -14,7 +14,7 @@ export const COLUMNS = (refetch: any): ITableColumn[] => [
     align: 'left',
   },
   {
-    title: 'Name',
+    title: 'Tên voucher',
     key: 'name',
     align: 'left',
   },
@@ -33,12 +33,12 @@ export const COLUMNS = (refetch: any): ITableColumn[] => [
     getCell: ({ row }) => <span>{row?.type === 'PERCENTAGE' ? `${row?.value}%` : `$${formatNumber(row?.value)}`}</span>,
   },
   {
-    title: 'Usage Limit',
+    title: 'Số lượng sử dụng tối đa',
     key: 'usageLimit',
     align: 'center',
   },
   {
-    title: 'Valid Period',
+    title: 'Thời gian áp dụng',
     key: 'period',
     align: 'center',
     getCell: ({ row }) => (
@@ -48,7 +48,7 @@ export const COLUMNS = (refetch: any): ITableColumn[] => [
     ),
   },
   {
-    title: 'Status',
+    title: 'Trạng thái',
     key: 'isActive',
     align: 'center',
     getCell: ({ row }) => (
@@ -58,7 +58,7 @@ export const COLUMNS = (refetch: any): ITableColumn[] => [
     ),
   },
   {
-    title: 'Actions',
+    title: 'Hành động',
     key: 'actions',
     align: 'center',
     getCell: ({ row }) => (

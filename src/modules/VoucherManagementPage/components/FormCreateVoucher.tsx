@@ -53,7 +53,7 @@ const FormCreateVoucher = ({ refetch }: Props) => {
       },
       {
         onSuccess: () => {
-          toast.success('Create new voucher successfully!');
+          toast.success('Tạo voucher thành công!');
           setIsOpenModal(false);
           form.reset();
           refetch();
@@ -68,7 +68,7 @@ const FormCreateVoucher = ({ refetch }: Props) => {
       <DialogTrigger asChild>
         <Button>
           <Icons.plus />
-          Create
+          Tạo mới voucher
         </Button>
       </DialogTrigger>
 
@@ -84,18 +84,18 @@ const FormCreateVoucher = ({ refetch }: Props) => {
             </span>
           </HStack>
 
-          <H3 className="mt-4">Create New Voucher</H3>
+          <H3 className="mt-4">Tạo mới voucher</H3>
 
           <div className="my-6">
             <FormWrapper form={form} onSubmit={handleSubmit}>
               <FormVoucher />
               <HStack pos="center" spacing={20} className="mt-10">
                 <Button size="sm" variant="outline" className="flex-1 px-6" onClick={() => setIsOpenModal(false)}>
-                  Cancel
+                  Hủy
                 </Button>
 
                 <Button type="submit" size="sm" className="flex-1 px-6" loading={isLoading} disabled={!form.formState.isDirty || isLoading}>
-                  Create New
+                  Tạo mới
                 </Button>
               </HStack>
             </FormWrapper>

@@ -1,4 +1,4 @@
-import { createCategory } from '@/api/category/requests';
+import { createBrand } from '@/api/brand/requests';
 import { Icons } from '@/assets/icons';
 import H3 from '@/components/text/H3';
 import { Button } from '@/components/ui/button';
@@ -14,7 +14,6 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { type BrandSchema, brandSchema } from '../libs/validators';
 import FormCategory from './FormBrand';
-import { createBrand } from '@/api/brand/requests';
 
 type Props = {
   refetch: any;
@@ -37,7 +36,7 @@ const FormCreateBrand = ({ refetch }: Props) => {
   const handleSubmit: SubmitHandler<BrandSchema> = async (formData) => {
     mutate(formData, {
       onSuccess: () => {
-        toast.success('Create new brand successfully!');
+        toast.success('Tạo thương hiệu thành công!');
         setIsOpenModal(false);
         refetch();
       },
@@ -50,7 +49,7 @@ const FormCreateBrand = ({ refetch }: Props) => {
       <DialogTrigger asChild>
         <Button>
           <Icons.plus />
-          Create
+          Thêm thương hiệu
         </Button>
       </DialogTrigger>
 
@@ -66,18 +65,18 @@ const FormCreateBrand = ({ refetch }: Props) => {
             </span>
           </HStack>
 
-          <H3 className="mt-4">Create New Brand</H3>
+          <H3 className="mt-4">Tạo mới thương hiệu</H3>
 
           <div className="my-6">
             <FormWrapper form={form} onSubmit={handleSubmit}>
               <FormCategory />
               <HStack pos="center" spacing={20} className="mt-10">
                 <Button size="sm" variant="outline" className="flex-1 px-6" onClick={() => setIsOpenModal(false)}>
-                  Cancel
+                  Hủy
                 </Button>
 
                 <Button type="submit" size="sm" className="flex-1 px-6" loading={isLoading} disabled={!form.formState.isDirty || isLoading}>
-                  Create New
+                  Tạo mới
                 </Button>
               </HStack>
             </FormWrapper>

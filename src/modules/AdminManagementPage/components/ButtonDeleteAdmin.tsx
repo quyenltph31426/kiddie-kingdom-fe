@@ -18,7 +18,7 @@ const ButtonDeleteAdmin = ({ _id, name, refetch }: Partial<ICategory> & { refetc
     mutate(String(_id), {
       onSuccess: async () => {
         refetch();
-        toast.success('The admin has been delete successfully!');
+        toast.success('Xóa admin thành công!');
       },
       onError: onMutateError,
     });
@@ -30,12 +30,12 @@ const ButtonDeleteAdmin = ({ _id, name, refetch }: Partial<ICategory> & { refetc
       onOk={handleRemoveBattle}
       description={
         <div>
-          <p className="line-clamp-4 font-medium text-lg">Are you sure you want to delete the admin "{name}"?</p>
+          <p className="line-clamp-4 font-medium text-lg">Bạn có chắc chắn muốn xóa admin "{name}"?</p>
         </div>
       }
       isOpen={isDeleteConfirm}
       setIsOpen={setIsDeleteConfirm}
-      title="Delete battle"
+      title="Xóa admin"
       variant="alert"
       okText={<>Delete</>}
       cancelText={<>Back</>}

@@ -32,7 +32,7 @@ export const COLUMNS = (refetch: any): ITableColumn[] => [
     align: 'left',
   },
   {
-    title: 'Created At',
+    title: 'Ngày tạo',
     key: 'createdAt',
     align: 'left',
   },

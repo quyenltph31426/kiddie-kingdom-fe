@@ -9,9 +9,9 @@ const FormCategory = () => {
   const form = useFormContext<CategorySchema>();
   return (
     <VStack spacing={16}>
-      <TextField required control={form.control} name="name" label="Name" className="h-12" fullWidth />
+      <TextField required control={form.control} name="name" label="Tên danh mục" className="h-12" fullWidth />
 
-      <TextAreaField required control={form.control} name="description" label="Description" className="h" fullWidth />
+      <TextAreaField required control={form.control} name="description" label="Mô tả" className="h" fullWidth />
 
       <UploadButtonField
         accept={['png', 'jpg', 'jpeg', 'svg', 'webp']}

@@ -19,8 +19,8 @@ const FormVoucher = () => {
   return (
     <VStack spacing={16}>
       <TextField required control={form.control} name="code" label="Code" className="h-11" fullWidth />
-      <TextField required control={form.control} name="name" label="Name" className="h-11" fullWidth />
-      <TextAreaField control={form.control} name="description" label="Description" fullWidth />
+      <TextField required control={form.control} name="name" label="Tên voucher" className="h-11" fullWidth />
+      <TextAreaField control={form.control} name="description" label="Mô tả voucher" fullWidth />
 
       <SelectCustomField
         required
@@ -36,7 +36,7 @@ const FormVoucher = () => {
         required
         control={form.control}
         name="value"
-        label={form.watch('type') === 'PERCENTAGE' ? 'Discount Percentage' : 'Discount Amount'}
+        label={form.watch('type') === 'PERCENTAGE' ? 'Giảm giá (% off)' : 'Giảm giá (VNĐ)'}
         type="number"
         className="h-11"
         fullWidth
@@ -46,26 +46,41 @@ const FormVoucher = () => {
         required
         control={form.control}
         name="minOrderValue"
-        label="Minimum Order Value"
+        label="Giá trị đơn hàng tối thiểu (VNĐ)"
         type="number"
         className="h-11"
         fullWidth
       />
 
       {form.watch('type') === 'PERCENTAGE' && (
-        <TextField control={form.control} name="maxDiscountValue" label="Maximum Discount Value" type="number" className="h-11" fullWidth />
+        <TextField
+          control={form.control}
+          name="maxDiscountValue"
+          label="Giá trị giảm tối đa (VNĐ)"
+          type="number"
+          className="h-11"
+          fullWidth
+        />
       )}
 
-      <TextField required control={form.control} name="usageLimit" label="Usage Limit" type="number" className="h-11" fullWidth />
+      <TextField
+        required
+        control={form.control}
+        name="usageLimit"
+        label="Số lượng sử dụng tối đa"
+        type="number"
+        className="h-11"
+        fullWidth
+      />
 
-      <DatePickerField required control={form.control} name="startDate" label="Start Date" className="h-11" fullWidth />
+      <DatePickerField required control={form.control} name="startDate" label="Ngày bắt đầu" className="h-11" fullWidth />
 
-      <DatePickerField required control={form.control} name="endDate" label="End Date" className="h-11" fullWidth />
+      <DatePickerField required control={form.control} name="endDate" label="Ngày kết thúc" className="h-11" fullWidth />
 
       <div className="flex items-center space-x-2">
         <Switch id="isActive" checked={form.watch('isActive')} onCheckedChange={(checked) => form.setValue('isActive', checked)} />
         <label htmlFor="isActive" className="font-medium text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-          Active
+          Kích hoạt
         </label>
       </div>
     </VStack>

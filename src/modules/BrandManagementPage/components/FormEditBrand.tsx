@@ -49,7 +49,7 @@ const FormEditBrand = ({ refetch, _id }: Props) => {
       { formData, id: String(_id) },
       {
         onSuccess: () => {
-          toast.success('Update the category successfully!');
+          toast.success('Cập nhật thương hiệu thành công!');
           setIsOpenModal(false);
           refetch();
         },
@@ -78,18 +78,18 @@ const FormEditBrand = ({ refetch, _id }: Props) => {
             </span>
           </HStack>
 
-          <H3 className="mt-4">Edit Category</H3>
+          <H3 className="mt-4">Cập nhật thương hiệu</H3>
 
           <div className="my-6">
             <FormWrapper form={form} onSubmit={handleSubmit}>
               <FormCategory />
               <HStack pos="center" spacing={20} className="mt-10">
                 <Button size="sm" variant="outline" className="flex-1 px-6" onClick={() => setIsOpenModal(false)}>
-                  Cancel
+                  Hủy
                 </Button>
 
                 <Button type="submit" size="sm" className="flex-1 px-6" loading={isLoading} disabled={!form.formState.isDirty || isLoading}>
-                  Update
+                  Cập nhật
                 </Button>
               </HStack>
             </FormWrapper>

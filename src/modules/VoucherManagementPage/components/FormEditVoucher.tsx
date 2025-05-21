@@ -75,7 +75,7 @@ const FormEditVoucher = ({ refetch, _id }: Props) => {
       } as any,
       {
         onSuccess: () => {
-          toast.success('Update the voucher successfully!');
+          toast.success('Cập nhật voucher thành công!');
           setIsOpenModal(false);
           refetch();
         },
@@ -104,18 +104,18 @@ const FormEditVoucher = ({ refetch, _id }: Props) => {
             </span>
           </HStack>
 
-          <H3 className="mt-4">Edit Voucher</H3>
+          <H3 className="mt-4">Cập nhật voucher</H3>
 
           <div className="my-6">
             <FormWrapper form={form} onSubmit={handleSubmit}>
               <FormVoucher />
               <HStack pos="center" spacing={20} className="mt-10">
                 <Button size="sm" variant="outline" className="flex-1 px-6" onClick={() => setIsOpenModal(false)}>
-                  Cancel
+                  Hủy
                 </Button>
 
                 <Button type="submit" size="sm" className="flex-1 px-6" loading={isLoading} disabled={!form.formState.isDirty || isLoading}>
-                  Update
+                  Cập nhật
                 </Button>
               </HStack>
             </FormWrapper>

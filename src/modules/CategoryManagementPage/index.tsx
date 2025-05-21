@@ -1,6 +1,6 @@
 'use client';
 
-import { useCategoriesQuery, useDeleteCategoryMutation } from '@/api/category/queries';
+import { useCategoriesQuery } from '@/api/category/queries';
 import type { ICategoryQuery } from '@/api/category/types';
 import SearchTable from '@/components/SearchTable';
 import H1 from '@/components/text/H1';
@@ -8,7 +8,6 @@ import TableBase, { TablePagination } from '@/components/ui/table';
 import { HStack } from '@/components/utilities';
 import Container from '@/components/wrapper/Container';
 import React, { useState } from 'react';
-import { toast } from 'react-toastify';
 import FormCreateCategory from './components/FormCreateCategory';
 import { COLUMNS } from './libs/consts';
 
@@ -25,7 +24,7 @@ const CategoryManagementPage = () => {
 
   return (
     <Container>
-      <H1 className="mb-8 font-orbitron">Category management</H1>
+      <H1 className="mb-8 font-orbitron">Quản lý danh mục</H1>
       <HStack pos="apart">
         <SearchTable
           listFilter={[]}

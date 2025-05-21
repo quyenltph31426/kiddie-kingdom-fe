@@ -50,7 +50,7 @@ const ProductReviewsPage = () => {
           <ArrowLeft className="h-4 w-4" />
         </Button>
         <div>
-          <H1 className="font-orbitron">Product Reviews</H1>
+          <H1 className="font-orbitron">Quản lý đánh giá sản phẩm</H1>
           <p className="text-gray-500">{product?.name}</p>
         </div>
       </HStack>

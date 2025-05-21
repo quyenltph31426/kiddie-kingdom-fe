@@ -1,7 +1,6 @@
 'use client';
 
 import { deleteBrand } from '@/api/brand/requests';
-import { deleteCategory } from '@/api/category/requests';
 import type { ICategory } from '@/api/category/types';
 import { Icons } from '@/assets/icons';
 import { AlertDialogComponent } from '@/components/ui/alert-dialog';
@@ -19,7 +18,7 @@ const ButtonDeleteBrand = ({ _id, name, refetch }: Partial<ICategory> & { refetc
     mutate(String(_id), {
       onSuccess: async () => {
         refetch();
-        toast.success('The brand has been delete successfully!');
+        toast.success('Xóa thương hiệu thành công!');
       },
       onError: onMutateError,
     });
@@ -31,15 +30,15 @@ const ButtonDeleteBrand = ({ _id, name, refetch }: Partial<ICategory> & { refetc
       onOk={handleRemoveBattle}
       description={
         <div>
-          <p className="line-clamp-4 font-medium text-lg">Are you sure you want to delete the brand "{name}"?</p>
+          <p className="line-clamp-4 font-medium text-lg">Bạn có chắc chắn muốn xóa thương hiệu "{name}"?</p>
         </div>
       }
       isOpen={isDeleteConfirm}
       setIsOpen={setIsDeleteConfirm}
-      title="Delete battle"
+      title="Xóa thương hiệu"
       variant="alert"
-      okText={<>Delete</>}
-      cancelText={<>Back</>}
+      okText={<>Xóa</>}
+      cancelText={<>Hủy</>}
       loading={isLoading}
     >
       <Button

@@ -52,7 +52,7 @@ const CreateProductPage = () => {
       {
         onSuccess: () => {
           form.reset();
-          toast.success('Create product successfully!');
+          toast.success('Tạo sản phẩm thành công!');
           router.push(ROUTER.PRODUCT_MANAGEMENT);
         },
         onError: onMutateError,
@@ -63,7 +63,7 @@ const CreateProductPage = () => {
     <Container>
       <div className="flex">
         <div className="sticky top-10 h-fit w-[280px] rounded bg-primary-500 px-4 pt-3 pb-20">
-          <H4 className="text-white">Progress</H4>
+          <H4 className="text-white">Tiến trình</H4>
 
           <VStack className="mt-4">
             {TABS?.map((item) => (

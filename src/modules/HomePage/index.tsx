@@ -13,7 +13,7 @@ import TopProductsChart from './components/TopProductsChart';
 const HomePage = () => {
   return (
     <Container>
-      <H1 className="mb-6 font-orbitron">Dashboard</H1>
+      <H1 className="mb-6 font-orbitron">Trang chủ</H1>
 
       {/* Stats Cards with real API data */}
       <StatsCards />

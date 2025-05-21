@@ -14,11 +14,11 @@ const DetailInformationTab = () => {
   const form = useFormContext<ProductSchema>();
   return (
     <div>
-      <H3>Detail Information</H3>
+      <H3>Thông tin chi tiết</H3>
 
       <VStack className="mt-8" spacing={16}>
         <div className="">
-          <TextMaskField required control={form.control} name="originalPrice" label="Original Price" placeholder="Price before discount" />
+          <TextMaskField required control={form.control} name="originalPrice" label="Giá gốc" placeholder="Nhập giá gốc chưa giảm giá" />
         </div>
         <div className="space-y-2">
           <FormLabel className={cn('mb-10 text-base')}>

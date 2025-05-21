@@ -42,10 +42,16 @@ export const COLUMNS = (refetch: any): ITableColumn[] => [
     ),
   },
   {
+    title: 'Giá nhập',
+    key: 'currentPrice',
+    align: 'center',
+    getCell: ({ row }) => <div className="px-2 py-1 text-center">{formatNumber(row?.currentPrice)}</div>,
+  },
+  {
     title: 'Giá bán',
     key: 'originalPrice',
     align: 'center',
-    getCell: ({ row }) => <div className="px-2 py-1 text-center">{row?.originalPrice}</div>,
+    getCell: ({ row }) => <div className="px-2 py-1 text-center">{formatNumber(row?.originalPrice)}</div>,
   },
   {
     title: 'Số lượng',
@@ -90,7 +96,7 @@ export const COLUMNS = (refetch: any): ITableColumn[] => [
     ),
   },
   {
-    title: 'Sang phẩm mới',
+    title: 'Sản phẩm mới',
     key: 'isNewArrival',
     align: 'center',
     getCell: ({ row }) => (

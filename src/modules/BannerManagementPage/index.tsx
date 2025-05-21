@@ -25,7 +25,7 @@ const BannerManagementPage = () => {
 
   return (
     <Container>
-      <H1 className="mb-8 font-orbitron">Banner management</H1>
+      <H1 className="mb-8 font-orbitron">Quản lý banner</H1>
       <HStack pos="apart">
         <SearchTable
           listFilter={[]}

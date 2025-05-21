@@ -18,7 +18,7 @@ const ButtonDeleteCategory = ({ _id, name, refetch }: Partial<ICategory> & { ref
     mutate(String(_id), {
       onSuccess: async () => {
         refetch();
-        toast.success('The category has been delete successfully!');
+        toast.success('Xóa danh mục thành công!');
       },
       onError: onMutateError,
     });
@@ -30,15 +30,15 @@ const ButtonDeleteCategory = ({ _id, name, refetch }: Partial<ICategory> & { ref
       onOk={handleRemoveBattle}
       description={
         <div>
-          <p className="line-clamp-4 font-medium text-lg">Are you sure you want to delete the category "{name}"?</p>
+          <p className="line-clamp-4 font-medium text-lg">Bạn có chắc chắn muốn xóa danh mục "{name}"?</p>
         </div>
       }
       isOpen={isDeleteConfirm}
       setIsOpen={setIsDeleteConfirm}
-      title="Delete battle"
+      title="Xóa danh mục"
       variant="alert"
-      okText={<>Delete</>}
-      cancelText={<>Back</>}
+      okText={<>Xóa</>}
+      cancelText={<>Hủy</>}
       loading={isLoading}
     >
       <Button

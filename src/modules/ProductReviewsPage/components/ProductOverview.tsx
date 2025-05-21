@@ -14,25 +14,25 @@ const ProductOverview = ({ product }: ProductOverviewProps) => {
 
   const productStats = [
     {
-      label: 'Views',
+      label: 'Lượt xem',
       value: product.viewCount || 0,
       icon: <Eye className="h-4 w-4 text-blue-500" />,
       color: 'bg-blue-50',
     },
     {
-      label: 'Sales',
+      label: 'Đã bán',
       value: product.totalSoldCount || 0,
       icon: <ShoppingCart className="h-4 w-4 text-green-500" />,
       color: 'bg-green-50',
     },
     {
-      label: 'In Stock',
+      label: 'Số lượng',
       value: product.variants?.reduce((acc, curr) => acc + curr.quantity, 0) || 0,
       icon: <Package className="h-4 w-4 text-amber-500" />,
       color: 'bg-amber-50',
     },
     {
-      label: 'Rating',
+      label: 'Đánh giá',
       value: product.averageRating ? `${product.averageRating.toFixed(1)}/5` : 'N/A',
       icon: <Star className="h-4 w-4 text-yellow-500" />,
       color: 'bg-yellow-50',
@@ -60,7 +60,7 @@ const ProductOverview = ({ product }: ProductOverviewProps) => {
       {/* Product Stats */}
       <Card className="lg:col-span-2">
         <CardHeader className="pb-2">
-          <CardTitle className="text-xl">Product Performance</CardTitle>
+          <CardTitle className="text-xl">Tổng quan sản phẩm</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
@@ -80,7 +80,7 @@ const ProductOverview = ({ product }: ProductOverviewProps) => {
             <div className="rounded-lg border p-4">
               <div className="mb-2 flex items-center gap-2">
                 <Tag className="h-4 w-4 text-gray-500" />
-                <h3 className="font-medium">Categories</h3>
+                <h3 className="font-medium">Danh mục</h3>
               </div>
               <div className="flex flex-wrap gap-2">
                 {product?.categories?.map((category: any, index) => (
@@ -94,7 +94,7 @@ const ProductOverview = ({ product }: ProductOverviewProps) => {
             <div className="rounded-lg border p-4">
               <div className="mb-2 flex items-center gap-2">
                 <Box className="h-4 w-4 text-gray-500" />
-                <h3 className="font-medium">Product Status</h3>
+                <h3 className="font-medium">Trạng thái</h3>
               </div>
               <div className="grid grid-cols-2 gap-2">
                 <div className="flex items-center gap-2">
@@ -121,7 +121,7 @@ const ProductOverview = ({ product }: ProductOverviewProps) => {
           <div className="mt-4 rounded-lg border p-4">
             <div className="mb-2 flex items-center gap-2">
               <Truck className="h-4 w-4 text-gray-500" />
-              <h3 className="font-medium">Shipping & Inventory</h3>
+              <h3 className="font-medium">Thông tin vận chuyển</h3>
             </div>
             {/* <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
               <div>

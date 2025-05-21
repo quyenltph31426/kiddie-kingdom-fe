@@ -1,10 +1,9 @@
 import type { ITableColumn } from '@/components/ui/table';
 import { HStack } from '@/components/utilities';
-import Image from 'next/image';
-import { Badge } from '@/components/ui/badge';
-import { Check, X } from 'lucide-react';
-import ButtonToggleUserStatus from '../components/ButtonToggleUserStatus';
 import { format } from 'date-fns';
+import { Check, X } from 'lucide-react';
+import Image from 'next/image';
+import ButtonToggleUserStatus from '../components/ButtonToggleUserStatus';
 
 export const COLUMNS = (refetch: any): ITableColumn[] => [
   { title: 'ID', key: '_id', align: 'left', className: 'w-[250px]' },
@@ -57,7 +56,7 @@ export const COLUMNS = (refetch: any): ITableColumn[] => [
     ),
   },
   {
-    title: 'Created At',
+    title: 'Ngày tạo',
     key: 'createdAt',
     align: 'left',
     getCell: ({ row }) => (

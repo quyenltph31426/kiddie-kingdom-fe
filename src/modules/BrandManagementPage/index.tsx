@@ -1,7 +1,7 @@
 'use client';
 
+import { useBrands } from '@/api/brand/queries';
 import type { IBrandQuery } from '@/api/brand/types';
-import { useCategoriesQuery } from '@/api/category/queries';
 import SearchTable from '@/components/SearchTable';
 import H1 from '@/components/text/H1';
 import TableBase, { TablePagination } from '@/components/ui/table';
@@ -10,7 +10,6 @@ import Container from '@/components/wrapper/Container';
 import { useState } from 'react';
 import FormCreateCategory from './components/FormCreateBrand';
 import { COLUMNS } from './libs/consts';
-import { useBrands } from '@/api/brand/queries';
 
 const defaultQuery = {
   page: 1,
@@ -25,7 +24,7 @@ const BrandManagementPage = () => {
 
   return (
     <Container>
-      <H1 className="mb-8 font-orbitron">Brand management</H1>
+      <H1 className="mb-8 font-orbitron">Quản lý thương hiệu</H1>
       <HStack pos="apart">
         <SearchTable
           listFilter={[]}

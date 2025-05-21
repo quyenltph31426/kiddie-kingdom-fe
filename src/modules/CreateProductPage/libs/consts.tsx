@@ -1,5 +1,5 @@
 export const TABS = [
-  { label: 'Basic Information', value: 'basic_information' },
-  { label: 'Detail Information', value: 'detail_information' },
-  { label: 'Other Information', value: 'other_information' },
+  { label: 'Thông tin cơ bản', value: 'basic_information' },
+  { label: 'Thông tin chi tiết', value: 'detail_information' },
+  { label: 'Thông tin khác', value: 'other_information' },
 ];

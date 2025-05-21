@@ -42,7 +42,7 @@ const ProductReviewsTable = ({ reviews, isLoading, pagination, onPageChange, onP
   }
 
   if (reviews.length === 0) {
-    return <div className="py-8 text-center text-gray-500">No reviews found for this product.</div>;
+    return <div className="py-8 text-center text-gray-500">Không có đánh giá nào cho sản phẩm này.</div>;
   }
 
   return (
@@ -55,9 +55,9 @@ const ProductReviewsTable = ({ reviews, isLoading, pagination, onPageChange, onP
               <th className="p-3">Rating</th>
               <th className="p-3">Comment</th>
               <th className="p-3">Images</th>
-              <th className="p-3">Status</th>
-              <th className="p-3">Date</th>
-              <th className="p-3 text-right">Actions</th>
+              <th className="p-3">Trạng thái</th>
+              <th className="p-3">Ngày tạo</th>
+              <th className="p-3 text-right">Hành động</th>
             </tr>
           </thead>
           <tbody className="divide-y">

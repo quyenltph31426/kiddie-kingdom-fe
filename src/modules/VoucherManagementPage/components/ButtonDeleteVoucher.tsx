@@ -23,7 +23,7 @@ const ButtonDeleteVoucher = ({ _id, refetch, className }: Props) => {
   const handleDelete = () => {
     mutate(_id, {
       onSuccess: () => {
-        toast.success('Delete voucher successfully!');
+        toast.success('Xóa voucher thành công!');
         setIsOpenModal(false);
         refetch();
       },
@@ -40,8 +40,8 @@ const ButtonDeleteVoucher = ({ _id, refetch, className }: Props) => {
       <AlertDialogComponent
         isOpen={isOpenModal}
         setIsOpen={setIsOpenModal}
-        title="Are you sure you want to delete this voucher?"
-        description="This action cannot be undone. This will permanently delete the voucher from our servers."
+        title="Xóa voucher"
+        description="Hành động này không thể hoàn tác. Voucher sẽ bị xóa vĩnh viễn."
         onOk={handleDelete}
         okText={<>Delete</>}
         cancelText={<>Back</>}

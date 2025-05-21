@@ -35,7 +35,7 @@ const FormCreateCategory = ({ refetch }: Props) => {
   const handleSubmit: SubmitHandler<CategorySchema> = async (formData) => {
     mutate(formData, {
       onSuccess: () => {
-        toast.success('Create new category successfully!');
+        toast.success('Tạo danh mục thành công!');
         setIsOpenModal(false);
         form.reset();
         refetch();
@@ -49,7 +49,7 @@ const FormCreateCategory = ({ refetch }: Props) => {
       <DialogTrigger asChild>
         <Button>
           <Icons.plus />
-          Create
+          Tạo mới danh mục
         </Button>
       </DialogTrigger>
 
@@ -65,18 +65,18 @@ const FormCreateCategory = ({ refetch }: Props) => {
             </span>
           </HStack>
 
-          <H3 className="mt-4">Create New Category</H3>
+          <H3 className="mt-4">Tạo mới danh mục</H3>
 
           <div className="my-6">
             <FormWrapper form={form} onSubmit={handleSubmit}>
               <FormCategory />
               <HStack pos="center" spacing={20} className="mt-10">
                 <Button size="sm" variant="outline" className="flex-1 px-6" onClick={() => setIsOpenModal(false)}>
-                  Cancel
+                  Hủy
                 </Button>
 
                 <Button type="submit" size="sm" className="flex-1 px-6" loading={isLoading} disabled={!form.formState.isDirty || isLoading}>
-                  Create New
+                  Tạo mới
                 </Button>
               </HStack>
             </FormWrapper>
