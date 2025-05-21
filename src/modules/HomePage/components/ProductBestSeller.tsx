@@ -18,13 +18,13 @@ const ProductBestSeller = () => {
   return (
     <section className="mt-10">
       <div className="mb-8 flex items-center justify-between">
-        <H2 className="text-primary-500">Best Sellers</H2>
-        <Link href={ROUTER.PRODUCTS}>
+        <H2 className="text-primary-500">Sản phẩm bán chạy</H2>
+        {/* <Link href={ROUTER.PRODUCTS}>
           <Button variant="ghost" className="group">
-            View All
+
             <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Button>
-        </Link>
+        </Link> */}
       </div>
 
       <Show when={isFetching}>
@@ -37,7 +37,7 @@ const ProductBestSeller = () => {
 
       <Show when={!isFetching && (!data?.items || data.items.length === 0)}>
         <div className="flex justify-center py-8">
-          <p className="text-gray-500">No best seller products available</p>
+          <p className="text-gray-500">Chưa có sản phẩm bán chạy</p>
         </div>
       </Show>
 

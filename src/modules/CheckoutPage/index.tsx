@@ -117,15 +117,15 @@ const CheckoutPage = () => {
           <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
             {/* Left column - Shipping & Payment */}
             <div className="col-span-2 space-y-6">
-              {/* Shipping Information */}
+              {/* Thông tin vận chuyển */}
               <div className="rounded bg-white p-6">
-                <h4 className="mb-4 font-medium text-lg">Shipping Information</h4>
+                <h4 className="mb-4 font-medium text-lg">Thông tin vận chuyển</h4>
                 <ShippingForm />
               </div>
 
-              {/* Payment Method */}
+              {/* Phương thức thanh toán */}
               <div className="rounded bg-white p-6">
-                <h4 className="mb-4 font-medium text-lg">Payment Method</h4>
+                <h4 className="mb-4 font-medium text-lg">Phương thức thanh toán</h4>
                 <PaymentMethod />
               </div>
 

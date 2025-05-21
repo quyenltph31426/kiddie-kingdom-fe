@@ -8,7 +8,6 @@ import React from 'react';
 type Props = {} & Partial<IProduct>;
 
 const ProductDetail = ({ primaryCategory, specifications }: Props) => {
-  console.log(specifications);
   return (
     <div className="rounded bg-primary-50 p-4">
       <H4>Product Detail</H4>

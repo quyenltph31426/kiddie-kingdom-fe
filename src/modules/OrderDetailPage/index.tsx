@@ -16,6 +16,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
+import DialogCancelOrder from '../OrdersPage/components/DialogCancelOrder';
 
 const OrderDetailPage = () => {
   const params = useParams();
@@ -40,12 +41,6 @@ const OrderDetailPage = () => {
     },
     onError: onMutateError,
   });
-
-  const handleCancelOrder = () => {
-    if (window.confirm('Are you sure you want to cancel this order?')) {
-      cancelOrder(orderId);
-    }
-  };
 
   // Simplified status display function
   const getStatusBadge = () => {
@@ -78,10 +73,10 @@ const OrderDetailPage = () => {
         icon: <Truck className="h-5 w-5" />,
         text: 'Shipping',
       },
-      CANCELLED: {
+      CANCELED: {
         color: 'bg-red-100 text-red-800',
         icon: <X className="h-5 w-5" />,
-        text: 'Cancelled',
+        text: 'Đã hủy',
       },
     };
 
@@ -161,7 +156,7 @@ const OrderDetailPage = () => {
         breadcrumbs={[
           { name: 'Home', path: ROUTER.HOME },
           { name: 'My Orders', path: ROUTER.ORDERS },
-          { name: order ? `Order #${order.orderCode}` : 'Order Details' },
+          { name: order ? `Order Code: ${order.orderCode}` : 'Order Details' },
         ]}
       />
 
@@ -170,15 +165,13 @@ const OrderDetailPage = () => {
           <Link href={ROUTER.ORDERS}>
             <Button variant="ghost" className="gap-1">
               <ArrowLeft className="h-4 w-4" />
-              Back to Orders
+              Quay lại đơn hàng
             </Button>
           </Link>
-          {order?.shippingStatus === 'PENDING' && (
-            <Button variant="destructive" onClick={handleCancelOrder} disabled={isCancelling}>
-              {isCancelling && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Cancel Order
-            </Button>
-          )}
+          {order &&
+            order.shippingStatus === 'PENDING' &&
+            order.paymentStatus === 'PENDING' &&
+            order.paymentMethod === 'CASH_ON_DELIVERY' && <DialogCancelOrder orderId={order._id} />}
         </div>
 
         <Show when={isFetching}>
@@ -193,8 +186,8 @@ const OrderDetailPage = () => {
             <div className="border-gray-200 border-b p-6">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <H2 className="mb-1">Order #{order?.orderCode}</H2>
-                  <p className="text-gray-500 text-sm">Placed on {formatDate(order?.createdAt)}</p>
+                  <H2 className="mb-1">Order Code: {order?.orderCode}</H2>
+                  <p className="text-gray-500 text-sm">Đã đặt: {formatDate(order?.createdAt)}</p>
                 </div>
                 <div className="flex items-center gap-4">{getStatusBadge()}</div>
               </div>
@@ -259,7 +252,7 @@ const OrderDetailPage = () => {
                 {/* Shipping and payment info */}
                 <div>
                   <div className="rounded-lg border border-gray-200 p-4">
-                    <h3 className="mb-4 font-medium text-lg">Shipping Information</h3>
+                    <h3 className="mb-4 font-medium text-lg">Thông tin vận chuyển</h3>
                     <VStack spacing={8} align="start">
                       <div>
                         <p className="font-medium">{order?.shippingAddress.fullName}</p>
@@ -277,7 +270,7 @@ const OrderDetailPage = () => {
                   </div>
 
                   <div className="mt-6 rounded-lg border border-gray-200 p-4">
-                    <h3 className="mb-4 font-medium text-lg">Payment Method</h3>
+                    <h3 className="mb-4 font-medium text-lg">Phương thức thanh toán</h3>
                     <p className="text-gray-700 capitalize">
                       {order?.paymentMethod === 'CASH_ON_DELIVERY' ? 'Cash On Delivery' : 'Online Payment'}
                     </p>
@@ -318,7 +311,7 @@ const OrderDetailPage = () => {
                           <div
                             className={cn(
                               'mr-2 h-4 w-4 rounded-full',
-                              order?.shippingStatus !== 'CANCELLED' ? 'bg-green-500' : 'bg-gray-300'
+                              order?.shippingStatus !== 'CANCELED' ? 'bg-green-500' : 'bg-gray-300'
                             )}
                           ></div>
                           <p className="text-sm">Order Placed</p>
@@ -352,16 +345,16 @@ const OrderDetailPage = () => {
                               order?.shippingStatus === 'DELIVERED' ? 'bg-green-500' : 'bg-gray-300'
                             )}
                           ></div>
-                          <p className="text-sm">Delivered</p>
+                          <p className="text-sm">Đã vận chuyển</p>
                           {order?.shippingStatus === 'DELIVERED' && order.updatedAt && (
                             <p className="ml-auto text-gray-500 text-xs">{formatDate(order.updatedAt)}</p>
                           )}
                         </div>
 
-                        {order?.shippingStatus === 'CANCELLED' && (
+                        {order?.shippingStatus === 'CANCELED' && (
                           <div className="flex items-center">
                             <div className="mr-2 h-4 w-4 rounded-full bg-red-500"></div>
-                            <p className="text-red-600 text-sm">Cancelled</p>
+                            <p className="text-red-600 text-sm">Đã hủy</p>
                             <p className="ml-auto text-gray-500 text-xs">{formatDate(order.updatedAt)}</p>
                           </div>
                         )}

@@ -61,7 +61,7 @@ const ProductComment = ({ productId }: ProductCommentProps) => {
   }));
 
   const tabOptions = [
-    { label: 'All Reviews', value: 'all' },
+    { label: 'Tất cả', value: 'all' },
     { label: '5', value: '5', icon: <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" /> },
     { label: '4', value: '4', icon: <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" /> },
     { label: '3', value: '3', icon: <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" /> },
@@ -71,7 +71,7 @@ const ProductComment = ({ productId }: ProductCommentProps) => {
 
   return (
     <div className="mt-8">
-      <h2 className="mb-6 font-bold text-2xl">Customer Reviews</h2>
+      <h2 className="mb-6 font-bold text-2xl">Đánh giá sản phẩm</h2>
 
       <div className="grid gap-8 md:grid-cols-[300px_1fr]">
         {/* Rating summary */}
@@ -79,7 +79,7 @@ const ProductComment = ({ productId }: ProductCommentProps) => {
           <div className="text-center">
             <div className="font-bold text-5xl">{ratingStats.averageRating.toFixed(1)}</div>
             <Rating value={Math.round(ratingStats.averageRating)} readOnly size="md" className="mt-2 justify-center" />
-            <div className="mt-1 text-gray-500 text-sm">{ratingStats.totalReviews} reviews</div>
+            <div className="mt-1 text-gray-500 text-sm">{ratingStats.totalReviews} đánh giá</div>
           </div>
 
           <div className="mt-6 space-y-3">
@@ -131,8 +131,8 @@ const ProductComment = ({ productId }: ProductCommentProps) => {
             </>
           ) : (
             <div className="flex h-40 flex-col items-center justify-center text-center text-gray-500">
-              <div className="font-medium text-lg">No reviews yet</div>
-              <p className="mt-2">Be the first to review this product</p>
+              <div className="font-medium text-lg">Chưa có đánh giá nào</div>
+              <p className="mt-2">Bạn là người đầu tiên đánh giá sản phẩm này</p>
             </div>
           )}
         </div>
@@ -179,8 +179,8 @@ const ReviewItem = ({ review }: ReviewItemProps) => {
 
       <div className="mt-4 flex items-center justify-between">
         <div className="flex gap-2">
-          {review.isPurchased && <span className="rounded-full bg-blue-100 px-2 py-1 font-medium text-blue-800 text-xs">Purchased</span>}
-          {review.isVerified && <span className="rounded-full bg-green-100 px-2 py-1 font-medium text-green-800 text-xs">Verified</span>}
+          {review.isPurchased && <span className="rounded-full bg-blue-100 px-2 py-1 font-medium text-blue-800 text-xs">Đã mua hàng</span>}
+          {review.isVerified && <span className="rounded-full bg-green-100 px-2 py-1 font-medium text-green-800 text-xs">Đã xác thực</span>}
         </div>
       </div>
     </div>

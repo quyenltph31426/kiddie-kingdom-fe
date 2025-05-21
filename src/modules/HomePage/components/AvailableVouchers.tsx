@@ -5,10 +5,10 @@ import H2 from '@/components/text/H2';
 import { Button } from '@/components/ui/button';
 import { Show } from '@/components/utilities';
 import { ROUTER } from '@/libs/router';
+import VoucherCard from '@/modules/VouchersPage/components/VoucherCard';
 import { ArrowRight, Ticket } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
-import VoucherCard from '@/modules/VouchersPage/components/VoucherCard';
 
 const AvailableVouchers = () => {
   const { data, isFetching } = useVouchersQuery({
@@ -18,10 +18,10 @@ const AvailableVouchers = () => {
   return (
     <section className="mt-10">
       <div className="mb-8 flex items-center justify-between">
-        <H2 className="text-primary-500">Available Vouchers</H2>
+        <H2 className="text-primary-500">Vouchers</H2>
         <Link href={ROUTER.VOUCHERS}>
           <Button variant="ghost" className="group">
-            View All
+            Xem tất cả
             <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Button>
         </Link>
@@ -38,8 +38,8 @@ const AvailableVouchers = () => {
       <Show when={!isFetching && (!data || data?.length === 0)}>
         <div className="flex flex-col items-center justify-center rounded-lg bg-gray-50 py-12">
           <Ticket className="h-12 w-12 text-gray-400" />
-          <p className="mt-4 text-center text-gray-500">No vouchers available at the moment</p>
-          <p className="text-center text-gray-500">Check back later for special offers!</p>
+          <p className="mt-4 text-center text-gray-500">Chưa có voucher nào</p>
+          <p className="text-center text-gray-500">Vui lòng quay lại sau!</p>
         </div>
       </Show>
 

@@ -12,7 +12,7 @@ import { Show, VStack } from '@/components/utilities';
 import Container from '@/components/wrapper/Container';
 import { onMutateError } from '@/libs/common';
 import { ROUTER } from '@/libs/router';
-import { AlertCircle, CheckCircle, Clock, CreditCard, Package, ShoppingBag, Truck, X } from 'lucide-react';
+import { AlertCircle, CheckCircle, Clock, Package, ShoppingBag, Truck, X } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import OrderItem from './components/OrderItem';
@@ -36,7 +36,7 @@ const OrdersPage = () => {
       case 'shipping':
         return { shippingStatus: 'SHIPPED' };
       case 'cancelled':
-        return { shippingStatus: 'CANCELLED' };
+        return { shippingStatus: 'CANCELED' };
       case 'payment-failed':
         return { paymentStatus: 'FAILED' };
 
@@ -86,7 +86,7 @@ const OrdersPage = () => {
               { label: 'Pending', value: 'pending' },
               { label: 'Processing', value: 'processing' },
               { label: 'Shipping', value: 'shipping' },
-              { label: 'Cancelled', value: 'cancelled' },
+              { label: 'Đã hủy', value: 'cancelled' },
               { label: 'Payment Failed', value: 'payment-failed' },
             ]}
             onChange={handleTabChange}

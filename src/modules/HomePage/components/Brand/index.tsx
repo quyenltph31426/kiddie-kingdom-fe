@@ -1,12 +1,8 @@
 'use client';
 import { useBrands } from '@/api/brand/queries';
 import H2 from '@/components/text/H2';
-import { Button } from '@/components/ui/button';
 import { Show } from '@/components/utilities';
 import { onMutateError } from '@/libs/common';
-import { ROUTER } from '@/libs/router';
-import { ArrowRight } from 'lucide-react';
-import Link from 'next/link';
 import React from 'react';
 import BrandItem from './components/BrandItem';
 
@@ -15,13 +11,13 @@ const Brand = () => {
   return (
     <section className="mt-10 rounded-lg bg-[#FEF373] pt-8 pb-16">
       <div className="mb-8 flex items-center justify-between px-4">
-        <H2 className="text-primary-500">Our Brands</H2>
-        <Link href={ROUTER.COLLECTIONS}>
+        <H2 className="text-primary-500">Danh sách thương hiệu</H2>
+        {/* <Link href={ROUTER.COLLECTIONS}>
           <Button variant="ghost" className="group">
-            View All
+            Xem tất cả
             <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Button>
-        </Link>
+        </Link> */}
       </div>
 
       <Show when={isFetching}>
@@ -34,7 +30,7 @@ const Brand = () => {
 
       <Show when={!isFetching && (!data?.items || data?.items.length === 0)}>
         <div className="flex justify-center py-8">
-          <p className="text-gray-500">No brands available</p>
+          <p className="text-gray-500">Chưa có thương hiệu</p>
         </div>
       </Show>
 

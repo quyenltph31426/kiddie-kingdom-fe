@@ -27,10 +27,11 @@ export const createOrder = async (orderData: ICreateOrderRequest): Promise<IOrde
   return data?.data;
 };
 
-export const cancelOrder = async (orderId: string): Promise<IOrder> => {
+export const cancelOrder = async ({ orderId, reason }: { orderId: string; reason: string }): Promise<IOrder> => {
   const { data } = await client({
     url: `/api/orders/${orderId}/cancel`,
-    method: 'PUT',
+    method: 'POST',
+    data: { reason },
   });
   return data?.data;
 };

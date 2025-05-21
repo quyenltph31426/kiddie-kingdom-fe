@@ -18,10 +18,10 @@ const NewArrivals = () => {
   return (
     <section className="mt-10">
       <div className="mb-8 flex items-center justify-between">
-        <H2 className="text-primary-500">New Arrivals</H2>
-        <Link href={ROUTER.PRODUCTS}>
+        <H2 className="text-primary-500">Sản phẩm mới</H2>
+        <Link href={ROUTER.COLLECTIONS}>
           <Button variant="ghost" className="group">
-            View All
+            Xem tất cả
             <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Button>
         </Link>
@@ -37,7 +37,7 @@ const NewArrivals = () => {
 
       <Show when={!isFetching && (!data?.items || data.items.length === 0)}>
         <div className="flex justify-center py-8">
-          <p className="text-gray-500">No new arrival products available</p>
+          <p className="text-gray-500">Chưa có sản phẩm mới</p>
         </div>
       </Show>
 

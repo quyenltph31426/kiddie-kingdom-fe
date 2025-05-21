@@ -9,6 +9,7 @@ import { TablePagination } from '@/components/ui/table';
 import { Show } from '@/components/utilities';
 import Container from '@/components/wrapper/Container';
 import { onMutateError } from '@/libs/common';
+import { ROUTER } from '@/libs/router';
 import { useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
 import FilterLeftBar from './components/FilterLeftBar';
@@ -32,7 +33,7 @@ const ProductPage = () => {
 
   return (
     <section>
-      <Breadcrumb breadcrumbs={[{ name: 'Home' }, { name: 'Collection' }]} />
+      <Breadcrumb breadcrumbs={[{ name: 'Home', path: ROUTER.HOME }, { name: 'Collection' }]} />
 
       <Container className="mt-10">
         <div className=" flex">

@@ -10,10 +10,12 @@ const Category = () => {
   const { data, isFetching } = useCategoriesQuery({ variables: { limit: 10 }, onError: onMutateError });
   return (
     <section className="mt-10">
-      <H2 className="mb-8 text-center text-primary-500">List categories</H2>
+      <H2 className="mb-8 text-center text-primary-500">Danh mục sản phẩm</H2>
 
       <Show when={!isFetching && data?.items.length === 0}>
-        <div>Category</div>
+        <div>
+          <p className="text-center text-gray-500">Chưa có danh mục sản phẩm</p>
+        </div>
       </Show>
       <Show when={!isFetching && data && data?.items?.length > 0}>
         <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-6">

@@ -8,6 +8,7 @@ import ProductComment from './components/ProductComment';
 import ProductDetail from './components/ProductDetail';
 import ProductInfo from './components/ProductInfo';
 import ProductRelated from './components/ProductRelated';
+import { ROUTER } from '@/libs/router';
 
 type Props = {
   params: Promise<{
@@ -21,7 +22,9 @@ const ProductDetailPage = async ({ params }: Props) => {
 
   return (
     <div>
-      <Breadcrumb breadcrumbs={[{ name: 'Home' }, { name: 'Product' }, { name: data?.name }]} />
+      <Breadcrumb
+        breadcrumbs={[{ name: 'Home', path: ROUTER.HOME }, { name: 'Product', path: ROUTER.COLLECTIONS }, { name: data?.name }]}
+      />
 
       <Container className="mt-10">
         <ProductInfo {...data} />

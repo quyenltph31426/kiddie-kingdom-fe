@@ -141,7 +141,7 @@ const ReviewDialog = ({ productId, orderId, productImage, productName }: ReviewD
               </div>
               <div>
                 <h4 className="font-medium">{productName}</h4>
-                <p className="text-gray-500 text-sm">Order #{orderId.slice(-6)}</p>
+                <p className="text-gray-500 text-sm">Order Code: {orderId.slice(-6)}</p>
               </div>
             </HStack>
 
