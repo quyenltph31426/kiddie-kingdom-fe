@@ -58,14 +58,13 @@ const CheckoutPage = () => {
         clearCheckout();
         window.location.href = data.paymentSession?.url;
       } else {
-        toast.success('Order placed successfully!');
+        toast.success('Tạo mới đơn hàng thành công!');
         clearCheckout();
         router.push(`${ROUTER.ORDERS}/${data._id}`);
       }
     },
     onError: (error) => {
-      toast.error('Failed to place order. Please try again.');
-      console.error('Order creation error:', error);
+      toast.error('Tạo mới đơn hàng thất bại!');
     },
   });
 
@@ -87,7 +86,6 @@ const CheckoutPage = () => {
 
     if (!validationResult.success) {
       const formattedErrors = validationResult.error.format();
-      console.error('Validation errors:', formattedErrors);
 
       // Hiển thị thông báo lỗi
       const firstError = validationResult.error.errors[0];
@@ -111,7 +109,7 @@ const CheckoutPage = () => {
       />
 
       <Container className="mt-8">
-        <H3>Checkout</H3>
+        <H3>Thanh toán</H3>
 
         <FormWrapper form={form} onSubmit={handleSubmitOrder}>
           <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
@@ -129,9 +127,9 @@ const CheckoutPage = () => {
                 <PaymentMethod />
               </div>
 
-              {/* Order Items */}
+              {/* Danh sách sản phẩm */}
               <div className="rounded bg-white p-6">
-                <h4 className="mb-4 font-medium text-lg">Order Items</h4>
+                <h4 className="mb-4 font-medium text-lg">Danh sách sản phẩm</h4>
                 <div className="space-y-4">
                   {items.map((item) => (
                     <div key={item._id} className="flex items-start gap-4">
@@ -164,15 +162,15 @@ const CheckoutPage = () => {
             {/* Right column - Order Summary */}
             <div className="col-span-1">
               <div className="sticky top-6 rounded bg-white p-6">
-                <h4 className="mb-4 font-medium text-lg">Order Summary</h4>
+                <h4 className="mb-4 font-medium text-lg">Tóm tắt đơn hàng</h4>
                 <OrderSummary />
 
-                <Button type="submit" className="mt-6 w-full" disabled={isLoading}>
-                  {isLoading ? 'Processing...' : 'Place Order'}
+                <Button type="submit" className="mt-6 w-full" disabled={isLoading} loading={isLoading}>
+                  {isLoading ? 'Đang xử lý...' : 'Đặt hàng'}
                 </Button>
 
                 <Link href={ROUTER.CART} className="mt-4 block text-center text-gray-500 text-sm hover:text-primary-600">
-                  Return to Cart
+                  Quay lại giỏ hàng
                 </Link>
               </div>
             </div>

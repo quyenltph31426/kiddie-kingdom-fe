@@ -79,9 +79,9 @@ const CartPage = () => {
   const handleRemoveItem = async (id: string) => {
     try {
       await removeFromCart(id);
-      toast.success('Item removed from cart');
+      toast.success('Xóa sản phẩm khỏi giỏ hàng thành công!');
     } catch (error) {
-      toast.error('Failed to remove item');
+      toast.error('Xóa sản phẩm khỏi giỏ hàng thất bại!');
     }
   };
 
@@ -91,14 +91,14 @@ const CartPage = () => {
     try {
       await updateCartItem(id, quantity);
     } catch (error) {
-      toast.error('Failed to update quantity');
+      toast.error('Cập nhật số lượng sản phẩm thất bại!');
     }
   };
 
   // Handle checkout
   const handleCheckout = () => {
     if (selectedItems.length === 0) {
-      toast.error('Please select at least one item');
+      toast.error('Vui lòng chọn ít nhất một sản phẩm!');
       return;
     }
 
@@ -117,18 +117,18 @@ const CartPage = () => {
       <Breadcrumb breadcrumbs={[{ name: 'Home', path: ROUTER.HOME }, { name: 'Cart' }]} className="bg-white" />
 
       <Container className="mt-8 text-sm">
-        <H3>My Cart</H3>
+        <H3>Giỏ hàng</H3>
 
         {isCartLoading ? (
           <div className="mt-10 flex items-center justify-center py-10">
             <Loader2 className="mr-2 h-6 w-6 animate-spin" />
-            <span>Loading cart...</span>
+            <span>Đang tải giỏ hàng...</span>
           </div>
         ) : carts.length === 0 ? (
           <div className="mt-10 flex flex-col items-center justify-center rounded bg-white py-10">
-            <p className="mb-4 text-lg">Your cart is empty</p>
-            <Link href={ROUTER.HOME}>
-              <Button>Continue Shopping</Button>
+            <p className="mb-4 text-lg">Giỏ hàng của bạn đang trống</p>
+            <Link href={ROUTER.COLLECTIONS}>
+              <Button>Tiếp tục mua hàng</Button>
             </Link>
           </div>
         ) : (
@@ -136,13 +136,13 @@ const CartPage = () => {
             <div className="mt-10 grid grid-cols-[2.5fr_1fr_1fr_1fr_1fr] rounded bg-white p-3">
               <HStack spacing={12}>
                 <Checkbox checked={isAllSelected} onCheckedChange={handleSelectAll} />
-                <span>Product</span>
+                <span>Sản phẩm</span>
               </HStack>
 
-              <span>Price</span>
-              <span>Quantity</span>
-              <span>Total</span>
-              <div className="text-center">Action</div>
+              <span>Giá</span>
+              <span>Số lượng</span>
+              <span>Thành tiền</span>
+              <div className="text-center">Hành động</div>
             </div>
 
             <VStack className="mt-4 rounded bg-white px-3 py-5" spacing={16}>
@@ -185,7 +185,7 @@ const CartPage = () => {
 
                     <HStack pos="center">
                       <Button size="xs" onClick={() => handleRemoveItem(cart._id || '')}>
-                        Remove
+                        Xóa
                       </Button>
                     </HStack>
                   </div>
@@ -196,23 +196,23 @@ const CartPage = () => {
             <div className="mt-6 flex justify-between rounded bg-white p-4">
               <div>
                 <Button type="button" variant="outline" onClick={() => setSelectedItems([])}>
-                  Clear Selection
+                  Xóa tất cả
                 </Button>
               </div>
 
               <div className="flex items-center gap-4">
                 <div className="text-right">
-                  <div className="text-gray-500 text-sm">Total ({selectedItems.length} items):</div>
+                  <div className="text-gray-500 text-sm">Tổng tiền ({selectedItems.length} sản phẩm):</div>
                   <div className="font-semibold text-lg text-primary-600">{formatNumber(totalPrice)}</div>
                 </div>
 
                 {isLoggedIn ? (
                   <Button type="submit" disabled={selectedItems.length === 0}>
-                    Checkout
+                    Tiến hành đặt hàng
                   </Button>
                 ) : (
                   <Link href={ROUTER.SIGN_IN}>
-                    <Button type="button">Login to checkout</Button>
+                    <Button type="button">Đăng nhập để thanh toán</Button>
                   </Link>
                 )}
               </div>

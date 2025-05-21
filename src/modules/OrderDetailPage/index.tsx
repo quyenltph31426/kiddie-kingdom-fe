@@ -198,7 +198,7 @@ const OrderDetailPage = () => {
               <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
                 {/* Order items */}
                 <div className="lg:col-span-2">
-                  <h3 className="mb-4 font-medium text-lg">Order Items</h3>
+                  <h3 className="mb-4 font-medium text-lg">Danh sách sản phẩm</h3>
                   <div className="rounded-lg border border-gray-200">
                     {order?.items.map((item, index) => (
                       <div
