@@ -1,10 +1,12 @@
+import { Badge } from '@/components/ui/badge';
 import { Popover, PopoverContent } from '@/components/ui/popover';
 import type { ITableColumn } from '@/components/ui/table';
 import { TooltipComponent } from '@/components/ui/tooltip';
 import { HStack } from '@/components/utilities';
+import { formatNumber } from '@/libs/utils';
 import { PopoverTrigger } from '@radix-ui/react-popover';
 import { format } from 'date-fns';
-import { Eye, Info, MoreHorizontal, Pen, Star } from 'lucide-react';
+import { Check, Eye, Info, MoreHorizontal, Pen, Star, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import ButtonDeleteProduct from '../components/ButtonDeleteProduct';
@@ -12,14 +14,25 @@ import ButtonDeleteProduct from '../components/ButtonDeleteProduct';
 export const COLUMNS = (refetch: any): ITableColumn[] => [
   { title: 'ID', key: '_id', align: 'left', className: 'w-[250px]' },
   {
-    title: 'Name',
+    title: 'Tên sản phẩm',
     key: 'name',
     align: 'left',
     className: 'w-[250px]',
   },
-
   {
-    title: 'Image',
+    title: 'Danh mục',
+    key: 'primaryCategory',
+    align: 'left',
+    getCell: ({ row }) => <div className="px-2 py-1 text-center">{row?.primaryCategory?.name}</div>,
+  },
+  {
+    title: 'Thương hiệu',
+    key: 'brand',
+    align: 'left',
+    getCell: ({ row }) => <div className="px-2 py-1 text-center">{row?.brand?.name}</div>,
+  },
+  {
+    title: 'Avatar',
     key: 'updated_by',
     align: 'center',
     getCell: ({ row }) => (
@@ -29,17 +42,31 @@ export const COLUMNS = (refetch: any): ITableColumn[] => [
     ),
   },
   {
-    title: 'Total Sold Count',
+    title: 'Giá bán',
+    key: 'originalPrice',
+    align: 'center',
+    getCell: ({ row }) => <div className="px-2 py-1 text-center">{row?.originalPrice}</div>,
+  },
+  {
+    title: 'Số lượng',
+    key: 'totalQuantity',
+    align: 'center',
+    getCell: ({ row }) => <div className="px-2 py-1 text-center">{formatNumber(row?.totalQuantity)}</div>,
+  },
+  {
+    title: 'Số lượng đã bán',
     key: 'totalSoldCount',
     align: 'center',
+    getCell: ({ row }) => <div className="px-2 py-1 text-center">{formatNumber(row?.totalSoldCount)}</div>,
   },
   {
-    title: 'View Count',
+    title: 'Lượt xem',
     key: 'viewCount',
     align: 'center',
+    getCell: ({ row }) => <div className="px-2 py-1 text-center">{formatNumber(row?.viewCount)}</div>,
   },
   {
-    title: 'Average Rating',
+    title: 'Đánh giá',
     key: 'averageRating',
     align: 'center',
     getCell: ({ row }) => (
@@ -49,12 +76,13 @@ export const COLUMNS = (refetch: any): ITableColumn[] => [
     ),
   },
   {
-    title: 'Review Count',
+    title: 'Số lượng đánh giá',
     key: 'reviewCount',
     align: 'center',
+    getCell: ({ row }) => <div className="px-2 py-1 text-center">{formatNumber(row?.reviewCount)}</div>,
   },
   {
-    title: 'Created At',
+    title: 'Ngày tạo',
     key: 'createdAt',
     align: 'left',
     getCell: ({ row }) => (
@@ -62,7 +90,17 @@ export const COLUMNS = (refetch: any): ITableColumn[] => [
     ),
   },
   {
-    title: 'Action',
+    title: 'Sang phẩm mới',
+    key: 'isNewArrival',
+    align: 'center',
+    getCell: ({ row }) => (
+      <div className="px-2 py-1 text-center">
+        <Badge variant="outline">{row?.isNewArrival ? <Check /> : <X />}</Badge>
+      </div>
+    ),
+  },
+  {
+    title: 'Hành động',
     key: 'action',
     align: 'center',
     className: 'w-[200px]',
@@ -70,7 +108,7 @@ export const COLUMNS = (refetch: any): ITableColumn[] => [
       <HStack pos="center" noWrap spacing={20}>
         {row.totalSoldCount > 0 ? (
           <>
-            <TooltipComponent content="Cannot delete product that has been sold!">
+            <TooltipComponent content="Không thể xóa sản phẩm đã có người mua!">
               <Info />
             </TooltipComponent>
           </>
@@ -92,14 +130,14 @@ export const COLUMNS = (refetch: any): ITableColumn[] => [
                 className="flex w-full items-center gap-2 rounded px-2 py-1.5 text-gray-700 text-sm hover:bg-gray-100"
               >
                 <Eye className="h-4 w-4" />
-                <span>View Reviewer</span>
+                <span>Xem đánh giá</span>
               </Link>
               <Link
                 href={`/products/${row._id}/edit`}
                 className="flex w-full items-center gap-2 rounded px-2 py-1.5 text-blue-600 text-sm hover:bg-blue-50"
               >
                 <Pen className="h-4 w-4" />
-                <span>Edit</span>
+                <span>Chỉnh sửa</span>
               </Link>
             </div>
           </PopoverContent>

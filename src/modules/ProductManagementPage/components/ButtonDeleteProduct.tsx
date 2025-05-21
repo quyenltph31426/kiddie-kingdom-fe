@@ -15,13 +15,13 @@ const ButtonDeleteProduct = ({ _id, name, refetch, totalSoldCount }: Partial<IPr
 
   const handleRemoveBattle = () => {
     if (totalSoldCount && totalSoldCount > 0) {
-      toast.error('Cannot delete product that has been sold!');
+      toast.error('Không thể xóa sản phẩm đã có người mua!');
       return;
     }
     mutate(String(_id), {
       onSuccess: async () => {
         refetch();
-        toast.success('The product has been delete successfully!');
+        toast.success('Xóa sản phẩm thành công!');
       },
       onError: onMutateError,
     });
@@ -34,13 +34,13 @@ const ButtonDeleteProduct = ({ _id, name, refetch, totalSoldCount }: Partial<IPr
       description={
         <div>
           <p className="line-clamp-4 font-medium text-base">
-            <span className="text-grey-600">Are you sure you want to delete the product</span> "{name}"?
+            <span className="text-grey-600">Bạn có chắc chắn muốn xóa sản phẩm</span> "{name}"?
           </p>
         </div>
       }
       isOpen={isDeleteConfirm}
       setIsOpen={setIsDeleteConfirm}
-      title="Delete battle"
+      title="Xóa sản phẩm"
       variant="alert"
       okText={<>Delete</>}
       cancelText={<>Back</>}

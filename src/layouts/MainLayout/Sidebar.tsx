@@ -31,7 +31,7 @@ const Sidebar = () => {
     queryClient.clear();
     router.replace(ROUTER.SIGN_IN);
 
-    toast.success('Logout successfully!');
+    toast.success('');
   };
 
   useEffect(() => {

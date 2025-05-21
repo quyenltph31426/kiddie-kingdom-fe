@@ -24,7 +24,7 @@ const Header = () => {
     setUser({} as any);
     queryClient.clear();
     router.replace(ROUTER.SIGN_IN);
-    toast.success('Logout successfully!');
+    toast.success('Đăng xuất thành công!');
   };
 
   return (

@@ -27,7 +27,7 @@ const ProductManagementPage = () => {
 
   return (
     <Container>
-      <H1 className="mb-8 font-orbitron">Product management</H1>
+      <H1 className="mb-8 font-orbitron">Quản lý sản phẩm</H1>
       <HStack pos="apart">
         <SearchTable
           listFilter={[]}
@@ -59,7 +59,7 @@ const ProductManagementPage = () => {
         <Link href={ROUTER.CREATE_PRODUCT}>
           <Button>
             <Icons.plus />
-            Create
+            Thêm sản phẩm
           </Button>
         </Link>
       </HStack>

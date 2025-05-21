@@ -23,7 +23,7 @@ const AdminManagementPage = () => {
 
   return (
     <Container>
-      <H1 className="mb-8 font-orbitron">Admin management</H1>
+      <H1 className="mb-8 font-orbitron">Quản lý Admin</H1>
       <HStack pos="apart">
         <SearchTable
           listFilter={[]}
