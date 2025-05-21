@@ -69,11 +69,11 @@ const ProductItem = ({
           <HStack className="mt-1 w-full justify-between text-gray-500 text-xs">
             <HStack spacing={4}>
               <Package className="h-3 w-3" />
-              <span>In stock: {formatNumber(totalQuantity || 0)}</span>
+              <span>Kho: {formatNumber(totalQuantity || 0)}</span>
             </HStack>
             <HStack spacing={4}>
               <ShoppingBag className="h-3 w-3" />
-              <span>Sold: {formatNumber(totalSoldCount || 0)}</span>
+              <span>Đã bán: {formatNumber(totalSoldCount || 0)}</span>
             </HStack>
           </HStack>
         </SkeletonWrapper>

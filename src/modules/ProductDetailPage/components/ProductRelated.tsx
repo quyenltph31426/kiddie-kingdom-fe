@@ -19,10 +19,12 @@ const ProductRelated = ({ productId }: Props) => {
 
   return (
     <section className="mt-10">
-      <H2 className="mb-8 text-center text-primary-500">Product Related</H2>
+      <H2 className="mb-8 text-center text-primary-500">Sản phẩm liên quan</H2>
 
       <Show when={!isFetching && data?.items?.length === 0}>
-        <div>Category</div>
+        <div>
+          <p className="text-center text-gray-500">Chưa có sản phẩm liên quan</p>
+        </div>
       </Show>
       <Show when={!isFetching && data && data?.items?.length > 0}>
         <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4">

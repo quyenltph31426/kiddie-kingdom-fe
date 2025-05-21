@@ -7,19 +7,19 @@ import React from 'react';
 
 type Props = {} & Partial<IProduct>;
 
-const ProductDetail = ({ primaryCategory, specifications }: Props) => {
+const ProductDetail = ({ primaryCategory, specifications, brand }: Props) => {
   return (
     <div className="rounded bg-primary-50 p-4">
-      <H4>Product Detail</H4>
+      <H4>Thông tin sản phẩm</H4>
 
       <VStack className="mt-4 text-sm" spacing={20}>
         <HStack className="">
-          <div className="w-[160px] font-semibold lg:w-[200px]">Category</div>
+          <div className="w-[160px] font-semibold lg:w-[200px]">Danh mục</div>
           <span>|</span> <span className="ml-10">{primaryCategory?.name}</span>
         </HStack>
         <HStack className="">
-          <div className="w-[160px] font-semibold lg:w-[200px]">Brand</div>
-          <span>|</span> <span className="ml-10">{primaryCategory?.name}</span>
+          <div className="w-[160px] font-semibold lg:w-[200px]">Thương hiệu</div>
+          <span>|</span> <span className="ml-10">{brand?.name}</span>
         </HStack>
 
         {specifications && (

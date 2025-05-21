@@ -32,7 +32,7 @@ const ProductDetailPage = async ({ params }: Props) => {
         <ProductDetail {...data} />
 
         <div className="mt-10">
-          <H2 className="font-orbitron">Product Description</H2>
+          <H2 className="font-orbitron">Mô tả sản phẩm</H2>
           <H3 className="my-4 font-poppins">{data?.name}</H3>
 
           <div className="text-base" dangerouslySetInnerHTML={{ __html: data?.description || '' }}></div>

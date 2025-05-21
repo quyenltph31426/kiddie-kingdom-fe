@@ -9,12 +9,12 @@ type Props = {
 const FilterTopBar = ({ total }: Props) => {
   return (
     <HStack pos="apart" noWrap className="text-sm">
-      <span>a</span>
+      <span></span>
 
-      <span>{total || 0} products</span>
+      <span>{total || 0} sản phẩm</span>
 
       <HStack>
-        Filter by: <SelectCustom data={FILTER_LIST} />
+        Sắp xếp: <SelectCustom data={FILTER_LIST} />
       </HStack>
     </HStack>
   );

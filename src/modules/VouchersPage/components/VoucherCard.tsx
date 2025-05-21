@@ -30,15 +30,15 @@ const VoucherCard = ({ voucher }: VoucherCardProps) => {
   // Get status text and color
   const getStatusInfo = () => {
     if (isExpired) {
-      return { text: 'Expired', color: 'bg-red-100 text-red-800' };
+      return { text: 'Hết hạn', color: 'bg-red-100 text-red-800' };
     }
     if (isNotStarted) {
-      return { text: 'Coming Soon', color: 'bg-blue-100 text-blue-800' };
+      return { text: 'Chưa bắt đầu', color: 'bg-blue-100 text-blue-800' };
     }
     if (!isActive) {
-      return { text: 'Inactive', color: 'bg-gray-100 text-gray-800' };
+      return { text: 'Không hoạt động', color: 'bg-gray-100 text-gray-800' };
     }
-    return { text: 'Active', color: 'bg-green-100 text-green-800' };
+    return { text: 'Còn hạn', color: 'bg-green-100 text-green-800' };
   };
 
   const statusInfo = getStatusInfo();
@@ -55,7 +55,7 @@ const VoucherCard = ({ voucher }: VoucherCardProps) => {
   const handleCopyCode = () => {
     navigator.clipboard.writeText(voucher.code);
     setCopied(true);
-    toast.success('Voucher code copied to clipboard!');
+    toast.success('Mã giảm giá đã được sao chép!');
     setTimeout(() => setCopied(false), 2000);
   };
 
@@ -84,28 +84,28 @@ const VoucherCard = ({ voucher }: VoucherCardProps) => {
         <div className="mb-4 flex items-center justify-between">
           <div>
             <span className="font-bold text-2xl text-primary-600">{formatDiscountValue()}</span>
-            <span className="ml-1 text-gray-600 text-sm">discount</span>
+            <span className="ml-1 text-gray-600 text-sm">Giảm giá</span>
           </div>
           <span className={cn('rounded-full px-3 py-1 font-medium text-xs', statusInfo.color)}>{statusInfo.text}</span>
         </div>
 
         <div className="mb-4 flex-1 space-y-2 text-sm">
           <div className="flex justify-between">
-            <span className="text-gray-600">Min. Order:</span>
+            <span className="text-gray-600">Giá trị đơn hàng tối thiểu:</span>
             <span className="font-medium">{formatNumber(voucher.minOrderValue)}</span>
           </div>
           {voucher.type === 'PERCENTAGE' && voucher.maxDiscountValue > 0 && (
             <div className="flex justify-between">
-              <span className="text-gray-600">Max. Discount:</span>
+              <span className="text-gray-600">Giảm giá tối đa:</span>
               <span className="font-medium">{formatNumber(voucher.maxDiscountValue)}</span>
             </div>
           )}
           <div className="flex justify-between">
-            <span className="text-gray-600">Valid Until:</span>
+            <span className="text-gray-600">Hết hạn:</span>
             <span className="font-medium">{format(new Date(voucher.endDate), 'dd/MM/yyyy')}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-600">Usage Left:</span>
+            <span className="text-gray-600">Số lượng còn lại:</span>
             <span className="font-medium">
               {voucher.usageLimit - voucher.usageCount}/{voucher.usageLimit}
             </span>

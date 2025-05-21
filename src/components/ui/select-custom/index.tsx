@@ -38,7 +38,7 @@ const SelectCustom = ({ isError, value, defaultValue, onChangeValue, onChange, d
           height: props.height || '42px',
           minHeight: '36px !important',
           fontSize: '14px',
-          backgroundColor: '#FAFAFA26 !important',
+          backgroundColor: '#ffffff !important',
           borderColor: isError ? '#E0384B' : state.isFocused ? '#00A061 !important' : '#FFFFFF26 !important',
           boxShadow: isError
             ? '0px 0px 0px 4px #E0384B40'
@@ -59,7 +59,7 @@ const SelectCustom = ({ isError, value, defaultValue, onChangeValue, onChange, d
         }),
         singleValue: (baseStyles, state) => ({
           ...baseStyles,
-          color: '#8a5136 !important',
+          color: '#333333 !important',
         }),
         indicatorSeparator: (baseStyles, state) => ({
           display: 'none',
@@ -69,7 +69,7 @@ const SelectCustom = ({ isError, value, defaultValue, onChangeValue, onChange, d
             ...defaultStyles,
             fontSize: '14px',
             fontWeight: 400,
-            color: '#8A513659',
+            color: '#8a5136',
           };
         },
       }}

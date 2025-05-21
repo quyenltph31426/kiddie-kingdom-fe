@@ -99,7 +99,7 @@ const LoginPage = () => {
 
           <HStack pos="center">
             <Button type="submit" className="mt-8 mb-2 w-full rounded-full px-10" loading={isLoading}>
-              Sign In
+              Login
             </Button>
           </HStack>
         </FormWrapper>

@@ -28,7 +28,7 @@ const FavoritesPage = () => {
       <Breadcrumb breadcrumbs={[{ name: 'Home', path: ROUTER.HOME }, { name: 'My Favorites' }]} />
 
       <Container className="py-8">
-        <H2 className="mb-6">My Favorites</H2>
+        <H2 className="mb-6">Sản phẩm yêu thích</H2>
 
         <Show when={isFetching}>
           <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4">
@@ -40,11 +40,11 @@ const FavoritesPage = () => {
 
         <Show when={!isFetching && (!data?.items || data.items.length === 0)}>
           <NoDataAvailable
-            message="No favorites yet"
-            description="You haven't added any products to your favorites yet."
+            message="Chưa có sản phẩm yêu thích"
+            description="Vui lòng thêm sản phẩm yêu thích!"
             action={
               <Link href={ROUTER.PRODUCTS}>
-                <Button>Browse Products</Button>
+                <Button>Tiếp tục mua hàng</Button>
               </Link>
             }
           />

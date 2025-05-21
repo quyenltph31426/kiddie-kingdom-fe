@@ -43,12 +43,12 @@ const VouchersPage = () => {
 
         <Show when={!isFetching && (!data || data?.length === 0)}>
           <NoDataAvailable
-            title="No vouchers found"
+            title="No vouchers available"
             description="There are no active vouchers available at the moment."
             icon={<Ticket className="h-16 w-16 text-gray-400" />}
             action={
-              <Link href={ROUTER.HOME}>
-                <Button>Go Shopping</Button>
+              <Link href={ROUTER.COLLECTIONS}>
+                <Button>Tiếp tục mua hàng</Button>
               </Link>
             }
           />
