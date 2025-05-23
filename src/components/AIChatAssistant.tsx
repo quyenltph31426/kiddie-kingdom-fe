@@ -21,7 +21,7 @@ const AIChatAssistant = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [prompt, setPrompt] = useState<string>('');
   const [messages, setMessages] = useState<Message[]>([
-    { id: '1', content: 'Hello! How can I help you find products today?', isUser: false },
+    { id: '1', content: 'Xin chào đến với kiddie kingdom shop, bạn cần giúp đỡ gì?', isUser: false },
   ]);
   const [chatHistory, setChatHistory] = useState<string[]>([]);
   const [streamingMessageId, setStreamingMessageId] = useState<string | null>(null);
@@ -105,10 +105,7 @@ const AIChatAssistant = () => {
           );
         },
         onError: () => {
-          setMessages((prev) => [
-            ...prev,
-            { id: Date.now().toString(), content: 'Sorry, I encountered an error. Please try again.', isUser: false },
-          ]);
+          setMessages((prev) => [...prev, { id: Date.now().toString(), content: 'Có lỗi xảy ra, vui lòng thử lại!', isUser: false }]);
         },
       }
     );
@@ -129,7 +126,7 @@ const AIChatAssistant = () => {
           <div className="flex h-full max-h-[440px] min-h-[300px] flex-col overflow-hidden rounded-xl text-xs">
             {/* Header */}
             <HStack className="bg-primary-500 p-2 text-white" pos="apart">
-              <h3 className="font-semibold">AI Shopping Assistant</h3>
+              <h3 className="font-semibold">Kiddie Kingdom Chat Bot</h3>
               <Button
                 variant="ghost"
                 size="icon"

@@ -1,6 +1,6 @@
 'use client';
 
-import { editAccount } from '@/api/auth/requests';
+import { editAccount, editPassword } from '@/api/auth/requests';
 import { UploadAvatarField } from '@/components/form/UploadAvatarField';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -43,11 +43,12 @@ const UserProfileDialog = () => {
   });
 
   const { mutate, isLoading } = useMutation(editAccount);
+  const { mutate: changePassword, isLoading: isChangingPassword } = useMutation(editPassword);
 
   const handleSubmit = (formData: any) => {
     mutate(formData, {
       onSuccess: () => {
-        toast.success('Profile updated successfully!');
+        toast.success('Cập nhật thông tin thành công!');
         queryClient.invalidateQueries(['user/info']);
         setIsOpen(false);
       },
@@ -56,10 +57,20 @@ const UserProfileDialog = () => {
   };
 
   const handlePasswordSubmit = (formData: any) => {
-    // Implement password change logic here
-    toast.success('Password updated successfully!');
-    setIsOpen(false);
-    passwordForm.reset();
+    changePassword(
+      {
+        currentPassword: formData.password,
+        newPassword: formData.newPassword,
+      },
+      {
+        onSuccess: () => {
+          toast.success('Cập nhật mật khẩu thành công!');
+          setIsOpen(false);
+          passwordForm.reset();
+        },
+        onError: onMutateError,
+      }
+    );
   };
 
   return (
@@ -67,7 +78,7 @@ const UserProfileDialog = () => {
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
           <Button className="rounded-full" variant="tertiary" onClick={() => setIsOpen(true)}>
-            Edit Profile
+            Chỉnh sửa thông tin
           </Button>
         </DialogTrigger>
 
@@ -145,7 +156,7 @@ const UserProfileDialog = () => {
                     type="password"
                   />
 
-                  <Button type="submit" className="w-full">
+                  <Button type="submit" className="w-full" loading={isChangingPassword}>
                     Cập nhật mật khẩu
                   </Button>
                 </VStack>

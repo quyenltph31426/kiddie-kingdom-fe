@@ -1,5 +1,3 @@
-'use client';
-
 import DOMPurify from 'dompurify';
 import React, { useEffect, useState } from 'react';
 
@@ -11,53 +9,58 @@ interface StreamTextProps {
   htmlMode?: boolean;
 }
 
+const cleanHtmlContent = (raw: string): string => {
+  // Remove markdown-style code block: ```html\n...\n```
+  let cleaned = raw.trim();
+
+  if (cleaned.startsWith('```html')) {
+    cleaned = cleaned.replace(/^```html\n?/, '');
+  }
+  if (cleaned.endsWith('```')) {
+    cleaned = cleaned.replace(/\n?```$/, '');
+  }
+
+  return cleaned.trim();
+};
+
 const StreamText: React.FC<StreamTextProps> = ({ content, isComplete = false, className = '', speed = 10, htmlMode = false }) => {
   const [displayedContent, setDisplayedContent] = useState('');
   const [isStreaming, setIsStreaming] = useState(true);
 
   useEffect(() => {
-    // Reset state when content changes
-    if (!isComplete && isStreaming) {
-      setDisplayedContent('');
-    }
+    let timeout: NodeJS.Timeout;
+    let index = 0;
 
-    // If complete or not streaming, show full content immediately
+    const rawContent = cleanHtmlContent(content);
+    const sanitized = htmlMode ? DOMPurify.sanitize(rawContent) : DOMPurify.sanitize(rawContent.replace(/<[^>]+>/g, ''));
+
     if (isComplete || !isStreaming) {
-      setDisplayedContent(content);
-      return;
-    }
-
-    // Always check for HTML content
-    const hasHtml = /<[a-z][\s\S]*>/i.test(content) || content.includes('&lt;') || content.includes('&gt;') || htmlMode;
-
-    // If content has HTML or htmlMode is true, don't stream it
-    if (hasHtml) {
-      setDisplayedContent(content);
+      setDisplayedContent(sanitized);
       setIsStreaming(false);
       return;
     }
 
-    // For plain text, do character-by-character streaming
-    let index = 0;
-    const interval = setInterval(() => {
-      if (index < content.length) {
-        setDisplayedContent((prev) => prev + content.charAt(index));
+    setDisplayedContent('');
+    setIsStreaming(true);
+
+    const stream = () => {
+      if (index <= sanitized.length) {
+        setDisplayedContent(sanitized.slice(0, index));
         index++;
+        timeout = setTimeout(stream, speed);
       } else {
-        clearInterval(interval);
         setIsStreaming(false);
       }
-    }, speed);
+    };
 
-    return () => clearInterval(interval);
-  }, [content, isComplete, isStreaming, speed, htmlMode]);
+    stream();
 
-  // Sanitize HTML content
-  const sanitizedContent = DOMPurify.sanitize(displayedContent);
+    return () => clearTimeout(timeout);
+  }, [content, isComplete, speed, htmlMode]);
 
   return (
     <div className={className}>
-      <div dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
+      <div dangerouslySetInnerHTML={{ __html: displayedContent }} />
       {isStreaming && <span className="animate-pulse">▌</span>}
     </div>
   );
