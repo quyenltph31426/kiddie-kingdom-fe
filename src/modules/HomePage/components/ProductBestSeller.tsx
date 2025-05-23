@@ -2,12 +2,8 @@
 
 import { useProductsBestSeller } from '@/api/product/queries';
 import H2 from '@/components/text/H2';
-import { Button } from '@/components/ui/button';
 import { Show } from '@/components/utilities';
-import { ROUTER } from '@/libs/router';
 import ProductItem from '@/modules/ProductsPage/components/ProductItem';
-import { ArrowRight } from 'lucide-react';
-import Link from 'next/link';
 import React from 'react';
 
 const ProductBestSeller = () => {
@@ -17,14 +13,8 @@ const ProductBestSeller = () => {
 
   return (
     <section className="mt-10">
-      <div className="mb-8 flex items-center justify-between">
-        <H2 className="text-primary-500">Sản phẩm bán chạy</H2>
-        {/* <Link href={ROUTER.PRODUCTS}>
-          <Button variant="ghost" className="group">
-
-            <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-          </Button>
-        </Link> */}
+      <div className="mb-8">
+        <H2 className="text-center text-primary-500">Sản phẩm bán chạy</H2>
       </div>
 
       <Show when={isFetching}>

@@ -13,14 +13,8 @@ const FeaturedProducts = () => {
 
   return (
     <section className="mt-10 rounded-lg bg-gray-50 py-10">
-      <div className="mb-8 flex items-center justify-between px-4">
-        <H2 className="text-primary-500">Sản phẩm nổi bật</H2>
-        {/* <Link href={ROUTER.}>
-          <Button variant="ghost" className="group">
-            Xem tất cả
-            <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-          </Button>
-        </Link> */}
+      <div className="mb-8 ">
+        <H2 className="text-center text-primary-500">Sản phẩm nổi bật</H2>
       </div>
 
       <Show when={isFetching}>

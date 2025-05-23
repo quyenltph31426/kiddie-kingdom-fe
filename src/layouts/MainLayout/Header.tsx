@@ -45,7 +45,7 @@ const Header = () => {
         </HStack>
 
         <HStack pos="right" spacing={isMobile ? 4 : 16} className="">
-          <Button variant="transparent" className="relative" onClick={handleOrdersClick}>
+          <Button variant="transparent" className="relative hidden lg:flex" onClick={handleOrdersClick}>
             <Package className="text-white" />
             <span className="ml-3">Orders</span>
           </Button>

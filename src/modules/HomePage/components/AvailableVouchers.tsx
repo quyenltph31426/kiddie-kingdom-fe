@@ -18,7 +18,7 @@ const AvailableVouchers = () => {
   return (
     <section className="mt-10">
       <div className="mb-8 flex items-center justify-between">
-        <H2 className="text-primary-500">Vouchers</H2>
+        <H2 className="text-center text-primary-500">Vouchers</H2>
         <Link href={ROUTER.VOUCHERS}>
           <Button variant="ghost" className="group">
             Xem tất cả

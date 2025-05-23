@@ -45,7 +45,7 @@ const Cart = () => {
         <Link href={ROUTER.CART}>
           <Button variant="transparent" className="relative">
             <Icons.cart className="text-white" />
-            <span className="ml-3">Cart</span>
+            <span className="ml-3 hidden lg:flex">Cart</span>
             <div className="-top-2 -right-2 absolute flex h-5 w-5 items-center justify-center rounded-full bg-white text-primary-500 text-xs">
               {carts?.length || 0}
             </div>

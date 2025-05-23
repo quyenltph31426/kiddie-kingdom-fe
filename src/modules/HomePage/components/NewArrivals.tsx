@@ -18,7 +18,7 @@ const NewArrivals = () => {
   return (
     <section className="mt-10">
       <div className="mb-8 flex items-center justify-between">
-        <H2 className="text-primary-500">Sản phẩm mới</H2>
+        <H2 className="text-center text-primary-500">Sản phẩm mới</H2>
         <Link href={ROUTER.COLLECTIONS}>
           <Button variant="ghost" className="group">
             Xem tất cả

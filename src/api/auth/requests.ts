@@ -47,8 +47,8 @@ export const logoutRequest = async (): Promise<boolean> => {
 
 export const editAccount = async (formData: Omit<EditAccountSchema, 'wallet_address'>): Promise<boolean> => {
   const { data } = await client({
-    url: '/api/auth/update-account',
-    method: 'POST',
+    url: '/api/users/profile',
+    method: 'PATCH',
     data: formData,
   });
 

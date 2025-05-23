@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { HStack, VStack } from '@/components/utilities';
 import { useUserLogin } from '@/hooks/useUserLogin';
+import UserProfileDialog from '@/layouts/MainLayout/UserProfileDialog';
 import { ROUTER } from '@/libs/router';
 import { useUserStore } from '@/stores/UserStore';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -34,7 +35,7 @@ const UserInfo = () => {
     deleteCookie('access_token');
     deleteCookie('refresh_token');
     localStorage.clear();
-    toast.success('You have logged out successfully!');
+    toast.success('Đăng xuất thành công!');
     //   },
     //   onError: onMutateError,
     // });
@@ -47,7 +48,7 @@ const UserInfo = () => {
           <Button>
             <HStack spacing={12}>
               <Image src={user?.avatar || '/images/no-image.svg'} alt="Avatar" width={56} height={56} className="h-7 w-7 rounded-full" />
-              <span>{user?.username || '--'}</span>
+              <span className="hidden lg:flex">{user?.username || '--'}</span>
 
               <Icons.chevronDown />
             </HStack>
@@ -64,27 +65,22 @@ const UserInfo = () => {
                 <span className="text-gray-500 text-sm">{user?.email || '--'}</span>
               </VStack>
             </HStack>
+
+            <UserProfileDialog />
           </VStack>
 
           <div className="grid gap-2 pt-2">
-            {/* <Link href={ROUTER.PROFILE}>
-              <Button variant="ghost" className="w-full justify-start gap-2 text-gray-700">
-                <User className="h-4 w-4" />
-                My Profile
-              </Button>
-            </Link> */}
-
             <Link href={ROUTER.ORDERS}>
               <Button variant="ghost" className="w-full justify-start gap-2 text-gray-700">
                 <Package className="h-4 w-4" />
-                My Orders
+                Đơn hàng của tôi
               </Button>
             </Link>
 
             <Link href={ROUTER.FAVORITES}>
               <Button variant="ghost" className="w-full justify-start gap-2 text-gray-700">
                 <Heart className="h-4 w-4" />
-                My Favorites
+                Sản phẩm yêu thích
               </Button>
             </Link>
 
@@ -98,7 +94,7 @@ const UserInfo = () => {
             <Link href={ROUTER.CART}>
               <Button variant="ghost" className="w-full justify-start gap-2 text-gray-700">
                 <ShoppingBag className="h-4 w-4" />
-                My Cart
+                Giỏ hàng
               </Button>
             </Link>
           </div>
@@ -106,7 +102,7 @@ const UserInfo = () => {
           <div className="pt-2">
             <Button className="w-full items-center gap-2" size="sm" onClick={handleLogout}>
               <Icons.logout />
-              Log Out
+              Đăng xuất
             </Button>
           </div>
         </PopoverContent>

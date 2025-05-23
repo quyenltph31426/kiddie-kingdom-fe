@@ -1,14 +1,13 @@
 'use client';
-import React, { useRef } from 'react';
-import type { Control, FieldPath, FieldPathValue, FieldValues } from 'react-hook-form';
-
-import { uploadAvatar } from '@/api/auth/requests';
+import { uploadSingleFile } from '@/api/upload/requests';
 import { cn, onMutateError } from '@/libs/common';
 import { useMutation } from '@tanstack/react-query';
 import { Loader2, Pencil } from 'lucide-react';
+import React, { useRef } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
+import type { Control, FieldPath, FieldPathValue, FieldValues } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import { Avatar, AvatarImage } from '../ui/avatar';
 import type { ButtonProps } from '../ui/button';
 import { FormField, FormItem, FormMessage } from '../ui/form';
 
@@ -37,7 +36,7 @@ const UploadAvatarField = <T extends FieldValues>({
 }: Props<T>) => {
   const ref = useRef<React.ElementRef<'input'>>(null);
 
-  const { mutate, isLoading } = useMutation(uploadAvatar);
+  const { mutate, isLoading } = useMutation(uploadSingleFile);
 
   const handleChangeFile = (e: File, onChange: any) => {
     const formData = new FormData();
