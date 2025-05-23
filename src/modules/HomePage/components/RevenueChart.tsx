@@ -51,7 +51,7 @@ const RevenueChart = () => {
     <Card>
       <CardHeader className="pb-4">
         <HStack pos="apart">
-          <CardTitle className="lg:text-xl">Revenue Overview</CardTitle>
+          <CardTitle className="lg:text-xl">Doanh thu</CardTitle>
           <div className="flex items-center space-x-2">
             <DateRangePicker
               onUpdate={handleDateRangeChange}
@@ -83,11 +83,11 @@ const RevenueChart = () => {
       <CardContent>
         <div className="mb-4 flex justify-between">
           <div>
-            <p className="text-muted-foreground text-sm">Total Revenue</p>
+            <p className="text-muted-foreground text-sm">Doanh thu</p>
             <p className="font-bold text-xl">{formatCurrency(data?.totalRevenue)}</p>
           </div>
           <div>
-            <p className="text-muted-foreground text-sm">Total Orders</p>
+            <p className="text-muted-foreground text-sm">Tổng đơn hàng</p>
             <p className="font-bold text-xl">{formatNumber(data?.totalOrders)}</p>
           </div>
         </div>

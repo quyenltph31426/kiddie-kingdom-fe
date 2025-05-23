@@ -64,7 +64,7 @@ export const COLUMNS = (refetch: any): ITableColumn[] => [
     ),
   },
   {
-    title: 'Action',
+    title: 'Hành động',
     key: 'action',
     align: 'center',
     className: 'w-[100px]',

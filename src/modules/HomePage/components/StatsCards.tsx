@@ -37,10 +37,10 @@ const StatsCards = () => {
             <SelectValue placeholder="Select period" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="day">Today</SelectItem>
-            <SelectItem value="week">This Week</SelectItem>
-            <SelectItem value="month">This Month</SelectItem>
-            <SelectItem value="year">This Year</SelectItem>
+            <SelectItem value="day">Hôm nay</SelectItem>
+            <SelectItem value="week">Tuần này</SelectItem>
+            <SelectItem value="month">Tháng này</SelectItem>
+            <SelectItem value="year">Năm này</SelectItem>
           </SelectContent>
         </Select>
       </div>

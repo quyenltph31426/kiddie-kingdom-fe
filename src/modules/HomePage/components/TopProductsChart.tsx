@@ -3,9 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
 import { formatCurrency } from '@/libs/common';
-import { ROUTER } from '@/libs/router';
 import { formatNumber } from '@/libs/utils';
-import Link from 'next/link';
 import React, { useState } from 'react';
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
@@ -31,7 +29,7 @@ const TopProductsChart = () => {
     return (
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle>Top Products</CardTitle>
+          <CardTitle>Top Sản phẩm Bán Chạy Nhất</CardTitle>
           <Skeleton className="h-4 w-20" />
         </CardHeader>
         <CardContent>
@@ -44,27 +42,27 @@ const TopProductsChart = () => {
   return (
     <Card>
       <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-2">
-        <CardTitle>Top Products Chart</CardTitle>
+        <CardTitle>Top Sản phẩm Bán Chạy Nhất</CardTitle>
         <div className="flex flex-wrap items-center gap-2">
           <Select value={metric} onValueChange={(value) => setMetric(value as 'sales' | 'revenue')}>
             <SelectTrigger className="h-8 w-[120px]">
               <SelectValue placeholder="Metric" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="sales">Sales</SelectItem>
-              <SelectItem value="revenue">Revenue</SelectItem>
+              <SelectItem value="sales">Đã bán</SelectItem>
+              <SelectItem value="revenue">Doanh thu</SelectItem>
             </SelectContent>
           </Select>
 
-          <Link href={ROUTER.PRODUCT_MANAGEMENT} className="text-blue-500 text-sm hover:underline">
+          {/* <Link href={ROUTER.PRODUCT_MANAGEMENT} className="text-blue-500 text-sm hover:underline">
             View All
-          </Link>
+          </Link> */}
         </div>
       </CardHeader>
       <CardContent>
         {!topProducts?.length ? (
           <div className="py-8 text-center text-gray-500">
-            <p>No products data available</p>
+            <p>Không có sản phẩm nào</p>
           </div>
         ) : (
           <ResponsiveContainer width="100%" height={350}>

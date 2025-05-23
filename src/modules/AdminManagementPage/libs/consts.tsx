@@ -37,7 +37,7 @@ export const COLUMNS = (refetch: any): ITableColumn[] => [
     align: 'left',
   },
   {
-    title: 'Action',
+    title: 'Hành động',
     key: 'action',
     align: 'center',
     className: 'w-[200px]',

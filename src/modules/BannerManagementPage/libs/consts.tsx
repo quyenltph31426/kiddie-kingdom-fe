@@ -48,7 +48,7 @@ export const COLUMNS = (refetch: any): ITableColumn[] => [
     ),
   },
   {
-    title: 'Actions',
+    title: 'Hành độngs',
     key: 'actions',
     align: 'center',
     getCell: ({ row }) => (
