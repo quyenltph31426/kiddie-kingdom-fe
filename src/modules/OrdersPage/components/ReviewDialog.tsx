@@ -1,10 +1,10 @@
 'use client';
 
 import { useSubmitReviewMutation } from '@/api/reviews/mutations';
-import { uploadSingleFile } from '@/api/upload/requests';
+import { uploadMultiFile } from '@/api/upload/requests';
 import { Icons } from '@/assets/icons';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage, FormWrapper } from '@/components/ui/form';
 import { Rating } from '@/components/ui/rating';
 import { TextArea } from '@/components/ui/textarea';
@@ -27,16 +27,15 @@ interface ReviewFormValues {
 }
 
 interface ReviewDialogProps {
-  isOpen: boolean;
-  onClose: () => void;
   productId: string;
   productName: string;
-  productImage: string;
+  productImage?: string;
   orderId: string;
-  onSubmitSuccess: () => void;
 }
 
-const ReviewDialog = ({ isOpen, onClose, productId, productName, productImage, orderId, onSubmitSuccess }: ReviewDialogProps) => {
+const ReviewDialog = ({ productId, orderId, productImage, productName }: ReviewDialogProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -53,15 +52,18 @@ const ReviewDialog = ({ isOpen, onClose, productId, productName, productImage, o
 
   // Upload image mutation
   const { mutate: uploadImage } = useMutation(
-    (file: File) => {
+    (files: File[]) => {
+      const filesArray = Array.from(files);
       setIsUploading(true);
       const formData = new FormData();
-      formData.append('file', file);
-      return uploadSingleFile(formData);
+      filesArray.forEach((file) => {
+        formData.append('files', file);
+      });
+      return uploadMultiFile(formData);
     },
     {
       onSuccess: (data) => {
-        const newImages = [...uploadedImages, data.url];
+        const newImages = data?.map((x) => x.url);
         setUploadedImages(newImages);
         form.setValue('images', newImages);
         setIsUploading(false);
@@ -77,7 +79,7 @@ const ReviewDialog = ({ isOpen, onClose, productId, productName, productImage, o
   const { mutate: submitReview, isLoading: isSubmitting } = useSubmitReviewMutation({
     onSuccess: () => {
       toast.success('Review submitted successfully!');
-      onSubmitSuccess();
+
       handleClose();
     },
     onError: onMutateError,
@@ -99,11 +101,11 @@ const ReviewDialog = ({ isOpen, onClose, productId, productName, productImage, o
   const handleClose = () => {
     form.reset();
     setUploadedImages([]);
-    onClose();
+    setIsOpen(false);
   };
 
-  const handleFileChange = (file: File) => {
-    uploadImage(file);
+  const handleFileChange = (files: File[]) => {
+    uploadImage(files);
   };
 
   const removeImage = (index: number) => {
@@ -114,14 +116,24 @@ const ReviewDialog = ({ isOpen, onClose, productId, productName, productImage, o
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={handleClose}>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild>
+        <Button size="xs">Reviews</Button>
+      </DialogTrigger>
+
       <DialogContent className="sm:max-w-[500px]">
-        <DialogHeader>
-          <DialogTitle>Write a Review</DialogTitle>
-        </DialogHeader>
+        <div className="flex justify-between">
+          <DialogHeader>
+            <DialogTitle>Write a Review</DialogTitle>
+          </DialogHeader>
+
+          <DialogClose asChild>
+            <X className="h-4 w-4 cursor-pointer" />
+          </DialogClose>
+        </div>
 
         <FormWrapper form={form} onSubmit={handleSubmit}>
-          <div className="grid gap-6 py-4">
+          <div className="grid gap-6 py-4 text-sm">
             {/* Product info */}
             <HStack className="gap-4">
               <div className="relative h-16 w-16 overflow-hidden rounded-md">
@@ -129,7 +141,7 @@ const ReviewDialog = ({ isOpen, onClose, productId, productName, productImage, o
               </div>
               <div>
                 <h4 className="font-medium">{productName}</h4>
-                <p className="text-gray-500 text-sm">Order #{orderId.slice(-6)}</p>
+                <p className="text-gray-500 text-sm">Order Code: {orderId.slice(-6)}</p>
               </div>
             </HStack>
 
@@ -171,6 +183,7 @@ const ReviewDialog = ({ isOpen, onClose, productId, productName, productImage, o
                 minSize={0.001}
                 ref={fileRef}
                 name="file"
+                multiple
                 types={['JPG', 'PNG', 'JPEG']}
                 handleChange={handleFileChange}
                 onSizeError={() => toast.error('Image size must be less than 5MB')}
@@ -210,7 +223,7 @@ const ReviewDialog = ({ isOpen, onClose, productId, productName, productImage, o
             </div>
 
             {/* Submit button */}
-            <Button type="submit" className="w-full" disabled={isSubmitting || isUploading}>
+            <Button type="submit" className="w-full" size="sm" disabled={isSubmitting || isUploading}>
               {isSubmitting ? (
                 <>
                   <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />

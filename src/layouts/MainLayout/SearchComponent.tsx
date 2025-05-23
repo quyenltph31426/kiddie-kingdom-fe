@@ -111,7 +111,7 @@ const SearchComponent = () => {
               <Loader2 className="h-6 w-6 animate-spin text-primary" />
             </div>
           ) : data?.items && data.items.length > 0 ? (
-            <div className="max-h-[450px] min-h-[250px] overflow-y-auto">
+            <div className="max-h-[350px] min-h-[250px] overflow-y-auto">
               {data.items.map((product) => (
                 <Link
                   key={product._id}

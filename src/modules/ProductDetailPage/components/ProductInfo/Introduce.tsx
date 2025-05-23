@@ -21,7 +21,18 @@ type VariantSelect = {
   [key: string]: any;
 };
 
-const Introduce = ({ _id, name, images, originalPrice, currentPrice, variants, totalQuantity }: ProductInfoProps) => {
+const Introduce = ({
+  _id,
+  name,
+  images,
+  originalPrice,
+  currentPrice,
+  variants,
+  totalQuantity,
+  averageRating,
+  reviewCount,
+  totalSoldCount,
+}: ProductInfoProps) => {
   const [variantSelect, setVariantSelect] = useState<Partial<VariantSelect> | undefined>({ productId: String(_id), quantity: 1 });
   const id = useId();
   const { addToCart } = useCartStore();
@@ -59,7 +70,7 @@ const Introduce = ({ _id, name, images, originalPrice, currentPrice, variants, t
 
     // Check if total requested quantity exceeds available stock
     if (totalRequestedQuantity > availableQuantity) {
-      toast.error(`Cannot add to cart. Only ${availableQuantity} items available.`);
+      toast.error(`Không thể thêm vào giỏ hàng. Chỉ còn ${availableQuantity} sản phẩm trong kho.`);
       return;
     }
 
@@ -76,7 +87,7 @@ const Introduce = ({ _id, name, images, originalPrice, currentPrice, variants, t
     };
 
     addToCart(newCart);
-    toast.success('Add to cart successfully!');
+    toast.success('Thêm vào giỏ hàng thành công!');
   };
 
   return (
@@ -85,18 +96,18 @@ const Introduce = ({ _id, name, images, originalPrice, currentPrice, variants, t
 
       <HStack className="mt-2 text-sm" spacing={24}>
         <HStack>
-          <span>4.9</span>
+          <span>{averageRating?.toFixed(1) || '0.0'}</span>
           <Star className="h-4 w-4 fill-yellow-500" />
         </HStack>
         <span>|</span>
         <HStack>
-          <span>1000 </span>
-          <span className="text-grey-500">Comments</span>
+          <span>{formatNumber(reviewCount)} </span>
+          <span className="text-grey-500">Đánh giá</span>
         </HStack>
         <span>|</span>
         <HStack>
-          <span>1000</span>
-          <span className="text-grey-500">Sold</span>
+          <span>{formatNumber(totalSoldCount)}</span>
+          <span className="text-grey-500">Đã bán</span>
         </HStack>
       </HStack>
 
@@ -152,7 +163,7 @@ const Introduce = ({ _id, name, images, originalPrice, currentPrice, variants, t
         </div>
         <Button variant="shadow" disabled={!selectedVariant} onClick={handleAddToCart}>
           <Icons.cart className="mr-2" />
-          Add To Cart
+          Thêm vào giỏ hàng
         </Button>
       </HStack>
     </div>

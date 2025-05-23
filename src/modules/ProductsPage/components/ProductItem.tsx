@@ -3,16 +3,18 @@ import { Icons } from '@/assets/icons';
 import FavoriteButton from '@/components/FavoriteButton';
 import H4 from '@/components/text/H4';
 import { SkeletonWrapper } from '@/components/ui/skeleton-wrapper';
-import { HStack, VStack } from '@/components/utilities';
+import { HStack, Show, VStack } from '@/components/utilities';
 import { ROUTER } from '@/libs/router';
 import { formatNumber } from '@/libs/utils';
-import { Package, ShoppingBag } from 'lucide-react';
+import { Package, ShoppingBag, Star } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
 type Props = {
   loading?: boolean;
+  averageRating?: number;
+  reviewCount?: number;
 } & Partial<IProduct>;
 
 const ProductItem = ({
@@ -27,6 +29,8 @@ const ProductItem = ({
   totalQuantity,
   totalSoldCount,
   isFavorite,
+  averageRating,
+  reviewCount,
 }: Props) => {
   const _originalPrice = originalPrice ? originalPrice : Number(currentPrice) + 10000;
   return (
@@ -65,17 +69,25 @@ const ProductItem = ({
           <HStack className="mt-1 w-full justify-between text-gray-500 text-xs">
             <HStack spacing={4}>
               <Package className="h-3 w-3" />
-              <span>In stock: {formatNumber(totalQuantity || 0)}</span>
+              <span>Kho: {formatNumber(totalQuantity || 0)}</span>
             </HStack>
             <HStack spacing={4}>
               <ShoppingBag className="h-3 w-3" />
-              <span>Sold: {formatNumber(totalSoldCount || 0)}</span>
+              <span>Đã bán: {formatNumber(totalSoldCount || 0)}</span>
             </HStack>
           </HStack>
         </SkeletonWrapper>
 
-        <HStack>
+        <HStack pos="apart" className="mt-1">
           <FavoriteButton productId={_id} active={isFavorite} />
+
+          <Show when={Boolean(averageRating && reviewCount)}>
+            <HStack spacing={4}>
+              <span className="text-xs text-yellow-500">{averageRating?.toFixed(1) || '0.0'}</span>
+              <Star className="h-3.5 w-3.5 fill-yellow-500 text-yellow-500" />
+              <span className="text-gray-500 text-xs">({reviewCount || 0})</span>
+            </HStack>
+          </Show>
         </HStack>
 
         <div className="text-xs">

@@ -1,7 +1,7 @@
 export const LIST_PRICE_FILTER = [
-  { label: '100.00 VND - 200.00 VND', value: '100.00-200.00' },
-  { label: '200.00 VND - 300.00 VND', value: '200.00-300.00' },
-  { label: '300.00 VND - 400.00 VND', value: '300.00-400.00' },
+  { label: '100.000 VND - 200.000 VND', value: '100000-200000' },
+  { label: '200.000 VND - 300.000 VND', value: '200000-300000' },
+  { label: '300.000 VND - 400.000 VND', value: '300000-400000' },
 ];
 
 export const SEX_FILTER = [

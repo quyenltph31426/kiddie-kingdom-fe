@@ -8,6 +8,7 @@ import ProductComment from './components/ProductComment';
 import ProductDetail from './components/ProductDetail';
 import ProductInfo from './components/ProductInfo';
 import ProductRelated from './components/ProductRelated';
+import { ROUTER } from '@/libs/router';
 
 type Props = {
   params: Promise<{
@@ -21,7 +22,9 @@ const ProductDetailPage = async ({ params }: Props) => {
 
   return (
     <div>
-      <Breadcrumb breadcrumbs={[{ name: 'Home' }, { name: 'Product' }, { name: data?.name }]} />
+      <Breadcrumb
+        breadcrumbs={[{ name: 'Home', path: ROUTER.HOME }, { name: 'Product', path: ROUTER.COLLECTIONS }, { name: data?.name }]}
+      />
 
       <Container className="mt-10">
         <ProductInfo {...data} />
@@ -29,7 +32,7 @@ const ProductDetailPage = async ({ params }: Props) => {
         <ProductDetail {...data} />
 
         <div className="mt-10">
-          <H2 className="font-orbitron">Product Description</H2>
+          <H2 className="font-orbitron">Mô tả sản phẩm</H2>
           <H3 className="my-4 font-poppins">{data?.name}</H3>
 
           <div className="text-base" dangerouslySetInnerHTML={{ __html: data?.description || '' }}></div>

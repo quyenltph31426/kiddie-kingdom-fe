@@ -53,20 +53,12 @@ const LoginPage = () => {
         <Image width={600} height={348} src="/images/logo.png" alt="battle logo" className="h-auto w-[14rem]" />
       </HStack>
       <VStack className="w-full max-w-[450px] rounded-lg border border-grey-100 px-6 py-6 shadow-card-2 md:px-8" spacing={16}>
-        <h1 className="mb-5 text-center font-semibold text-2xl md:text-3xl">User Sign Up</h1>
+        <h1 className="mb-4 text-center font-semibold text-2xl md:text-3xl">User Sign Up</h1>
 
         <FormWrapper form={form} onSubmit={handleSubmit}>
           <VStack spacing={16}>
-            <TextField
-              inputSize="md"
-              required
-              fullWidth
-              control={form.control}
-              name="username"
-              label="Username"
-              placeholder="Enter your username"
-            />
-            <TextField inputSize="md" required fullWidth control={form.control} name="email" label="Email" placeholder="Enter your email" />
+            <TextField required fullWidth control={form.control} name="username" label="Username" placeholder="Enter your username" />
+            <TextField required fullWidth control={form.control} name="email" label="Email" placeholder="Enter your email" />
             <TextField
               required
               fullWidth
@@ -75,13 +67,12 @@ const LoginPage = () => {
               label="Password"
               placeholder="Enter your password"
               type="password"
-              inputSize="md"
             />
           </VStack>
 
           <HStack pos="center" className="mt-2">
             <Button type="submit" className="mt-8 mb-2 w-full rounded-full px-10" loading={isLoading}>
-              Sign in
+              Sign Up
             </Button>
           </HStack>
         </FormWrapper>
@@ -89,7 +80,7 @@ const LoginPage = () => {
         <div className="text-right text-sm">
           You have an account?{' '}
           <Link href={ROUTER.SIGN_IN} className="font-semibold text-primary-500 hover:text-primary-600">
-            Sign in
+            Sign In
           </Link>
         </div>
       </VStack>

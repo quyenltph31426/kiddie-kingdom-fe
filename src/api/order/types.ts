@@ -2,7 +2,7 @@ import type { IMetaResponse } from '@/types';
 import type { IProduct } from '../product/types';
 
 export type PaymentMethod = 'CASH_ON_DELIVERY' | 'ONLINE_PAYMENT';
-export type OrderStatus = 'PENDING' | 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED';
+export type OrderStatus = 'PENDING' | 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELED';
 export type PaymentStatus = 'PENDING' | 'COMPLETED' | 'FAILED' | 'REFUNDED';
 export interface IOrderItem {
   _id: string;
@@ -13,6 +13,7 @@ export interface IOrderItem {
   productName: string;
   productImage?: string;
   attributes?: Record<string, string>;
+  isReviewed?: boolean;
 }
 
 export interface IShippingAddress {
@@ -45,10 +46,6 @@ export interface IOrder {
     paymentId: string;
   };
   product?: IProduct;
-  reviewStatus: {
-    allItemsReviewed: boolean;
-    someItemsReviewed: boolean;
-  };
 }
 
 export interface IOrderResponse {

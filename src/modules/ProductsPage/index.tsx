@@ -9,6 +9,7 @@ import { TablePagination } from '@/components/ui/table';
 import { Show } from '@/components/utilities';
 import Container from '@/components/wrapper/Container';
 import { onMutateError } from '@/libs/common';
+import { ROUTER } from '@/libs/router';
 import { useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
 import FilterLeftBar from './components/FilterLeftBar';
@@ -24,13 +25,15 @@ const ProductPage = () => {
   const searchParams = useSearchParams();
   const brand = searchParams.get('brand');
   const category = searchParams.get('category');
-  console.log({ brand, category });
 
-  const { data, isFetching } = useProductsQuery({ variables: paramsQuery, onError: onMutateError });
+  const { data, isFetching } = useProductsQuery({
+    variables: { ...paramsQuery, brandId: String(brand), categoryId: String(category) },
+    onError: onMutateError,
+  });
 
   return (
     <section>
-      <Breadcrumb breadcrumbs={[{ name: 'Home' }, { name: 'Collection' }]} />
+      <Breadcrumb breadcrumbs={[{ name: 'Home', path: ROUTER.HOME }, { name: 'Collection' }]} />
 
       <Container className="mt-10">
         <div className=" flex">

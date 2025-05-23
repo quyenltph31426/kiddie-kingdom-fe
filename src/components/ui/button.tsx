@@ -26,8 +26,8 @@ const buttonVariants = cva(
         destructive: 'bg-red-damask-500 text-white hover:bg-red-damask-600',
       },
       size: {
-        default: 'h-11 px-4 py-2 rounded',
-        md: 'h-10 px-4 py-2',
+        default: 'h-10 px-4 py-2 rounded',
+        md: 'h-11 px-4 py-2',
         sm: 'h-9 rounded px-3',
         lg: 'h-12 rounded px-6',
         icon: 'h-9 w-9',

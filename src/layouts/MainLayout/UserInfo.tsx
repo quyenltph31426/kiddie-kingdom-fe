@@ -15,6 +15,7 @@ import { useRouter } from 'next-nprogress-bar';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
+import { toast } from 'react-toastify';
 
 const UserInfo = () => {
   const { user } = useUserLogin();
@@ -32,6 +33,8 @@ const UserInfo = () => {
     logout();
     deleteCookie('access_token');
     deleteCookie('refresh_token');
+    localStorage.clear();
+    toast.success('You have logged out successfully!');
     //   },
     //   onError: onMutateError,
     // });
@@ -78,7 +81,7 @@ const UserInfo = () => {
               </Button>
             </Link>
 
-            <Link href={ROUTER.WISHLIST}>
+            <Link href={ROUTER.FAVORITES}>
               <Button variant="ghost" className="w-full justify-start gap-2 text-gray-700">
                 <Heart className="h-4 w-4" />
                 My Favorites

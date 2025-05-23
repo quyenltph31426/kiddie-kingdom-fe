@@ -17,7 +17,7 @@ export const useCreateOrderMutation = createMutation<IOrder, ICreateOrderRequest
   mutationFn: (orderData) => createOrder(orderData),
 });
 
-export const useCancelOrderMutation = createMutation<IOrder, string>({
+export const useCancelOrderMutation = createMutation<IOrder, { orderId: string; reason: string }>({
   mutationKey: ['orders/cancel'],
-  mutationFn: (orderId) => cancelOrder(orderId),
+  mutationFn: (data) => cancelOrder(data),
 });

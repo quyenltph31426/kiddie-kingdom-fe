@@ -7,17 +7,17 @@ import { Button } from '@/components/ui/button';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import { Separator } from '@/components/ui/separator';
 import { HStack, VStack } from '@/components/utilities';
+import { useUserLogin } from '@/hooks/useUserLogin';
 import { ROUTER } from '@/libs/router';
 import { formatNumber } from '@/libs/utils';
 import { useCartStore } from '@/stores/CartStore';
-import { useUserStore } from '@/stores/UserStore';
 import { ShoppingBag, X } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect } from 'react';
 
 const Cart = () => {
   const { carts, mergeCart, removeFromCart } = useCartStore();
-  const { user } = useUserStore();
+  const { user } = useUserLogin();
 
   // Calculate total price
   const totalPrice = carts.reduce((total, item) => total + item.price * item.quantity, 0);

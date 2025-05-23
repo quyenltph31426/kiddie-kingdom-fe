@@ -3,18 +3,17 @@
 import { RadioGroupField } from '@/components/form';
 import Image from 'next/image';
 import { useFormContext } from 'react-hook-form';
-import * as z from 'zod';
 
 const paymentMethods = [
   {
     value: 'CASH_ON_DELIVERY',
     label: 'Cash On Delivery',
-    image: '/images/payment/cod.png',
+    image: '/images/cash-on-delivery.png',
   },
   {
     value: 'ONLINE_PAYMENT',
     label: 'VNPay',
-    image: '/images/payment/vnpay.png',
+    image: '/images/vnpay.png',
   },
 ];
 

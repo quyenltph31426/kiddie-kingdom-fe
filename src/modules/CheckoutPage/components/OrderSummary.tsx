@@ -55,20 +55,20 @@ const OrderSummary = () => {
 
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-      <h3 className="mb-4 font-semibold text-lg">Order Summary</h3>
+      <h3 className="mb-4 font-semibold text-lg">Tóm tắt đơn hàng</h3>
 
       <div className="mb-4 space-y-3">
         <div className="flex justify-between">
-          <span className="text-gray-600">Subtotal</span>
+          <span className="text-gray-600">Tổng tiền hàng</span>
           <span>{formatNumber(subtotal)}</span>
         </div>
         <div className="flex justify-between">
-          <span className="text-gray-600">Shipping Fee</span>
+          <span className="text-gray-600">Phí vận chuyển</span>
           <span>{formatNumber(shippingFee)}</span>
         </div>
         {discount > 0 && (
           <div className="flex justify-between text-green-600">
-            <span>Discount</span>
+            <span>Giảm giá</span>
             <span>-{formatNumber(discount)}</span>
           </div>
         )}
@@ -87,10 +87,10 @@ const OrderSummary = () => {
           {isApplyingCoupon ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Applying
+              Đang áp dụng...
             </>
           ) : (
-            'Apply'
+            'Áp dụng mã giảm giá'
           )}
         </Button>
       </div>

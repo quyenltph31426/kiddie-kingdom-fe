@@ -1,7 +1,7 @@
 'use client';
 
 import { useCancelOrderMutation } from '@/api/order/queries';
-import type { IOrder, IOrderItem, OrderStatus, PaymentMethod, PaymentStatus } from '@/api/order/types';
+import type { IOrder, IOrderItem } from '@/api/order/types';
 import H4 from '@/components/text/H4';
 import { Button } from '@/components/ui/button';
 import { HStack, Show, VStack } from '@/components/utilities';
@@ -9,11 +9,22 @@ import { cn, onMutateError } from '@/libs/common';
 import { ROUTER } from '@/libs/router';
 import { formatNumber } from '@/libs/utils';
 import { format } from 'date-fns';
-import { AlertCircle, CheckCircle, Clock, CreditCard, DollarSign, Package, RefreshCw, Star, Truck, X } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
+import {
+  getPaymentMethodIcon,
+  getPaymentMethodText,
+  getPaymentStatusColor,
+  getPaymentStatusIcon,
+  getPaymentStatusText,
+  getShippingStatusColor,
+  getShippingStatusIcon,
+  getShippingStatusText,
+  getSimplifiedStatusDisplay,
+} from '../libs/utils';
+import DialogCancelOrder from './DialogCancelOrder';
 import ReviewDialog from './ReviewDialog';
 
 interface OrderItemProps {
@@ -34,198 +45,15 @@ const OrderItem = ({ order, onCancelSuccess }: OrderItemProps) => {
     onError: onMutateError,
   });
 
-  const handleCancelOrder = () => {
-    if (window.confirm('Are you sure you want to cancel this order?')) {
-      cancelOrder(order._id);
-    }
-  };
-
   const openReviewDialog = (item: IOrderItem) => {
     setSelectedItemForReview(item);
     setIsReviewDialogOpen(true);
   };
 
-  const getShippingStatusIcon = (status: OrderStatus) => {
-    switch (status) {
-      case 'PENDING':
-        return <Clock className="h-5 w-5 text-yellow-500" />;
-      case 'PROCESSING':
-        return <Package className="h-5 w-5 text-blue-500" />;
-      case 'SHIPPED':
-        return <Truck className="h-5 w-5 text-blue-500" />;
-      case 'DELIVERED':
-        return <CheckCircle className="h-5 w-5 text-green-500" />;
-      case 'CANCELLED':
-        return <X className="h-5 w-5 text-red-500" />;
-      default:
-        return <AlertCircle className="h-5 w-5 text-gray-500" />;
-    }
-  };
-
-  const getShippingStatusText = (status: OrderStatus) => {
-    switch (status) {
-      case 'PENDING':
-        return 'Pending';
-      case 'PROCESSING':
-        return 'Processing';
-      case 'SHIPPED':
-        return 'Shipped';
-      case 'DELIVERED':
-        return 'Delivered';
-      case 'CANCELLED':
-        return 'Cancelled';
-      default:
-        return 'Unknown';
-    }
-  };
-
-  const getShippingStatusColor = (status: OrderStatus) => {
-    switch (status) {
-      case 'PENDING':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'PROCESSING':
-        return 'bg-blue-100 text-blue-800';
-      case 'SHIPPED':
-        return 'bg-blue-100 text-blue-800';
-      case 'DELIVERED':
-        return 'bg-green-100 text-green-800';
-      case 'CANCELLED':
-        return 'bg-red-100 text-red-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
-  };
-
-  const getPaymentStatusIcon = (status: PaymentStatus) => {
-    switch (status) {
-      case 'COMPLETED':
-        return <CheckCircle className="h-5 w-5 text-green-500" />;
-      case 'PENDING':
-        return <Clock className="h-5 w-5 text-yellow-500" />;
-      case 'FAILED':
-        return <X className="h-5 w-5 text-red-500" />;
-      case 'REFUNDED':
-        return <RefreshCw className="h-5 w-5 text-blue-500" />;
-      default:
-        return <AlertCircle className="h-5 w-5 text-gray-500" />;
-    }
-  };
-
-  const getPaymentStatusText = (status: PaymentStatus) => {
-    switch (status) {
-      case 'COMPLETED':
-        return 'Completed';
-      case 'PENDING':
-        return 'Pending';
-      case 'FAILED':
-        return 'Failed';
-      case 'REFUNDED':
-        return 'Refunded';
-      default:
-        return 'Unknown';
-    }
-  };
-
-  const getPaymentStatusColor = (status: PaymentStatus) => {
-    switch (status) {
-      case 'COMPLETED':
-        return 'bg-green-100 text-green-800';
-      case 'PENDING':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'FAILED':
-        return 'bg-red-100 text-red-800';
-      case 'REFUNDED':
-        return 'bg-blue-100 text-blue-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
-  };
-
-  const getPaymentMethodIcon = (method: PaymentMethod) => {
-    switch (method) {
-      case 'CASH_ON_DELIVERY':
-        return <DollarSign className="h-5 w-5 text-gray-500" />;
-      case 'ONLINE_PAYMENT':
-        return <CreditCard className="h-5 w-5 text-blue-500" />;
-      default:
-        return <AlertCircle className="h-5 w-5 text-gray-500" />;
-    }
-  };
-
-  const getPaymentMethodText = (method: PaymentMethod) => {
-    switch (method) {
-      case 'CASH_ON_DELIVERY':
-        return 'Cash On Delivery';
-      case 'ONLINE_PAYMENT':
-        return 'Online Payment';
-      default:
-        return 'Unknown';
-    }
-  };
-
   // Add a new function to determine if an order is fully completed
-  const isOrderFullyCompleted = (order: IOrder): boolean => {
-    return order.shippingStatus === 'DELIVERED' && order.paymentStatus === 'COMPLETED';
-  };
 
   // Add a function to get the simplified status display
-  const getSimplifiedStatusDisplay = (order: IOrder) => {
-    if (isOrderFullyCompleted(order)) {
-      return {
-        icon: <CheckCircle className="h-5 w-5 text-green-500" />,
-        text: 'Completed',
-        color: 'bg-green-100 text-green-800',
-      };
-    }
 
-    if (order.shippingStatus === 'CANCELLED') {
-      return {
-        icon: <X className="h-5 w-5 text-red-500" />,
-        text: 'Cancelled',
-        color: 'bg-red-100 text-red-800',
-      };
-    }
-
-    if (order.paymentStatus === 'FAILED') {
-      return {
-        icon: <AlertCircle className="h-5 w-5 text-red-500" />,
-        text: 'Payment Failed',
-        color: 'bg-red-100 text-red-800',
-      };
-    }
-
-    if (order.shippingStatus === 'PENDING') {
-      return {
-        icon: <Clock className="h-5 w-5 text-yellow-500" />,
-        text: 'Pending',
-        color: 'bg-yellow-100 text-yellow-800',
-      };
-    }
-
-    if (order.shippingStatus === 'PROCESSING') {
-      return {
-        icon: <Package className="h-5 w-5 text-blue-500" />,
-        text: 'Processing',
-        color: 'bg-blue-100 text-blue-800',
-      };
-    }
-
-    if (order.shippingStatus === 'SHIPPED') {
-      return {
-        icon: <Truck className="h-5 w-5 text-blue-500" />,
-        text: 'Shipping',
-        color: 'bg-blue-100 text-blue-800',
-      };
-    }
-
-    return {
-      icon: <AlertCircle className="h-5 w-5 text-gray-500" />,
-      text: 'Processing',
-      color: 'bg-gray-100 text-gray-800',
-    };
-  };
-
-  // Check if order can be reviewed
   const canReview = order.shippingStatus === 'DELIVERED' && order.paymentStatus === 'COMPLETED';
 
   return (
@@ -234,7 +62,7 @@ const OrderItem = ({ order, onCancelSuccess }: OrderItemProps) => {
       <div className="border-gray-200 border-b bg-gradient-to-r from-gray-50 to-white p-4">
         <HStack className="justify-between">
           <HStack spacing={8}>
-            <span className="font-medium text-gray-700 text-sm">Order #{order.orderCode}</span>
+            <span className="font-medium text-gray-700 text-sm">Order Code: {order.orderCode}</span>
             <span className="text-gray-500 text-sm">{format(new Date(order.createdAt), 'dd/MM/yyyy HH:mm')}</span>
           </HStack>
 
@@ -272,7 +100,7 @@ const OrderItem = ({ order, onCancelSuccess }: OrderItemProps) => {
             </HStack>
           </div>
 
-          <VStack spacing={2} align="end">
+          <VStack spacing={8} align="center">
             <Link href={`${ROUTER.ORDERS}/${order._id}`}>
               <Button
                 variant="outline"
@@ -282,83 +110,65 @@ const OrderItem = ({ order, onCancelSuccess }: OrderItemProps) => {
                 View Order
               </Button>
             </Link>
-
-            {canReview && (
-              <Button
-                variant="ghost"
-                size="sm"
-                className="w-full text-yellow-600 hover:bg-yellow-50 hover:text-yellow-700"
-                onClick={() => (order.items.length === 1 ? openReviewDialog(order.items[0]) : setIsExpanded(true))}
-              >
-                <Star className="mr-1 h-4 w-4" />
-                Review Products
-              </Button>
-            )}
-
-            {order.shippingStatus === 'PENDING' && (
-              <Button variant="destructive" size="sm" onClick={handleCancelOrder} disabled={isLoading}>
-                {isLoading ? 'Cancelling...' : 'Cancel Order'}
-              </Button>
+            {order.shippingStatus === 'PENDING' && order.paymentStatus === 'PENDING' && order.paymentMethod === 'CASH_ON_DELIVERY' && (
+              <DialogCancelOrder orderId={order._id} />
             )}
           </VStack>
         </HStack>
       </div>
 
       {/* Product preview with improved layout and hover effects */}
-      <div className="px-4 pb-4">
-        <div className="flex flex-wrap gap-3">
-          {order.items.map((item, index) => (
-            <div
-              key={index}
-              className="group relative h-16 w-16 cursor-pointer overflow-hidden rounded-md border border-gray-200 transition-all hover:border-primary-300 hover:shadow-md"
-              onClick={() => canReview && openReviewDialog(item)}
-            >
-              <Image
-                src={item.productImage || '/images/no-image.svg'}
-                alt={item.productName}
-                fill
-                className="object-cover transition-transform group-hover:scale-110"
-                sizes="64px"
-              />
-              {item.quantity > 1 && (
-                <div className="absolute right-0 bottom-0 rounded-tl-md bg-black bg-opacity-70 px-1 text-white text-xs">
-                  x{item.quantity}
-                </div>
-              )}
+      <VStack spacing={4} className="px-4 pb-4">
+        {order.items.map((item, index) => {
+          // && !item?.isReviewed;
 
-              {/* Review overlay for completed orders */}
-              {canReview && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 transition-opacity group-hover:opacity-100">
-                  <Star className="h-6 w-6 text-yellow-400" />
+          return (
+            <div className="flex items-center" key={index}>
+              <HStack className="flex-1">
+                <div
+                  className="group relative h-16 w-16 cursor-pointer overflow-hidden rounded-md border border-gray-200 transition-all hover:border-primary-300 hover:shadow-md"
+                  onClick={() => canReview && openReviewDialog(item)}
+                >
+                  <Image
+                    src={item.productImage || '/images/no-image.svg'}
+                    alt={item.productName}
+                    fill
+                    className="object-cover transition-transform group-hover:scale-110"
+                    sizes="64px"
+                  />
+                  {item.quantity > 1 && (
+                    <div className="absolute right-0 bottom-0 rounded-tl-md bg-black bg-opacity-70 px-1 text-white text-xs">
+                      x{item.quantity}
+                    </div>
+                  )}
                 </div>
-              )}
+
+                <VStack>
+                  <span className="line-clamp-1 font-medium text-sm">{item.productName}</span>
+                  <span className="text-gray-500 text-xs">Qty: {item.quantity}</span>
+                </VStack>
+              </HStack>
+
+              <VStack>
+                <Show when={canReview}>
+                  {!item.isReviewed ? (
+                    <ReviewDialog
+                      productId={item.productId}
+                      productName={item.productName}
+                      productImage={item.productImage}
+                      orderId={order._id}
+                    />
+                  ) : (
+                    <Button size="xs" disabled>
+                      Đã đánh giá
+                    </Button>
+                  )}
+                </Show>
+              </VStack>
             </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Review Dialog */}
-      <Show when={false}>
-        {selectedItemForReview && (
-          <ReviewDialog
-            isOpen={isReviewDialogOpen}
-            onClose={() => setIsReviewDialogOpen(false)}
-            productId={selectedItemForReview.productId}
-            productName={selectedItemForReview.productName || 'Product'}
-            productImage={selectedItemForReview.productImage || '/images/no-image.svg'}
-            orderId={order._id}
-            onSubmitSuccess={() => {
-              toast.success('Thank you for your review!');
-            }}
-          />
-        )}
-      </Show>
-
-      <Show when={order.reviewStatus?.someItemsReviewed}>
-        <div className="p-4">
-          <p className="text-gray-500 text-sm">Reviewed</p>
-        </div>
-      </Show>
+          );
+        })}
+      </VStack>
 
       {/* Expanded details with improved sections and visual hierarchy */}
       {isExpanded && (
@@ -447,26 +257,16 @@ const OrderItem = ({ order, onCancelSuccess }: OrderItemProps) => {
 
                             <HStack className="mt-1 w-full justify-between">
                               <span className="text-gray-500 text-xs">
-                                Qty: {item.quantity} x {formatNumber(item.price)}
+                                Số lượng: {item.quantity} x {formatNumber(item.price)}
                               </span>
                               <span className="font-medium text-primary-700 text-sm">{formatNumber(item.price * item.quantity)}</span>
                             </HStack>
 
                             {/* Review button for completed orders */}
-                            {canReview && (
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                className="mt-1 text-yellow-600 hover:bg-yellow-50 hover:text-yellow-700"
-                                onClick={() => openReviewDialog(item)}
-                              >
-                                <Star className="mr-1 h-4 w-4" />
-                                Review
-                              </Button>
-                            )}
                           </VStack>
                         </HStack>
                       </HStack>
+
                       {index < order.items.length - 1 && <div className="my-3 border-gray-100 border-b"></div>}
                     </div>
                   ))}
@@ -503,7 +303,7 @@ const OrderItem = ({ order, onCancelSuccess }: OrderItemProps) => {
 
                 {/* Shipping information */}
                 <div className="rounded-md bg-white p-3 shadow-sm">
-                  <h6 className="mb-2 font-medium text-gray-700">Shipping Information</h6>
+                  <h6 className="mb-2 font-medium text-gray-700">Thông tin vận chuyển</h6>
                   <VStack spacing={2} className="text-sm">
                     <HStack className="w-full justify-between">
                       <span className="text-gray-600">Status:</span>
@@ -562,11 +362,9 @@ const OrderItem = ({ order, onCancelSuccess }: OrderItemProps) => {
 
                 {/* Actions */}
                 <div className="flex justify-end space-x-2">
-                  {order.shippingStatus === 'PENDING' && (
-                    <Button variant="destructive" size="sm" onClick={handleCancelOrder} disabled={isLoading} className="w-full">
-                      {isLoading ? 'Cancelling...' : 'Cancel Order'}
-                    </Button>
-                  )}
+                  {order.shippingStatus === 'PENDING' &&
+                    order.paymentStatus === 'PENDING' &&
+                    order.paymentMethod === 'CASH_ON_DELIVERY' && <DialogCancelOrder orderId={order._id} />}
                   <Link href={`${ROUTER.ORDERS}/${order._id}`} className="w-full">
                     <Button
                       variant="outline"

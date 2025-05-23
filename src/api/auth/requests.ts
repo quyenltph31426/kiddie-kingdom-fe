@@ -16,6 +16,16 @@ export const loginRequest = async (formData: AuthSchema): Promise<ILoginResponse
   return data?.data;
 };
 
+export const loginWithGoogleRequest = async (formData: { token: string }): Promise<ILoginResponse> => {
+  const { data } = await client({
+    url: '/api/auth/google',
+    method: 'POST',
+    data: formData,
+  });
+
+  return data?.data;
+};
+
 export const signUpRequest = async (formData: SignUpSchema): Promise<ILoginResponse> => {
   const { data } = await client({
     url: '/api/auth/sign-up',
@@ -93,6 +103,16 @@ export const createAccount = async ({ formData, token }: { formData: CreateAccou
     headers: {
       Authorization: `Bearer ${token}`,
     },
+  });
+
+  return data?.data;
+};
+
+export const verifyEmail = async (token: string): Promise<boolean> => {
+  const { data } = await client({
+    url: `/api/auth/verify-email`,
+    method: 'POST',
+    params: { token },
   });
 
   return data?.data;

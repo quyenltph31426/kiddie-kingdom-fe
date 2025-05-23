@@ -69,10 +69,10 @@ const ShippingForm = () => {
       refetch();
       setIsAddingAddress(false);
       form.reset();
-      toast.success('New address added successfully');
+      toast.success('Địa chỉ mới đã được thêm');
     },
     onError: (error) => {
-      toast.error('Failed to add address');
+      toast.error('Thêm địa chỉ mới thất bại!');
       console.error(error);
     },
   });
@@ -80,10 +80,10 @@ const ShippingForm = () => {
   const { mutate: deleteAddress } = useDeleteAddressMutation({
     onSuccess: () => {
       refetch();
-      toast.success('Address deleted successfully');
+      toast.success('Địa chỉ đã được xóa!');
     },
     onError: (error) => {
-      toast.error('Failed to delete address');
+      toast.error('Xóa địa chỉ thất bại!');
       console.error(error);
     },
   });
@@ -91,10 +91,10 @@ const ShippingForm = () => {
   const { mutate: setDefaultAddress } = useSetDefaultAddressMutation({
     onSuccess: () => {
       refetch();
-      toast.success('Default address updated');
+      toast.success('Địa chỉ mặc định đã được cập nhật!');
     },
     onError: (error) => {
-      toast.error('Failed to update default address');
+      toast.error('Cập nhật địa chỉ mặc định thất bại!');
       console.error(error);
     },
   });
@@ -128,50 +128,50 @@ const ShippingForm = () => {
   return (
     <div>
       <div className="mb-6 flex justify-between">
-        <h5 className="font-medium">Your Saved Addresses</h5>
+        <h5 className="font-medium">Địa chỉ của bạn</h5>
         <Dialog open={isAddingAddress} onOpenChange={setIsAddingAddress}>
           <DialogTrigger asChild>
             <Button variant="outline" size="sm">
               <Icons.plus className="mr-2 h-4 w-4" />
-              Add New Address
+              Thêm địa chỉ mới
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[550px]">
             <DialogHeader>
-              <DialogTitle>Add New Address</DialogTitle>
+              <DialogTitle>Thêm địa chỉ mới</DialogTitle>
             </DialogHeader>
             <FormWrapper form={form} onSubmit={handleAddNewAddress}>
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <TextField label="Full Name" placeholder="Enter your full name" control={form.control} name="fullName" required />
-                <TextField label="Phone Number" placeholder="Enter your phone number" control={form.control} name="phone" required />
+                <TextField label="Họ và tên" placeholder="Nhập họ và tên" control={form.control} name="fullName" required />
+                <TextField label="Số điện thoại" placeholder="Nhập số điện thoại" control={form.control} name="phone" required />
                 <TextField
-                  label="Address Line 1"
-                  placeholder="Enter your address"
+                  label="Địa chỉ 1"
+                  placeholder="Nhập địa chỉ 1"
                   control={form.control}
                   name="addressLine1"
                   className="md:col-span-2"
                   required
                 />
                 <TextField
-                  label="Address Line 2 (Optional)"
+                  label="Địa chỉ 2 (không bắt buộc)"
                   placeholder="Apartment, suite, etc."
                   control={form.control}
                   name="addressLine2"
                   className="md:col-span-2"
                 />
-                <TextField label="City" placeholder="Enter your city" control={form.control} name="city" required />
-                <TextField label="District" placeholder="Enter your district" control={form.control} name="district" required />
-                <TextField label="Ward" placeholder="Enter your ward" control={form.control} name="ward" required />
+                <TextField label="Thành phố" placeholder="Nhập thành phố" control={form.control} name="city" required />
+                <TextField label="Quận/Huyện" placeholder="Nhập Quận/Huyện" control={form.control} name="district" required />
+                <TextField label="Phường/Xã" placeholder="Nhập Phường/Xã" control={form.control} name="ward" required />
                 <TextField label="Postal Code" placeholder="Enter your postal code" control={form.control} name="postalCode" />
 
                 <CheckboxField label="Set as default address" control={form.control} name="isDefault" />
 
                 <div className="flex justify-end gap-2 md:col-span-2">
                   <Button type="button" variant="outline" onClick={() => setIsAddingAddress(false)}>
-                    Cancel
+                    Hủy
                   </Button>
                   <Button type="button" onClick={() => form.handleSubmit(handleAddNewAddress)()}>
-                    Save Address
+                    Thêm
                   </Button>
                 </div>
               </div>
