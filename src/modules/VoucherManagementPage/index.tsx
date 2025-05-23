@@ -25,7 +25,7 @@ const VoucherManagementPage = () => {
 
   return (
     <Container>
-      <H1 className="mb-8 font-orbitron">Voucher management</H1>
+      <H1 className="mb-8 font-orbitron">Quản lý voucher</H1>
       <HStack pos="apart">
         <SearchTable
           listFilter={[]}
