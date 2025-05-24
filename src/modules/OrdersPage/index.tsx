@@ -81,11 +81,10 @@ const OrdersPage = () => {
           </div>
           <Tabs
             data={[
-              { label: 'All Orders', value: 'all' },
-              { label: 'Completed', value: 'completed' },
-              { label: 'Pending', value: 'pending' },
-              { label: 'Processing', value: 'processing' },
-              { label: 'Shipping', value: 'shipping' },
+              { label: 'Tất cả', value: 'all' },
+              { label: 'Đã hoàn thành', value: 'completed' },
+              { label: 'Đang xử lý', value: 'pending' },
+              { label: 'Đang vận chuyển', value: 'shipping' },
               { label: 'Đã hủy', value: 'cancelled' },
               { label: 'Payment Failed', value: 'payment-failed' },
             ]}
@@ -105,12 +104,12 @@ const OrdersPage = () => {
 
         <Show when={!isFetching && (!data?.items || data.items.length === 0)}>
           <NoDataAvailable
-            title="No orders found"
+            title="Chưa có đơn hàng"
             description={getEmptyStateDescription(activeTab)}
             icon={getEmptyStateIcon(activeTab)}
             action={
-              <Link href={ROUTER.PRODUCTS}>
-                <Button>Continue Shopping</Button>
+              <Link href={ROUTER.COLLECTIONS}>
+                <Button>Tiếp tục mua hàng</Button>
               </Link>
             }
           />
@@ -156,19 +155,19 @@ function getEmptyStateIcon(tab: OrderFilterTab) {
 function getEmptyStateDescription(tab: OrderFilterTab): string {
   switch (tab) {
     case 'completed':
-      return "You don't have any completed orders yet.";
+      return 'Bạn chưa có đơn hàng nào được hoàn thành.';
     case 'pending':
-      return "You don't have any pending orders yet.";
+      return 'Bạn chưa có đơn hàng nào đang chờ xử lý.';
     case 'processing':
-      return "You don't have any orders being processed yet.";
+      return 'Bạn chưa có đơn hàng nào đang được xử lý.';
     case 'shipping':
-      return "You don't have any orders being shipped yet.";
+      return 'Bạn chưa có đơn hàng nào đang vận chuyển.';
     case 'cancelled':
-      return "You don't have any cancelled orders.";
+      return 'Bạn chưa có đơn hàng nào đã bị hủy.';
     case 'payment-failed':
-      return "You don't have any orders with failed payment.";
+      return 'Bạn chưa có đơn hàng nào thanh toán thất bại.';
     default:
-      return "You don't have any orders yet.";
+      return 'Bạn chưa có đơn hàng nào.';
   }
 }
 

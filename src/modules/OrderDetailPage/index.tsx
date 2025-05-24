@@ -228,22 +228,24 @@ const OrderDetailPage = () => {
 
                   {/* Order summary */}
                   <div className="mt-6 rounded-lg border border-gray-200 p-4">
-                    <h3 className="mb-4 font-medium text-lg">Order Summary</h3>
+                    <h3 className="mb-4 font-medium text-lg">Tóm tắt đơn hàng</h3>
                     <div className="space-y-2">
                       <HStack className="justify-between">
-                        <span className="text-gray-600 text-sm">Subtotal</span>
-                        <span className="font-medium text-sm">{formatNumber(order?.totalAmount || 0)}</span>
+                        <span className="text-gray-600 text-sm">Tổng tiền hàng</span>
+                        <span className="font-medium text-sm">
+                          {formatNumber((order?.totalAmount || 0) + (order?.discountAmount || 0))}
+                        </span>
                       </HStack>
                       {(order?.discountAmount || 0) > 0 && (
                         <HStack className="justify-between">
-                          <span className="text-gray-600 text-sm">Discount</span>
+                          <span className="text-gray-600 text-sm">Giảm giá</span>
                           <span className="font-medium text-red-600 text-sm">-{formatNumber(order?.discountAmount || 0)}</span>
                         </HStack>
                       )}
                       <Separator className="my-2" />
                       <HStack className="justify-between">
-                        <span className="font-medium">Total</span>
-                        <span className="font-medium">{formatNumber((order?.totalAmount || 0) - (order?.discountAmount || 0))}</span>
+                        <span className="font-medium">Tổng cộng</span>
+                        <span className="font-medium">{formatNumber(order?.totalAmount || 0)}</span>
                       </HStack>
                     </div>
                   </div>
@@ -272,12 +274,12 @@ const OrderDetailPage = () => {
                   <div className="mt-6 rounded-lg border border-gray-200 p-4">
                     <h3 className="mb-4 font-medium text-lg">Phương thức thanh toán</h3>
                     <p className="text-gray-700 capitalize">
-                      {order?.paymentMethod === 'CASH_ON_DELIVERY' ? 'Cash On Delivery' : 'Online Payment'}
+                      {order?.paymentMethod === 'CASH_ON_DELIVERY' ? 'Thanh toán khi nhận hàng' : 'Thanh toán online'}
                     </p>
 
                     {/* Payment status */}
                     <div className="mt-4">
-                      <h4 className="mb-2 font-medium text-sm">Payment Status</h4>
+                      <h4 className="mb-2 font-medium text-sm">Trạng thái thanh toán</h4>
                       {order?.paymentStatus === 'COMPLETED' ? (
                         <div className="mt-2 rounded-md bg-green-50 p-2">
                           <p className="flex items-center font-medium text-green-600 text-sm">
@@ -296,7 +298,7 @@ const OrderDetailPage = () => {
                         <div className="mt-2 rounded-md bg-yellow-50 p-2">
                           <p className="flex items-center font-medium text-sm text-yellow-600">
                             <AlertCircle className="mr-2 h-4 w-4" />
-                            Payment Pending
+                            Đang chờ thanh toán
                           </p>
                         </div>
                       )}
@@ -304,7 +306,7 @@ const OrderDetailPage = () => {
 
                     {/* Shipping status */}
                     <div className="mt-4">
-                      <h4 className="mb-2 font-medium text-sm">Shipping Status</h4>
+                      <h4 className="mb-2 font-medium text-sm">Trạng thái vận chuyển</h4>
                       <div className="mt-2 space-y-2">
                         {/* Shipping timeline */}
                         <div className="flex items-center">
@@ -314,7 +316,7 @@ const OrderDetailPage = () => {
                               order?.shippingStatus !== 'CANCELED' ? 'bg-green-500' : 'bg-gray-300'
                             )}
                           ></div>
-                          <p className="text-sm">Order Placed</p>
+                          <p className="text-sm">Đã đặt hàng</p>
                           <p className="ml-auto text-gray-500 text-xs">{formatDate(order?.createdAt)}</p>
                         </div>
 
@@ -325,7 +327,7 @@ const OrderDetailPage = () => {
                               ['PROCESSING', 'SHIPPED', 'DELIVERED'].includes(order?.shippingStatus || '') ? 'bg-green-500' : 'bg-gray-300'
                             )}
                           ></div>
-                          <p className="text-sm">Processing</p>
+                          <p className="text-sm">Đang xử lý</p>
                         </div>
 
                         <div className="flex items-center">
@@ -335,7 +337,7 @@ const OrderDetailPage = () => {
                               ['SHIPPED', 'DELIVERED'].includes(order?.shippingStatus || '') ? 'bg-green-500' : 'bg-gray-300'
                             )}
                           ></div>
-                          <p className="text-sm">Shipping</p>
+                          <p className="text-sm">Đang vận chuyển</p>
                         </div>
 
                         <div className="flex items-center">

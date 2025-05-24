@@ -21,11 +21,11 @@ export const getShippingStatusIcon = (status: OrderStatus) => {
 export const getShippingStatusText = (status: OrderStatus) => {
   switch (status) {
     case 'PENDING':
-      return 'Pending';
+      return 'Đã đặt hàng';
     case 'PROCESSING':
-      return 'Processing';
+      return 'Đang xử lý';
     case 'SHIPPED':
-      return 'Shipped';
+      return 'Đang vận chuyển';
     case 'DELIVERED':
       return 'Đã vận chuyển';
     case 'CANCELED':
@@ -70,13 +70,13 @@ export const getPaymentStatusIcon = (status: PaymentStatus) => {
 export const getPaymentStatusText = (status: PaymentStatus) => {
   switch (status) {
     case 'COMPLETED':
-      return 'Completed';
+      return 'Đã thanh toán';
     case 'PENDING':
-      return 'Pending';
+      return 'Đang chờ thanh toán';
     case 'FAILED':
       return 'Failed';
     case 'REFUNDED':
-      return 'Refunded';
+      return 'Đã hoàn tiền';
     default:
       return 'Unknown';
   }
@@ -105,7 +105,7 @@ export const getSimplifiedStatusDisplay = (order: IOrder) => {
   if (isOrderFullyCompleted(order)) {
     return {
       icon: <CheckCircle className="h-5 w-5 text-green-500" />,
-      text: 'Completed',
+      text: 'Đã hoàn thành',
       color: 'bg-green-100 text-green-800',
     };
   }
@@ -129,7 +129,7 @@ export const getSimplifiedStatusDisplay = (order: IOrder) => {
   if (order.shippingStatus === 'PENDING') {
     return {
       icon: <Clock className="h-5 w-5 text-yellow-500" />,
-      text: 'Pending',
+      text: 'Đang chờ xử lý',
       color: 'bg-yellow-100 text-yellow-800',
     };
   }
@@ -137,7 +137,7 @@ export const getSimplifiedStatusDisplay = (order: IOrder) => {
   if (order.shippingStatus === 'PROCESSING') {
     return {
       icon: <Package className="h-5 w-5 text-blue-500" />,
-      text: 'Processing',
+      text: 'Đang xử lý',
       color: 'bg-blue-100 text-blue-800',
     };
   }
@@ -145,14 +145,14 @@ export const getSimplifiedStatusDisplay = (order: IOrder) => {
   if (order.shippingStatus === 'SHIPPED') {
     return {
       icon: <Truck className="h-5 w-5 text-blue-500" />,
-      text: 'Shipping',
+      text: 'Đang vận chuyển',
       color: 'bg-blue-100 text-blue-800',
     };
   }
 
   return {
     icon: <AlertCircle className="h-5 w-5 text-gray-500" />,
-    text: 'Processing',
+    text: 'Unknown',
     color: 'bg-gray-100 text-gray-800',
   };
 };
@@ -171,9 +171,9 @@ export const getPaymentMethodIcon = (method: PaymentMethod) => {
 export const getPaymentMethodText = (method: PaymentMethod) => {
   switch (method) {
     case 'CASH_ON_DELIVERY':
-      return 'Cash On Delivery';
+      return 'Thanh toán khi nhận hàng';
     case 'ONLINE_PAYMENT':
-      return 'Online Payment';
+      return 'Thanh toán online';
     default:
       return 'Unknown';
   }

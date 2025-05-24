@@ -55,12 +55,12 @@ const CheckoutPage = () => {
       }
 
       if (data.paymentMethod === 'ONLINE_PAYMENT' && data?.paymentSession) {
-        clearCheckout();
         window.location.href = data.paymentSession?.url;
+        clearCheckout();
       } else {
+        router.push(`${ROUTER.ORDERS}/${data._id}`);
         toast.success('Tạo mới đơn hàng thành công!');
         clearCheckout();
-        router.push(`${ROUTER.ORDERS}/${data._id}`);
       }
     },
     onError: (error) => {

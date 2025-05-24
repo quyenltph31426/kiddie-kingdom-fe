@@ -7,7 +7,7 @@ import { useFormContext } from 'react-hook-form';
 const paymentMethods = [
   {
     value: 'CASH_ON_DELIVERY',
-    label: 'Cash On Delivery',
+    label: 'Thanh toán khi nhận hàng',
     image: '/images/cash-on-delivery.png',
   },
   {

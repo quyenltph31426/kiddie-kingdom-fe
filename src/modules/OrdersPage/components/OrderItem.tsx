@@ -89,7 +89,7 @@ const OrderItem = ({ order, onCancelSuccess }: OrderItemProps) => {
       <div className="p-4">
         <HStack className="justify-between">
           <div>
-            <H4 className="mb-1 text-primary-700">Total: {formatNumber(order.totalAmount - order.discountAmount)}</H4>
+            <H4 className="mb-1 text-primary-700">Tổng cộng: {formatNumber((order.totalAmount || 0) + (order.discountAmount || 0))}</H4>
             <HStack spacing={4} className="text-gray-500 text-sm">
               <span className="font-medium">{order.items.length} items</span>
               <span>•</span>
@@ -306,7 +306,7 @@ const OrderItem = ({ order, onCancelSuccess }: OrderItemProps) => {
                   <h6 className="mb-2 font-medium text-gray-700">Thông tin vận chuyển</h6>
                   <VStack spacing={2} className="text-sm">
                     <HStack className="w-full justify-between">
-                      <span className="text-gray-600">Status:</span>
+                      <span className="text-gray-600">Trạng thái:</span>
                       <span
                         className={cn('flex items-center rounded-full px-2 py-0.5 text-xs', getShippingStatusColor(order.shippingStatus))}
                       >
@@ -343,7 +343,7 @@ const OrderItem = ({ order, onCancelSuccess }: OrderItemProps) => {
                   <VStack spacing={2} className="text-sm">
                     <HStack className="w-full justify-between">
                       <span className="text-gray-600">Tổng tiền hàng:</span>
-                      <span className="text-gray-800">{formatNumber(order.totalAmount)}</span>
+                      <span className="text-gray-800"> {formatNumber((order.totalAmount || 0) + (order.discountAmount || 0))}</span>
                     </HStack>
 
                     {order.discountAmount > 0 && (
@@ -355,7 +355,7 @@ const OrderItem = ({ order, onCancelSuccess }: OrderItemProps) => {
                     <div className="my-1 border-gray-200 border-t"></div>
                     <HStack className="w-full justify-between">
                       <span className="font-medium text-gray-700">Tổng cộng:</span>
-                      <span className="font-medium text-primary-700">{formatNumber(order.totalAmount)}</span>
+                      <span className="font-medium text-primary-700">{formatNumber(order.totalAmount || 0)}</span>
                     </HStack>
                   </VStack>
                 </div>
