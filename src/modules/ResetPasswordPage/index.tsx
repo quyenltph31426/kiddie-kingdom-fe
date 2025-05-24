@@ -20,13 +20,12 @@ const ResetPasswordPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
-  const email = searchParams.get('email');
   const [resetComplete, setResetComplete] = useState(false);
 
   const form = useForm<ResetPasswordSchema>({
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
-      password: '',
+      newPassword: '',
       confirmPassword: '',
     },
   });
@@ -34,28 +33,27 @@ const ResetPasswordPage = () => {
   const { mutate: resetPassword, isLoading } = useMutation(resetPasswordRequest);
 
   const handleSubmit: SubmitHandler<ResetPasswordSchema> = async (formData) => {
-    if (!token || !email) {
-      toast.error('Invalid reset link. Please request a new password reset.');
+    if (!token) {
+      toast.error('Không thể đặt lại mật khẩu. Vui lòng thử lại.');
       return;
     }
 
     resetPassword(
       {
-        password: formData.password,
+        newPassword: formData.newPassword,
         token,
-        email,
       },
       {
         onSuccess: () => {
           setResetComplete(true);
-          toast.success('Your password has been reset successfully.');
+          toast.success('Bạn đã đặt lại mật khẩu thành công!');
         },
         onError: onMutateError,
       }
     );
   };
 
-  if (!token || !email) {
+  if (!token) {
     return (
       <VStack justify="center" align="center" className="mx-2 h-[100vh]">
         <div className="-z-10 fixed inset-0 bg-cover bg-repeat opacity-65" style={{ backgroundImage: "url('/images/background.png')" }}>
@@ -70,10 +68,10 @@ const ResetPasswordPage = () => {
           </div>
           <h1 className="text-center font-semibold text-2xl">Invalid Reset Link</h1>
           <p className="text-center text-gray-600">
-            The password reset link is invalid or has expired. Please request a new password reset.
+            Đường dẫn đặt lại mật khẩu không hợp lệ hoặc đã hết hạn. Vui lòng yêu cầu một đường dẫn đặt lại mật khẩu mới.
           </p>
           <Button onClick={() => router.push(ROUTER.FORGOT_PASSWORD)} className="w-full rounded-full">
-            Request New Reset Link
+            Yêu cầu đường dẫn đặt lại mật khẩu mới
           </Button>
         </VStack>
       </VStack>
@@ -94,7 +92,7 @@ const ResetPasswordPage = () => {
 
         {!resetComplete ? (
           <>
-            <p className="text-center text-gray-600">Please enter your new password below.</p>
+            <p className="text-center text-gray-600">Vui lòng nhập mật khẩu mới của bạn.</p>
 
             <FormWrapper form={form} onSubmit={handleSubmit}>
               <VStack spacing={16}>
@@ -102,8 +100,8 @@ const ResetPasswordPage = () => {
                   required
                   fullWidth
                   control={form.control}
-                  name="password"
-                  label="New Password"
+                  name="newPassword"
+                  label="Mật khẩu mới"
                   placeholder="Enter your new password"
                   type="password"
                 />
@@ -112,7 +110,7 @@ const ResetPasswordPage = () => {
                   fullWidth
                   control={form.control}
                   name="confirmPassword"
-                  label="Confirm Password"
+                  label="Xác nhận mật khẩu mới"
                   placeholder="Confirm your new password"
                   type="password"
                 />
@@ -120,7 +118,7 @@ const ResetPasswordPage = () => {
 
               <HStack pos="center">
                 <Button type="submit" className="mt-8 mb-2 w-full rounded-full px-10" loading={isLoading}>
-                  Reset Password
+                  Đặt lại mật khẩu
                 </Button>
               </HStack>
             </FormWrapper>
@@ -138,9 +136,9 @@ const ResetPasswordPage = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <p className="text-center text-gray-600">Your password has been reset successfully.</p>
+            <p className="text-center text-gray-600">Bạn đã đặt lại mật khẩu thành công.</p>
             <Button onClick={() => router.push(ROUTER.SIGN_IN)} className="mt-4 w-full rounded-full">
-              Sign In
+              Đăng nhập
             </Button>
           </VStack>
         )}

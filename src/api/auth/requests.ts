@@ -138,9 +138,8 @@ export const forgotPasswordRequest = async (formData: { email: string }): Promis
 };
 
 export const resetPasswordRequest = async (data: {
-  password: string;
+  newPassword: string;
   token: string;
-  email: string;
 }): Promise<boolean> => {
   const { data: responseData } = await client({
     url: '/api/auth/reset-password',

@@ -34,7 +34,7 @@ const ForgotPasswordPage = () => {
     forgotPassword(formData, {
       onSuccess: () => {
         setEmailSent(true);
-        toast.success('Password reset instructions have been sent to your email.');
+        toast.success('Chúng tôi đã gửi hướng dẫn đặt lại mật khẩu đến email của bạn. Vui lòng kiểm tra email của bạn.');
       },
       onError: onMutateError,
     });
@@ -50,11 +50,11 @@ const ForgotPasswordPage = () => {
         <Image width={150} height={92} src="/images/logo.png" alt="logo" className="h-auto w-[14rem]" />
       </HStack>
       <VStack className="w-full max-w-[450px] rounded-lg border border-grey-100 px-6 py-6 shadow-card-2 md:px-8" spacing={16}>
-        <h1 className="mb-4 text-center font-semibold text-2xl md:text-3xl">Forgot Password</h1>
+        <h1 className="mb-4 text-center font-semibold text-2xl md:text-3xl">Quên mật khẩu?</h1>
 
         {!emailSent ? (
           <>
-            <p className="text-center text-gray-600">Enter your email address and we'll send you instructions to reset your password.</p>
+            <p className="text-center text-gray-600">Vui lòng nhập địa chỉ email của bạn để đặt lại mật khẩu.</p>
 
             <FormWrapper form={form} onSubmit={handleSubmit}>
               <VStack spacing={16}>
@@ -63,7 +63,7 @@ const ForgotPasswordPage = () => {
 
               <HStack pos="center">
                 <Button type="submit" className="mt-8 mb-2 w-full rounded-full px-10" loading={isLoading}>
-                  Send Reset Instructions
+                  Gửi
                 </Button>
               </HStack>
             </FormWrapper>
@@ -81,17 +81,19 @@ const ForgotPasswordPage = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <p className="text-center text-gray-600">We've sent password reset instructions to your email. Please check your inbox.</p>
+            <p className="text-center text-gray-600">
+              Chúng tôi đã gửi hướng dẫn đặt lại mật khẩu đến email của bạn. Vui lòng kiểm tra email của bạn.
+            </p>
             <Button onClick={() => router.push(ROUTER.SIGN_IN)} className="mt-4 w-full rounded-full">
-              Return to Login
+              Đăng nhập
             </Button>
           </VStack>
         )}
 
         <div className="text-center text-sm">
-          Remember your password?{' '}
+          Bạn nhớ mật khẩu của mình?{' '}
           <Link href={ROUTER.SIGN_IN} className="font-semibold text-primary-500 hover:text-primary-600">
-            Sign In
+            Đăng nhập
           </Link>
         </div>
       </VStack>

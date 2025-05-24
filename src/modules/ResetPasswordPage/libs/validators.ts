@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 export const resetPasswordSchema = z
   .object({
-    password: z
+    newPassword: z
       .string()
       .min(8, 'Password must be at least 8 characters')
       .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/, {
@@ -11,7 +11,7 @@ export const resetPasswordSchema = z
       }),
     confirmPassword: z.string().min(1, validationMessages.required('Confirm Password')),
   })
-  .refine((data) => data.confirmPassword === data.password, {
+  .refine((data) => data.confirmPassword === data.newPassword, {
     message: "Passwords don't match",
     path: ['confirmPassword'],
   });
