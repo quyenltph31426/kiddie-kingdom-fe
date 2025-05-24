@@ -7,7 +7,7 @@ import React from 'react';
 import CategoryItem from './components/CategoryItem';
 
 const Category = () => {
-  const { data, isFetching } = useCategoriesQuery({ variables: { limit: 10 }, onError: onMutateError });
+  const { data, isFetching } = useCategoriesQuery({ variables: { limit: 12 }, onError: onMutateError });
   return (
     <section className="mt-10">
       <H2 className="mb-8 text-center text-primary-500">Danh mục sản phẩm</H2>
