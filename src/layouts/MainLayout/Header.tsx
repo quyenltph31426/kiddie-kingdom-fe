@@ -31,13 +31,13 @@ const Header = () => {
   return (
     <header
       className={cn(
-        'sticky top-0 right-0 z-40 w-full bg-primary-600 px-4 py-4 text-white shadow-header lg:px-8',
+        'sticky top-0 right-0 z-40 w-full bg-primary-600 px-4 py-3 text-white shadow-header lg:px-8',
         !isMobile && ' h-header '
       )}
     >
       <HStack className="mx-auto max-w-[1440px]" pos="apart" spacing={isMobile ? 20 : 48}>
         <Link href={ROUTER.HOME}>
-          <Image src="/images/logo.png" alt="logo" width={200} height={60} />
+          <Image src="/images/logo.png" alt="logo" width={150} height={92} className="h-auto w-[95px]" />
         </Link>
 
         <HStack className="flex-1">

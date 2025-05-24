@@ -3,18 +3,18 @@
   "short_name": "0G Battle",
   "icons": [
     {
-      "src": "/images/logo-no-desc.svg",
+      "src": "/images/logo.png",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"
     },
     {
-      "src": "/images/logo-no-desc.svg",
+      "src": "/images/logo.png",
       "sizes": "any",
       "type": "image/svg+xml"
     },
     {
-      "src": "/images/logo-no-desc.svg",
+      "src": "/images/logo.png",
       "sizes": "any",
       "type": "image/svg+xml"
     }
