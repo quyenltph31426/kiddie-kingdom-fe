@@ -37,7 +37,9 @@ const LoginPage = () => {
     loginCredential(formData, {
       onSuccess: () => {
         router.replace(ROUTER.SIGN_IN);
-        toast.success('Đăng ký tài khoản thành công. Chúng tôi đã gửi một email xác nhận đến hộp thư của bạn. Vui lòng kiểm tra và xác nhận để hoàn tất đăng ký.');
+        toast.success(
+          'Đăng ký tài khoản thành công. Chúng tôi đã gửi một email xác nhận đến hộp thư của bạn. Vui lòng kiểm tra và xác nhận để hoàn tất đăng ký.'
+        );
       },
       onError: onMutateError,
     });

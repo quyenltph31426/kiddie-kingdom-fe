@@ -22,7 +22,7 @@ export const inputVariants = cva(
         sm: 'h-11 px-3 py-2 text-sm rounded-sm file:text-sm file:font-medium ',
         xs: 'h-9 px-3 py-2 text-sm rounded-sm file:text-sm file:font-medium ',
         md: 'h-12 px-3 py-2 text-sm rounded-md file:text-sm file:font-medium ',
-        default: 'h-[42px] px-3 text-sm rounded file:text-sm file:font-medium',
+        default: 'h-11 px-3 text-sm rounded file:text-sm file:font-medium',
       },
     },
     defaultVariants: {

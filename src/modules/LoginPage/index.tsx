@@ -95,15 +95,20 @@ const LoginPage = () => {
               placeholder="Enter your password"
               type="password"
             />
+            <div className="-mt-3 text-right">
+              <Link href={ROUTER.FORGOT_PASSWORD} className="font-semibold text-primary-500 text-xs hover:text-primary-600">
+                Quên mật khẩu?
+              </Link>
+            </div>
           </VStack>
 
           <HStack pos="center">
-            <Button type="submit" className="mt-8 mb-2 w-full rounded-full px-10" loading={isLoading}>
+            <Button type="submit" className="mt-6 mb-2 w-full rounded-full px-10" loading={isLoading}>
               Đăng nhập
             </Button>
           </HStack>
         </FormWrapper>
-        <HStack className="my-1" spacing={8}>
+        <HStack className="" spacing={8}>
           <Separator className="flex-1" />
           <span>or</span>
           <Separator className="flex-1" />
@@ -115,7 +120,7 @@ const LoginPage = () => {
           Đăng nhập với Google
         </Button>
 
-        <div className="text-right text-sm">
+        <div className="text-right text-xs">
           Chưa có tài khoản?{' '}
           <Link href={ROUTER.SIGN_UP} className="font-semibold text-primary-500 hover:text-primary-600">
             Đăng ký

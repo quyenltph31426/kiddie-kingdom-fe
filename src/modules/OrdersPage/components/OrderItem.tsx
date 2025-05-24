@@ -181,11 +181,11 @@ const OrderItem = ({ order, onCancelSuccess }: OrderItemProps) => {
                 <span className="font-mono text-gray-800">{order._id}</span>
               </HStack>
               <HStack className="w-full justify-between">
-                <span className="font-medium text-gray-600">Created:</span>
+                <span className="font-medium text-gray-600">Ngày đặt hàng:</span>
                 <span className="text-gray-800">{format(new Date(order.createdAt), 'dd/MM/yyyy HH:mm:ss')}</span>
               </HStack>
               <HStack className="w-full justify-between">
-                <span className="font-medium text-gray-600">Updated:</span>
+                <span className="font-medium text-gray-600">Ngày cập nhật:</span>
                 <span className="text-gray-800">{format(new Date(order.updatedAt), 'dd/MM/yyyy HH:mm:ss')}</span>
               </HStack>
               <HStack className="w-full justify-between">
@@ -204,7 +204,7 @@ const OrderItem = ({ order, onCancelSuccess }: OrderItemProps) => {
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {/* Order items with improved card styling */}
             <div>
-              <h5 className="mb-3 font-medium text-gray-700">Items</h5>
+              <h5 className="mb-3 font-medium text-gray-700">Danh sách sản phẩm</h5>
               <div className="rounded-md bg-white p-3 shadow-sm">
                 <VStack spacing={12} className="max-h-80 overflow-y-auto">
                   {order.items.map((item, index) => (
@@ -276,14 +276,14 @@ const OrderItem = ({ order, onCancelSuccess }: OrderItemProps) => {
 
             {/* Order details with improved card styling */}
             <div>
-              <h5 className="mb-3 font-medium text-gray-700">Order Details</h5>
+              <h5 className="mb-3 font-medium text-gray-700">Thông tin đơn hàng</h5>
               <div className="space-y-4">
                 {/* Payment information */}
                 <div className="rounded-md bg-white p-3 shadow-sm">
-                  <h6 className="mb-2 font-medium text-gray-700">Payment Information</h6>
+                  <h6 className="mb-2 font-medium text-gray-700">Thông tin thanh toán</h6>
                   <VStack spacing={2} className="text-sm">
                     <HStack className="w-full justify-between">
-                      <span className="text-gray-600">Method:</span>
+                      <span className="text-gray-600">Phương thức thanh toán:</span>
                       <span className="flex items-center font-medium">
                         {getPaymentMethodIcon(order.paymentMethod)}
                         <span className="ml-1">{getPaymentMethodText(order.paymentMethod)}</span>
@@ -315,19 +315,19 @@ const OrderItem = ({ order, onCancelSuccess }: OrderItemProps) => {
                       </span>
                     </HStack>
                     <HStack className="w-full justify-between">
-                      <span className="text-gray-600">Address:</span>
+                      <span className="text-gray-600">Địa chỉ:</span>
                       <span className="text-right text-gray-800">{order.shippingAddress?.addressLine1}</span>
                     </HStack>
                     <HStack className="w-full justify-between">
-                      <span className="text-gray-600">City:</span>
+                      <span className="text-gray-600">Thành phố:</span>
                       <span className="text-gray-800">{order.shippingAddress?.city}</span>
                     </HStack>
                     <HStack className="w-full justify-between">
-                      <span className="text-gray-600">District:</span>
+                      <span className="text-gray-600">Quận/Huyện:</span>
                       <span className="text-gray-800">{order.shippingAddress?.district}</span>
                     </HStack>
                     <HStack className="w-full justify-between">
-                      <span className="text-gray-600">Ward:</span>
+                      <span className="text-gray-600">Phường/Xã:</span>
                       <span className="text-gray-800">{order.shippingAddress?.ward}</span>
                     </HStack>
                     <HStack className="w-full justify-between">
@@ -339,22 +339,22 @@ const OrderItem = ({ order, onCancelSuccess }: OrderItemProps) => {
 
                 {/* Price breakdown */}
                 <div className="rounded-md bg-white p-3 shadow-sm">
-                  <h6 className="mb-2 font-medium text-gray-700">Price Breakdown</h6>
+                  <h6 className="mb-2 font-medium text-gray-700">Tóm tắt đơn hàng</h6>
                   <VStack spacing={2} className="text-sm">
                     <HStack className="w-full justify-between">
-                      <span className="text-gray-600">Subtotal:</span>
+                      <span className="text-gray-600">Tổng tiền hàng:</span>
                       <span className="text-gray-800">{formatNumber(order.totalAmount)}</span>
                     </HStack>
 
                     {order.discountAmount > 0 && (
                       <HStack className="w-full justify-between">
-                        <span className="text-gray-600">Discount:</span>
+                        <span className="text-gray-600">Giảm giá:</span>
                         <span className="text-green-600">-{formatNumber(order.discountAmount)}</span>
                       </HStack>
                     )}
                     <div className="my-1 border-gray-200 border-t"></div>
                     <HStack className="w-full justify-between">
-                      <span className="font-medium text-gray-700">Total:</span>
+                      <span className="font-medium text-gray-700">Tổng cộng:</span>
                       <span className="font-medium text-primary-700">{formatNumber(order.totalAmount)}</span>
                     </HStack>
                   </VStack>
@@ -371,7 +371,7 @@ const OrderItem = ({ order, onCancelSuccess }: OrderItemProps) => {
                       size="sm"
                       className="w-full border-primary-200 text-primary-700 hover:bg-primary-50 hover:text-primary-800"
                     >
-                      View Order Details
+                      Xem chi tiết
                     </Button>
                   </Link>
                 </div>

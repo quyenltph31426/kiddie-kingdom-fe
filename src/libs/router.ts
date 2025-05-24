@@ -18,4 +18,6 @@ export const ROUTER = {
   COLLECTIONS: '/collections',
   PAYMENT_CALLBACK: '/payment/callback',
   VOUCHERS: '/vouchers',
+  FORGOT_PASSWORD: '/forgot-password',
+  RESET_PASSWORD: '/reset-password',
 } as const;

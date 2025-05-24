@@ -126,3 +126,13 @@ export const verifyEmail = async (token: string): Promise<boolean> => {
 
   return data?.data;
 };
+
+export const forgotPasswordRequest = async (formData: { email: string }): Promise<boolean> => {
+  const { data } = await client({
+    url: '/api/auth/forgot-password',
+    method: 'POST',
+    data: formData,
+  });
+
+  return data?.data;
+};
