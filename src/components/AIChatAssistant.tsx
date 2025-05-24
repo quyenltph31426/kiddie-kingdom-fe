@@ -187,6 +187,7 @@ const AIChatAssistant = () => {
                     placeholder="Ask about products..."
                     className="h-9 flex-1"
                     disabled={isLoading}
+                    autoFocus
                   />
                 </div>
                 <Button type="submit" size="icon" className="h-9 w-9 rounded-full" disabled={isLoading || !prompt.trim()}>

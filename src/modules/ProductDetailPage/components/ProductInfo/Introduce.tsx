@@ -161,7 +161,7 @@ const Introduce = ({
           />
           <span className="text-primary-600 text-xs">{formatNumber(selectedVariant?.quantity ?? totalQuantity)} products available</span>
         </div>
-        <Button variant="shadow" disabled={!selectedVariant} onClick={handleAddToCart}>
+        <Button variant="shadow" className="h-11" disabled={!selectedVariant} onClick={handleAddToCart}>
           <Icons.cart className="mr-2" />
           Thêm vào giỏ hàng
         </Button>

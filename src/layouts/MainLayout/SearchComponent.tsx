@@ -90,7 +90,7 @@ const SearchComponent = () => {
           onClick={handleInputClick}
           onKeyDown={handleKeyDown}
           className="h-11 w-full max-w-[500px] rounded-full bg-white pr-10 pl-10 text-black"
-          placeholder="Search products..."
+          placeholder="Tìm kiếm sản phẩm..."
         />
         <Search className="-translate-y-1/2 absolute top-1/2 left-3 h-5 w-5 text-gray-400" />
         {searchTerm && (

@@ -1,7 +1,10 @@
 import { useVerifyVoucherMutation } from '@/api/voucher/mutations';
+import { useVouchersQuery } from '@/api/voucher/queries';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import SelectCustom from '@/components/ui/select-custom';
 import { Separator } from '@/components/ui/separator';
+import { VStack } from '@/components/utilities';
 import { formatNumber } from '@/libs/utils';
 import { useCheckoutStore } from '@/stores/CheckoutStore';
 import { Loader2 } from 'lucide-react';
@@ -14,6 +17,8 @@ const OrderSummary = () => {
   const { subtotal, shippingFee, discount, total, setDiscount } = useCheckoutStore();
   const [couponCode, setCouponCode] = useState('');
   const [isApplyingCoupon, setIsApplyingCoupon] = useState(false);
+
+  const { data: vouchers } = useVouchersQuery({ variables: { limit: 1000 } });
 
   // Use verify voucher mutation
   const { mutate: verifyVoucher, isLoading: isVerifying } = useVerifyVoucherMutation({
@@ -60,16 +65,16 @@ const OrderSummary = () => {
       <div className="mb-4 space-y-3">
         <div className="flex justify-between">
           <span className="text-gray-600">Tổng tiền hàng</span>
-          <span>{formatNumber(subtotal)}</span>
+          <span>{formatNumber(subtotal)} VNĐ</span>
         </div>
         <div className="flex justify-between">
           <span className="text-gray-600">Phí vận chuyển</span>
-          <span>{formatNumber(shippingFee)}</span>
+          <span>{formatNumber(shippingFee)} VNĐ</span>
         </div>
         {discount > 0 && (
           <div className="flex justify-between text-green-600">
             <span>Giảm giá</span>
-            <span>-{formatNumber(discount)}</span>
+            <span>-{formatNumber(discount)} VNĐ</span>
           </div>
         )}
         <Separator />
@@ -79,21 +84,27 @@ const OrderSummary = () => {
         </div>
       </div>
 
-      <div className="mb-6 flex items-center">
-        <div className="mr-2 flex-1">
-          <Input placeholder="Enter voucher code" value={couponCode} onChange={(e) => setCouponCode(e.target.value)} className="flex-1" />
-        </div>
-        <Button type="button" size="sm" variant="shadow" disabled={isApplyingCoupon} onClick={handleApplyCoupon}>
+      <VStack spacing={12} className="mb-6">
+        <Input placeholder="Enter voucher code" value={couponCode} onChange={(e) => setCouponCode(e.target.value)} className="flex-1" />
+
+        <SelectCustom
+          className="rounded border"
+          value={couponCode}
+          placeholder="Chọn voucher"
+          onChangeValue={setCouponCode}
+          data={vouchers?.map((voucher) => ({ label: voucher.name, value: voucher.code }))}
+        />
+        <Button type="button" size="sm" variant="shadow" disabled={isApplyingCoupon || !couponCode} onClick={handleApplyCoupon}>
           {isApplyingCoupon ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               Đang áp dụng...
             </>
           ) : (
-            'Áp dụng mã giảm giá'
+            'Áp dụng'
           )}
         </Button>
-      </div>
+      </VStack>
     </div>
   );
 };
