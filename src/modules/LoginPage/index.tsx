@@ -78,7 +78,7 @@ const LoginPage = () => {
       </div>
 
       <HStack className="mb-3" pos="center">
-        <Image width={600} height={348} src="/images/logo.png" alt="battle logo" className="h-auto w-[14rem]" />
+        <Image width={150} height={92} src="/images/logo.png" alt="battle logo" className="h-auto w-[14rem]" />
       </HStack>
       <VStack className="w-full max-w-[450px] rounded-lg border border-grey-100 px-6 py-6 shadow-card-2 md:px-8" spacing={16}>
         <h1 className="mb-2 text-center font-semibold text-2xl md:text-3xl">User Login</h1>
@@ -99,7 +99,7 @@ const LoginPage = () => {
 
           <HStack pos="center">
             <Button type="submit" className="mt-8 mb-2 w-full rounded-full px-10" loading={isLoading}>
-              Login
+              Đăng nhập
             </Button>
           </HStack>
         </FormWrapper>
@@ -112,13 +112,13 @@ const LoginPage = () => {
           <span className="mr-2">
             <Image src="/images/google.png" alt="google" width={20} height={20} />
           </span>
-          Continue with google
+          Đăng nhập với Google
         </Button>
 
         <div className="text-right text-sm">
-          Don't have an account?{' '}
+          Chưa có tài khoản?{' '}
           <Link href={ROUTER.SIGN_UP} className="font-semibold text-primary-500 hover:text-primary-600">
-            Sign Up
+            Đăng ký
           </Link>
         </div>
       </VStack>

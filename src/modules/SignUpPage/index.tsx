@@ -37,7 +37,7 @@ const LoginPage = () => {
     loginCredential(formData, {
       onSuccess: () => {
         router.replace(ROUTER.SIGN_IN);
-        toast.success('Sign up successfully!');
+        toast.success('Đăng ký tài khoản thành công. Chúng tôi đã gửi một email xác nhận đến hộp thư của bạn. Vui lòng kiểm tra và xác nhận để hoàn tất đăng ký.');
       },
       onError: onMutateError,
     });
@@ -50,7 +50,7 @@ const LoginPage = () => {
       </div>
 
       <HStack className="mb-3" pos="center">
-        <Image width={600} height={348} src="/images/logo.png" alt="battle logo" className="h-auto w-[14rem]" />
+        <Image width={150} height={92} src="/images/logo.png" alt="battle logo" className="h-auto w-[14rem]" />
       </HStack>
       <VStack className="w-full max-w-[450px] rounded-lg border border-grey-100 px-6 py-6 shadow-card-2 md:px-8" spacing={16}>
         <h1 className="mb-4 text-center font-semibold text-2xl md:text-3xl">User Sign Up</h1>
@@ -65,22 +65,22 @@ const LoginPage = () => {
               control={form.control}
               name="password"
               label="Password"
-              placeholder="Enter your password"
+              placeholder="Nhập mật khẩu của bạn"
               type="password"
             />
           </VStack>
 
           <HStack pos="center" className="mt-2">
             <Button type="submit" className="mt-8 mb-2 w-full rounded-full px-10" loading={isLoading}>
-              Sign Up
+              Đăng ký
             </Button>
           </HStack>
         </FormWrapper>
 
         <div className="text-right text-sm">
-          You have an account?{' '}
+          Bạn đã có tài khoản?{' '}
           <Link href={ROUTER.SIGN_IN} className="font-semibold text-primary-500 hover:text-primary-600">
-            Sign In
+            Đăng nhập
           </Link>
         </div>
       </VStack>
