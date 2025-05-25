@@ -64,6 +64,15 @@ const CartPageWebsite = () => {
         toast.error('Xóa sản phẩm khỏi giỏ hàng thất bại!');
       }
     };
+      const handleUpdateQuantity = async (id: string, quantity: number) => {
+    if (quantity < 1) return;
+
+    try {
+      await updateCartItem(id, quantity);
+    } catch (error) {
+      toast.error('Cập nhật số lượng sản phẩm thất bại!');
+    }
+  };
 };
 
 export default CartPageWebsite;
