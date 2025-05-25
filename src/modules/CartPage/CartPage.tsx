@@ -1,6 +1,8 @@
 import { useCartQuery } from "@/api/cart/queries";
 import { useUserLogin } from "@/hooks/useUserLogin";
+import { ROUTER } from "@/libs/router";
 import { useCartStore } from "@/stores/CartStore";
+import { useCheckoutStore } from "@/stores/CheckoutStore";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -64,6 +66,7 @@ const CartPageWebsite = () => {
         toast.error('Xóa sản phẩm khỏi giỏ hàng thất bại!');
       }
     };
+    // Handle update quantity
       const handleUpdateQuantity = async (id: string, quantity: number) => {
     if (quantity < 1) return;
 
@@ -73,6 +76,22 @@ const CartPageWebsite = () => {
       toast.error('Cập nhật số lượng sản phẩm thất bại!');
     }
   };
+  // Handle checkout
+    const handleCheckout = () => {
+      if (selectedItems.length === 0) {
+        toast.error('Vui lòng chọn ít nhất một sản phẩm!');
+        return;
+      }
+  
+      // Get selected items from cart
+      const checkoutItems = carts.filter((item) => selectedItems.includes(item._id || ''));
+  
+      // Set items in checkout store
+      useCheckoutStore.getState().setItems(checkoutItems);
+  
+      // Navigate to checkout page
+      router.push(ROUTER.CHECKOUT);
+    };
 };
 
 export default CartPageWebsite;
