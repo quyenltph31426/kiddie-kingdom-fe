@@ -33,6 +33,15 @@ const CartPageWebsite = () => {
       setSelectedItems(carts.map((item) => item._id || ''));
     }
   }, [isAllSelected, carts]);
+    // Handle select all checkbox
+  const handleSelectAll = () => {
+    setIsAllSelected(!isAllSelected);
+    if (!isAllSelected) {
+      setSelectedItems(carts.map((item) => item._id || ''));
+    } else {
+      setSelectedItems([]);
+    }
+  };
 };
 
 export default CartPageWebsite;
