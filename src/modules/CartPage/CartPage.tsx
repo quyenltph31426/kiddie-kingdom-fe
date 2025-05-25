@@ -42,6 +42,18 @@ const CartPageWebsite = () => {
       setSelectedItems([]);
     }
   };
+    // Handle item selection
+  const handleSelectItem = (id: string) => {
+    if (selectedItems.includes(id)) {
+      setSelectedItems(selectedItems.filter((item) => item !== id));
+      setIsAllSelected(false);
+    } else {
+      setSelectedItems([...selectedItems, id]);
+      if (selectedItems.length + 1 === carts.length) {
+        setIsAllSelected(true);
+      }
+    }
+  };
 };
 
 export default CartPageWebsite;
