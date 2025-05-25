@@ -4,6 +4,7 @@ import { useCartStore } from "@/stores/CartStore";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 const CartPageWebsite = () => {
   const form = useForm();
@@ -54,6 +55,15 @@ const CartPageWebsite = () => {
       }
     }
   };
+    // Handle remove item
+    const handleRemoveItem = async (id: string) => {
+      try {
+        await removeFromCart(id);
+        toast.success('Xóa sản phẩm khỏi giỏ hàng thành công!');
+      } catch (error) {
+        toast.error('Xóa sản phẩm khỏi giỏ hàng thất bại!');
+      }
+    };
 };
 
 export default CartPageWebsite;
