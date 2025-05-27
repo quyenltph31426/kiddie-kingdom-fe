@@ -68,7 +68,34 @@ const PageCheckout = () => {
     },
   });
 
+  const handleSubmitOrder = (formData: OrderSchema) => {
+    const { items } = useCheckoutStore.getState();
 
+    const orderData = {
+      items: items.map((item) => ({
+        productId: item.productId,
+        variantId: item.variantId,
+        quantity: item.quantity,
+      })),
+      paymentMethod: formData.paymentMethod,
+      shippingAddress: formData.shippingAddress,
+      voucherId: formData.voucherId || undefined,
+    };
+
+    const validationResult = orderSchema.safeParse(orderData);
+
+    if (!validationResult.success) {
+      const formattedErrors = validationResult.error.format();
+
+      // Hiển thị thông báo lỗi
+      const firstError = validationResult.error.errors[0];
+      toast.error(firstError?.message || 'Please check your order information');
+      return;
+    }
+
+    // Nếu validation thành công, gửi request tạo đơn hàng
+    createOrder(orderData);
+  };
 
   if (items.length === 0) {
     return <NotFound />;
