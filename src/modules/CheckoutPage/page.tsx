@@ -44,7 +44,29 @@ const PageCheckout = () => {
   const { items, clearCheckout } = useCheckoutStore();
   const { removeMultipleFromCart } = useCartStore(); // Import removeMultipleFromCart from CartStore
 
+  const { mutate: createOrder, isLoading } = useCreateOrderMutation({
+    onSuccess: (data) => {
+      // Get the IDs of items that were successfully ordered
+      const orderedItemIds = items.map((item) => item._id).filter(Boolean);
 
+      // Remove these items from the cart
+      if (orderedItemIds.length > 0) {
+        removeMultipleFromCart(orderedItemIds);
+      }
+
+      if (data.paymentMethod === 'ONLINE_PAYMENT' && data?.paymentSession) {
+        window.location.href = data.paymentSession?.url;
+        clearCheckout();
+      } else {
+        router.push(`${ROUTER.ORDERS}/${data._id}`);
+        toast.success('Tạo mới đơn hàng thành công!');
+        clearCheckout();
+      }
+    },
+    onError: (error) => {
+      toast.error('Tạo mới đơn hàng thất bại!');
+    },
+  });
 
 
 
