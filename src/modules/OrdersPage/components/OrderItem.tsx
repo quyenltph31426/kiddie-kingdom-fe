@@ -269,7 +269,7 @@ const OrderItem = ({ order, onCancelSuccess, refetch }: OrderItemProps) => {
                               <span className="text-gray-500 text-xs">
                                 Số lượng: {item.quantity} x {formatNumber(item.price)}
                               </span>
-                              <span className="font-medium text-primary-700 text-sm">{formatNumber(item.price * item.quantity)}</span>
+                              <span className="font-medium text-primary-700 text-sm">{formatNumber(item.price * item.quantity)} vnđ</span>
                             </HStack>
 
                             {/* Review button for completed orders */}
@@ -353,19 +353,19 @@ const OrderItem = ({ order, onCancelSuccess, refetch }: OrderItemProps) => {
                   <VStack spacing={2} className="text-sm">
                     <HStack className="w-full justify-between">
                       <span className="text-gray-600">Tổng tiền hàng:</span>
-                      <span className="text-gray-800"> {formatNumber((order.totalAmount || 0) + (order.discountAmount || 0))}</span>
+                      <span className="text-gray-800"> {formatNumber((order.totalAmount || 0) + (order.discountAmount || 0))} vnđ</span>
                     </HStack>
 
                     {order.discountAmount > 0 && (
                       <HStack className="w-full justify-between">
                         <span className="text-gray-600">Giảm giá:</span>
-                        <span className="text-green-600">-{formatNumber(order.discountAmount)}</span>
+                        <span className="text-green-600">-{formatNumber(order.discountAmount)} vnđ</span>
                       </HStack>
                     )}
                     <div className="my-1 border-gray-200 border-t"></div>
                     <HStack className="w-full justify-between">
                       <span className="font-medium text-gray-700">Tổng cộng:</span>
-                      <span className="font-medium text-primary-700">{formatNumber(order.totalAmount || 0)}</span>
+                      <span className="font-medium text-primary-700">{formatNumber(order.totalAmount || 0)} vnđ</span>
                     </HStack>
                   </VStack>
                 </div>

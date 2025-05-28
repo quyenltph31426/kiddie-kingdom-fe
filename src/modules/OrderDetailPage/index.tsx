@@ -211,7 +211,7 @@ const OrderDetailPage = () => {
                           {item.variantId && <p className="mt-1 text-gray-500 text-xs">Variant: {item.variantId}</p>}
                           <div className="mt-auto flex items-end justify-between">
                             <p className="text-gray-500 text-sm">Qty: {item.quantity}</p>
-                            <p className="font-medium text-gray-900 text-sm">{formatNumber(item.price * item.quantity)}</p>
+                            <p className="font-medium text-gray-900 text-sm">{formatNumber(item.price * item.quantity)} vnđ</p>
                           </div>
                         </div>
                       </div>
@@ -225,19 +225,19 @@ const OrderDetailPage = () => {
                       <HStack className="justify-between">
                         <span className="text-gray-600 text-sm">Tổng tiền hàng</span>
                         <span className="font-medium text-sm">
-                          {formatNumber((order?.totalAmount || 0) + (order?.discountAmount || 0))}
+                          {formatNumber((order?.totalAmount || 0) + (order?.discountAmount || 0))} vnđ
                         </span>
                       </HStack>
                       {(order?.discountAmount || 0) > 0 && (
                         <HStack className="justify-between">
                           <span className="text-gray-600 text-sm">Giảm giá</span>
-                          <span className="font-medium text-red-600 text-sm">-{formatNumber(order?.discountAmount || 0)}</span>
+                          <span className="font-medium text-red-600 text-sm">-{formatNumber(order?.discountAmount || 0)} vnđ</span>
                         </HStack>
                       )}
                       <Separator className="my-2" />
                       <HStack className="justify-between">
                         <span className="font-medium">Tổng cộng</span>
-                        <span className="font-medium">{formatNumber(order?.totalAmount || 0)}</span>
+                        <span className="font-medium">{formatNumber(order?.totalAmount || 0)} vnđ</span>
                       </HStack>
                     </div>
                   </div>
