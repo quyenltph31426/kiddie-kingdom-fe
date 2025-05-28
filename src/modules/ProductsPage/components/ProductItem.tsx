@@ -45,10 +45,13 @@ const ProductItem = ({
               height={300}
               className="w-full object-cover transition-all duration-300 group-hover:scale-105"
             />
-            <HStack className="mt-1">
-              <div className="line-clamp-1 max-w-[160px] font-semibold text-[#8f8f8f] text-sm uppercase">{brand?.name}</div>
-            </HStack>
           </div>
+        </SkeletonWrapper>
+
+        <SkeletonWrapper className="h-4 w-full" loading={loading}>
+          <HStack className="mt-1">
+            <div className="line-clamp-1 max-w-[160px] font-semibold text-[#8f8f8f] text-sm uppercase">{brand?.name}</div>
+          </HStack>
         </SkeletonWrapper>
 
         <SkeletonWrapper className="h-4 w-full" loading={loading}>
