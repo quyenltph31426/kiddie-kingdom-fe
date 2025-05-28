@@ -124,7 +124,7 @@ const ReviewDialog = ({ productId, orderId, productImage, productName }: ReviewD
       <DialogContent className="sm:max-w-[500px]">
         <div className="flex justify-between">
           <DialogHeader>
-            <DialogTitle>Write a Review</DialogTitle>
+            <DialogTitle>Viết một đánh giá</DialogTitle>
           </DialogHeader>
 
           <DialogClose asChild>
@@ -166,9 +166,9 @@ const ReviewDialog = ({ productId, orderId, productImage, productName }: ReviewD
               name="comment"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Your Review</FormLabel>
+                  <FormLabel>Đánh giá sản phẩm</FormLabel>
                   <FormControl>
-                    <TextArea placeholder="Share your experience with this product..." className="min-h-[120px]" {...field} />
+                    <TextArea placeholder="Chia sẻ trải nghiệm của bạn về sản phẩm này..." className="min-h-[120px]" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -177,7 +177,7 @@ const ReviewDialog = ({ productId, orderId, productImage, productName }: ReviewD
 
             {/* Image upload */}
             <div className="space-y-2">
-              <FormLabel>Add Photos (Optional)</FormLabel>
+              <FormLabel>Thêm hình ảnh (không bắt buộc)</FormLabel>
               <FileUploader
                 maxSize={5}
                 minSize={0.001}
@@ -191,7 +191,7 @@ const ReviewDialog = ({ productId, orderId, productImage, productName }: ReviewD
               >
                 <div className="cursor-pointer rounded-md border-2 border-gray-300 border-dashed p-4 text-center hover:border-gray-400">
                   {/* <Icons.image className="mx-auto h-8 w-8 text-gray-400" /> */}
-                  <p className="mt-2 text-gray-500 text-sm">Click to upload or drag and drop</p>
+                  <p className="mt-2 text-gray-500 text-sm">Kéo và thả hoặc chọn hình ảnh</p>
                   <p className="text-gray-400 text-xs">PNG, JPG, JPEG (max 5MB)</p>
                 </div>
               </FileUploader>
@@ -227,10 +227,10 @@ const ReviewDialog = ({ productId, orderId, productImage, productName }: ReviewD
               {isSubmitting ? (
                 <>
                   <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                  Submitting...
+                  Đang gửi...
                 </>
               ) : (
-                'Submit Review'
+                'Gửi đánh giá'
               )}
             </Button>
           </div>
