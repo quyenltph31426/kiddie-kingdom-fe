@@ -20,6 +20,7 @@ import OrderSummary from './components/OrderSummary';
 import PaymentMethod from './components/PaymentMethod';
 import ShippingForm from './components/ShippingForm';
 import { type OrderSchema, orderSchema } from './libs/validators';
+import { onMutateError } from '@/libs/common';
 
 const CheckoutPage = () => {
   const router = useRouter();
@@ -63,9 +64,7 @@ const CheckoutPage = () => {
         clearCheckout();
       }
     },
-    onError: (error) => {
-      toast.error('Tạo mới đơn hàng thất bại!');
-    },
+    onError: onMutateError,
   });
 
   const handleSubmitOrder = (formData: OrderSchema) => {
