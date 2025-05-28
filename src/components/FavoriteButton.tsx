@@ -35,7 +35,7 @@ const FavoriteButton = ({
   const { mutate: toggleFavorite, isLoading } = useToggleFavoriteMutation({
     onSuccess: () => {
       setIsFavorite(!isFavorite);
-      toast.success(isFavorite ? 'Removed from favorites' : 'Added to favorites');
+      toast.success(isFavorite ? 'Xóa sản phẩm khỏi danh sách yêu thích!' : 'Thêm sản phẩm vào danh sách yêu thích!');
       // Invalidate favorites queries to refresh lists
       // queryClient.invalidateQueries({ queryKey: ['favorites'] });
     },

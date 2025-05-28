@@ -55,7 +55,7 @@ const ProductItem = ({
         </SkeletonWrapper>
 
         <SkeletonWrapper className="h-4 w-full" loading={loading}>
-          <H4 className="font-poppins text-[#041675] lg:text-base line-clamp-4 h-28">{name}</H4>
+          <H4 className="line-clamp-4 h-28 font-poppins text-[#041675] lg:text-base">{name}</H4>
         </SkeletonWrapper>
 
         <HStack pos="apart">

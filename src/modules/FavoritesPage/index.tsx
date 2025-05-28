@@ -21,8 +21,10 @@ const FavoritesPage = () => {
   const { data, isFetching, refetch } = useFavoriteProductsQuery({
     variables: { page, limit },
     onError: onMutateError,
+    refetchOnMount: true,
   });
 
+  console.log(data?.items);
   return (
     <div>
       <Breadcrumb breadcrumbs={[{ name: 'Home', path: ROUTER.HOME }, { name: 'My Favorites' }]} />
@@ -52,9 +54,9 @@ const FavoritesPage = () => {
 
         <Show when={!isFetching && data && data.items.length > 0}>
           <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4">
-            {data?.items.map((favorite) => (
-              <ProductItem key={favorite._id} {...favorite.product} />
-            ))}
+            {data?.items.map((favorite) => {
+              return <ProductItem key={favorite._id} {...favorite} />;
+            })}
           </div>
 
           <div className="mt-8 flex justify-center">
