@@ -48,7 +48,7 @@ const CartPageWebsite = () => {
       setSelectedItems(carts.map((item) => item._id || ''));
     }
   }, [isAllSelected, carts]);
-    // Handle select all checkbox
+  // Handle select all checkbox
   const handleSelectAll = () => {
     setIsAllSelected(!isAllSelected);
     if (!isAllSelected) {
@@ -57,7 +57,7 @@ const CartPageWebsite = () => {
       setSelectedItems([]);
     }
   };
-    // Handle item selection
+  // Handle item selection
   const handleSelectItem = (id: string) => {
     if (selectedItems.includes(id)) {
       setSelectedItems(selectedItems.filter((item) => item !== id));
@@ -69,17 +69,17 @@ const CartPageWebsite = () => {
       }
     }
   };
-    // Handle remove item
-    const handleRemoveItem = async (id: string) => {
-      try {
-        await removeFromCart(id);
-        toast.success('Xóa sản phẩm khỏi giỏ hàng thành công!');
-      } catch (error) {
-        toast.error('Xóa sản phẩm khỏi giỏ hàng thất bại!');
-      }
-    };
-    // Handle update quantity
-      const handleUpdateQuantity = async (id: string, quantity: number) => {
+  // Handle remove item
+  const handleRemoveItem = async (id: string) => {
+    try {
+      await removeFromCart(id);
+      toast.success('Xóa sản phẩm khỏi giỏ hàng thành công!');
+    } catch (error) {
+      toast.error('Xóa sản phẩm khỏi giỏ hàng thất bại!');
+    }
+  };
+  // Handle update quantity
+  const handleUpdateQuantity = async (id: string, quantity: number) => {
     if (quantity < 1) return;
 
     try {
@@ -89,22 +89,22 @@ const CartPageWebsite = () => {
     }
   };
   // Handle checkout
-    const handleCheckout = () => {
-      if (selectedItems.length === 0) {
-        toast.error('Vui lòng chọn ít nhất một sản phẩm!');
-        return;
-      }
-  
-      // Get selected items from cart
-      const checkoutItems = carts.filter((item) => selectedItems.includes(item._id || ''));
-  
-      // Set items in checkout store
-      useCheckoutStore.getState().setItems(checkoutItems);
-  
-      // Navigate to checkout page
-      router.push(ROUTER.CHECKOUT);
-    };
-      return (
+  const handleCheckout = () => {
+    if (selectedItems.length === 0) {
+      toast.error('Vui lòng chọn ít nhất một sản phẩm!');
+      return;
+    }
+
+    // Get selected items from cart
+    const checkoutItems = carts.filter((item) => selectedItems.includes(item._id || ''));
+
+    // Set items in checkout store
+    useCheckoutStore.getState().setItems(checkoutItems);
+
+    // Navigate to checkout page
+    router.push(ROUTER.CHECKOUT);
+  };
+  return (
     <div className="bg-[#F5F5F5] pb-10">
       <Breadcrumb breadcrumbs={[{ name: 'Home', path: ROUTER.HOME }, { name: 'Cart' }]} className="bg-white" />
 
@@ -119,7 +119,7 @@ const CartPageWebsite = () => {
         ) : carts.length === 0 ? (
           <div className="mt-10 flex flex-col items-center justify-center rounded bg-white py-10">
             <p className="mb-4 text-lg">Giỏ hàng của bạn đang trống</p>
-            <Link  href={ROUTER.COLLECTIONS}>
+            <Link href={ROUTER.COLLECTIONS}>
               <Button>Tiếp tục mua hàng</Button>
             </Link>
           </div>

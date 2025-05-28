@@ -171,7 +171,7 @@ const OrderDetailPage = () => {
           {order &&
             order.shippingStatus === 'PENDING' &&
             order.paymentStatus === 'PENDING' &&
-            order.paymentMethod === 'CASH_ON_DELIVERY' && <DialogCancelOrder orderId={order._id} />}
+            order.paymentMethod === 'CASH_ON_DELIVERY' && <DialogCancelOrder refetch={refetch} orderId={order._id} />}
         </div>
 
         <Show when={isFetching}>

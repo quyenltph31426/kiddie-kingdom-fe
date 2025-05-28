@@ -1,18 +1,15 @@
 'use client';
-
-import { useCancelOrderMutation } from '@/api/order/queries';
 import type { IOrder, IOrderItem } from '@/api/order/types';
 import H4 from '@/components/text/H4';
 import { Button } from '@/components/ui/button';
 import { HStack, Show, VStack } from '@/components/utilities';
-import { cn, onMutateError } from '@/libs/common';
+import { cn } from '@/libs/common';
 import { ROUTER } from '@/libs/router';
 import { formatNumber } from '@/libs/utils';
 import { format } from 'date-fns';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
-import { toast } from 'react-toastify';
 import {
   getPaymentMethodIcon,
   getPaymentMethodText,
@@ -29,21 +26,13 @@ import ReviewDialog from './ReviewDialog';
 
 interface OrderItemProps {
   order: IOrder;
-  onCancelSuccess?: () => void;
+  refetch: any;
 }
 
-const OrderItem = ({ order, onCancelSuccess }: OrderItemProps) => {
+const OrderItem = ({ order, refetch }: OrderItemProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedItemForReview, setSelectedItemForReview] = useState<IOrderItem | null>(null);
   const [isReviewDialogOpen, setIsReviewDialogOpen] = useState(false);
-
-  const { mutate: cancelOrder, isLoading } = useCancelOrderMutation({
-    onSuccess: () => {
-      toast.success('Order cancelled successfully');
-      onCancelSuccess?.();
-    },
-    onError: onMutateError,
-  });
 
   const openReviewDialog = (item: IOrderItem) => {
     setSelectedItemForReview(item);
@@ -111,7 +100,7 @@ const OrderItem = ({ order, onCancelSuccess }: OrderItemProps) => {
               </Button>
             </Link>
             {order.shippingStatus === 'PENDING' && order.paymentStatus === 'PENDING' && order.paymentMethod === 'CASH_ON_DELIVERY' && (
-              <DialogCancelOrder orderId={order._id} />
+              <DialogCancelOrder orderId={order._id} refetch={refetch} />
             )}
           </VStack>
         </HStack>
@@ -364,7 +353,7 @@ const OrderItem = ({ order, onCancelSuccess }: OrderItemProps) => {
                 <div className="flex justify-end space-x-2">
                   {order.shippingStatus === 'PENDING' &&
                     order.paymentStatus === 'PENDING' &&
-                    order.paymentMethod === 'CASH_ON_DELIVERY' && <DialogCancelOrder orderId={order._id} />}
+                    order.paymentMethod === 'CASH_ON_DELIVERY' && <DialogCancelOrder orderId={order._id} refetch={refetch} />}
                   <Link href={`${ROUTER.ORDERS}/${order._id}`} className="w-full">
                     <Button
                       variant="outline"

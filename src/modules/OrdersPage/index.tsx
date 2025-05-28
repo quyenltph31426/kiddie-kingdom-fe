@@ -118,7 +118,7 @@ const OrdersPage = () => {
         <Show when={!isFetching && data && data.items.length > 0}>
           <VStack spacing={16} className="mt-4">
             {data?.items.map((order) => (
-              <OrderItem key={order._id} order={order} onCancelSuccess={refetch} />
+              <OrderItem key={order._id} order={order} refetch={refetch} />
             ))}
           </VStack>
 

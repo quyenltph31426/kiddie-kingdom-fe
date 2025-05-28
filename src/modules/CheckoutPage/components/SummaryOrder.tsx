@@ -109,4 +109,4 @@ const SummaryOrder = () => {
   );
 };
 
-export default SummaryOrder
+export default SummaryOrder;

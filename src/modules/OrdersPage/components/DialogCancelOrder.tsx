@@ -12,9 +12,10 @@ import { toast } from 'react-toastify';
 
 interface DialogCancelOrderProps {
   orderId: string;
+  refetch: any;
 }
 
-const DialogCancelOrder = ({ orderId }: DialogCancelOrderProps) => {
+const DialogCancelOrder = ({ orderId, refetch }: DialogCancelOrderProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [reason, setReason] = useState('');
 
@@ -28,6 +29,7 @@ const DialogCancelOrder = ({ orderId }: DialogCancelOrderProps) => {
 
   const handleCancelOrder = () => {
     cancelOrder({ orderId, reason });
+    refetch?.();
   };
 
   return (
