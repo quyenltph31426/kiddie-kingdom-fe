@@ -68,7 +68,6 @@ const ReviewDialog = ({ productId, orderId, productImage, productName, refetch }
         setUploadedImages(newImages);
         form.setValue('images', newImages);
         setIsUploading(false);
-        refetch?.();
       },
       onError: (error) => {
         onMutateError(error);
@@ -83,6 +82,8 @@ const ReviewDialog = ({ productId, orderId, productImage, productName, refetch }
       toast.success('Cảm ơn bạn đã đánh giá sản phẩm!');
 
       handleClose();
+
+      refetch?.();
     },
     onError: onMutateError,
   });
