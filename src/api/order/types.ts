@@ -46,6 +46,9 @@ export interface IOrder {
     paymentId: string;
   };
   product?: IProduct;
+  userNote?: string;
+  shipperOfProof?: string[];
+  cancelledReason?: string;
 }
 
 export interface IOrderResponse {

@@ -26,10 +26,11 @@ import ReviewDialog from './ReviewDialog';
 
 interface OrderItemProps {
   order: IOrder;
+  onCancelSuccess?: () => void;
   refetch: any;
 }
 
-const OrderItem = ({ order, refetch }: OrderItemProps) => {
+const OrderItem = ({ order, onCancelSuccess, refetch }: OrderItemProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedItemForReview, setSelectedItemForReview] = useState<IOrderItem | null>(null);
   const [isReviewDialogOpen, setIsReviewDialogOpen] = useState(false);
@@ -159,6 +160,25 @@ const OrderItem = ({ order, refetch }: OrderItemProps) => {
           );
         })}
       </VStack>
+
+      <Show when={order.shippingStatus === 'DELIVERED' && order.paymentStatus === 'COMPLETED'}>
+        {order.shipperOfProof && order.shipperOfProof.length > 0 && (
+          <div className="px-4 pb-2">
+            <span className="font-medium text-gry-500 text-sm">Minh chứng giao hàng</span>
+            <div className="flex flex-wrap gap-2">
+              {order.shipperOfProof.map((image, index) => (
+                <div key={index} className="relative h-20 w-20 overflow-hidden rounded-md border border-gray-200">
+                  <Image src={image} alt={`Review image ${index + 1}`} fill className="object-cover" />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </Show>
+
+      <Show when={order.shippingStatus === 'CANCELED'}>
+        <p className="px-4 pb-2 text-red-500 text-sm">Lý do hủy: {order?.cancelledReason || 'Không có lý do'}</p>
+      </Show>
 
       {/* Expanded details with improved sections and visual hierarchy */}
       {isExpanded && (

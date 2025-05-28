@@ -34,14 +34,6 @@ const OrderDetailPage = () => {
     onError: onMutateError,
   });
 
-  const { mutate: cancelOrder, isLoading: isCancelling } = useCancelOrderMutation({
-    onSuccess: () => {
-      toast.success('Order cancelled successfully');
-      refetch();
-    },
-    onError: onMutateError,
-  });
-
   // Simplified status display function
   const getStatusBadge = () => {
     if (!order) return null;

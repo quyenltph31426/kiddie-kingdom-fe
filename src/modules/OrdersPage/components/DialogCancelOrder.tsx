@@ -23,6 +23,7 @@ const DialogCancelOrder = ({ orderId, refetch }: DialogCancelOrderProps) => {
     onSuccess: () => {
       toast.success('Hủy đơn hàng thành công');
       setIsOpen(false);
+      refetch?.();
     },
     onError: onMutateError,
   });
