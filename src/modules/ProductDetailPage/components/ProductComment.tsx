@@ -177,12 +177,12 @@ const ReviewItem = ({ review }: ReviewItemProps) => {
         </div>
       </Show>
 
-      <div className="mt-4 flex items-center justify-between">
+      {/* <div className="mt-4 flex items-center justify-between">
         <div className="flex gap-2">
           {review.isPurchased && <span className="rounded-full bg-blue-100 px-2 py-1 font-medium text-blue-800 text-xs">Đã mua hàng</span>}
           {review.isVerified && <span className="rounded-full bg-green-100 px-2 py-1 font-medium text-green-800 text-xs">Đã xác thực</span>}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
