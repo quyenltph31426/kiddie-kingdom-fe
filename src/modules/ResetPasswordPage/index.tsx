@@ -66,7 +66,7 @@ const ResetPasswordPage = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </div>
-          <h1 className="text-center font-semibold text-2xl">Invalid Reset Link</h1>
+          <h1 className="text-center font-semibold text-2xl">Đường dẫn đặt lại mật khẩu không hợp lệ</h1>
           <p className="text-center text-gray-600">
             Đường dẫn đặt lại mật khẩu không hợp lệ hoặc đã hết hạn. Vui lòng yêu cầu một đường dẫn đặt lại mật khẩu mới.
           </p>
