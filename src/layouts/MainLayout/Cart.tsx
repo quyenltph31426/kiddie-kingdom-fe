@@ -45,7 +45,7 @@ const Cart = () => {
         <Link href={ROUTER.CART}>
           <Button variant="transparent" className="relative">
             <Icons.cart className="text-white" />
-            <span className="ml-3 hidden lg:flex">Cart</span>
+            <span className="ml-3 hidden lg:flex">Giỏ hàng</span>
             <div className="-top-2 -right-2 absolute flex h-5 w-5 items-center justify-center rounded-full bg-white text-primary-500 text-xs">
               {carts?.length || 0}
             </div>
@@ -55,7 +55,7 @@ const Cart = () => {
 
       <HoverCardContent className="w-80 p-4" align="end">
         <div className="mb-2 flex items-center justify-between">
-          <H3 className="text-primary-600">My Cart</H3>
+          <H3 className="text-primary-600">Giỏ hàng</H3>
         </div>
 
         <Separator className="mb-3" />
@@ -63,9 +63,9 @@ const Cart = () => {
         {carts.length === 0 ? (
           <VStack spacing={4} className="py-6 text-center">
             <ShoppingBag className="mx-auto h-12 w-12 text-gray-300" />
-            <H3 className="text-center font-semibold text-gray-500">Your cart is empty</H3>
-            <Link href={ROUTER.HOME}>
-              <Button className="mt-2 w-full">Go Shopping</Button>
+            <H3 className="text-center font-semibold text-gray-500">Giỏ hàng của bạn đang trống</H3>
+            <Link href={ROUTER.COLLECTIONS}>
+              <Button className="mt-2 w-full">Tiếp tục mua hàng</Button>
             </Link>
           </VStack>
         ) : (
@@ -96,13 +96,13 @@ const Cart = () => {
             <Separator className="my-3" />
 
             <HStack pos="apart" className="mb-3">
-              <span className="font-medium text-sm">Subtotal:</span>
+              <span className="font-medium text-sm">Tổng tiền:</span>
               <span className="font-bold text-sm">{formatNumber(totalPrice)}</span>
             </HStack>
 
             <Link href={ROUTER.CART} className="w-full ">
               <Button variant="outline" className="w-full">
-                View Cart
+                Xem giỏ hàng
               </Button>
             </Link>
           </>

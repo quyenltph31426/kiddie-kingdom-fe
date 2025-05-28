@@ -126,7 +126,7 @@ const AIChatAssistant = () => {
           <div className="flex h-full max-h-[440px] min-h-[300px] flex-col overflow-hidden rounded-xl text-xs">
             {/* Header */}
             <HStack className="bg-primary-500 p-2 text-white" pos="apart">
-              <h3 className="font-semibold">Kiddie Kingdom Chat Bot</h3>
+              <h3 className="font-semibold">Kiddie Kingdom Chat Bot Với AI</h3>
               <Button
                 variant="ghost"
                 size="icon"
@@ -184,7 +184,7 @@ const AIChatAssistant = () => {
                     ref={inputRef}
                     value={prompt}
                     onChange={(e) => setPrompt(e.target.value)}
-                    placeholder="Ask about products..."
+                    placeholder="Hỏi tôi bất kỳ điều gì..."
                     className="h-9 flex-1"
                     disabled={isLoading}
                     autoFocus
