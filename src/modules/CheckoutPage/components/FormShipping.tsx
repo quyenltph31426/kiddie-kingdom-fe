@@ -256,4 +256,4 @@ const FormShipping = () => {
   );
 };
 
-export default FormShipping
+export default FormShipping;

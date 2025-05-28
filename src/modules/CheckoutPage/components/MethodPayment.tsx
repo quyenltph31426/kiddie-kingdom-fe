@@ -40,4 +40,4 @@ const MethodPayment = () => {
   );
 };
 
-export default MethodPayment
+export default MethodPayment;
