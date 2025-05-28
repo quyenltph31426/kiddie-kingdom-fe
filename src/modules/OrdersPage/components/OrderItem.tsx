@@ -146,6 +146,7 @@ const OrderItem = ({ order, refetch }: OrderItemProps) => {
                       productName={item.productName}
                       productImage={item.productImage}
                       orderId={order._id}
+                      refetch={refetch}
                     />
                   ) : (
                     <Button size="xs" disabled>

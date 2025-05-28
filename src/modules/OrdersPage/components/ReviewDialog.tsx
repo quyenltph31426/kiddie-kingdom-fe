@@ -31,9 +31,10 @@ interface ReviewDialogProps {
   productName: string;
   productImage?: string;
   orderId: string;
+  refetch: any;
 }
 
-const ReviewDialog = ({ productId, orderId, productImage, productName }: ReviewDialogProps) => {
+const ReviewDialog = ({ productId, orderId, productImage, productName, refetch }: ReviewDialogProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
@@ -67,6 +68,7 @@ const ReviewDialog = ({ productId, orderId, productImage, productName }: ReviewD
         setUploadedImages(newImages);
         form.setValue('images', newImages);
         setIsUploading(false);
+        refetch?.();
       },
       onError: (error) => {
         onMutateError(error);
@@ -78,7 +80,7 @@ const ReviewDialog = ({ productId, orderId, productImage, productName }: ReviewD
   // Submit review mutation using the actual API
   const { mutate: submitReview, isLoading: isSubmitting } = useSubmitReviewMutation({
     onSuccess: () => {
-      toast.success('Review submitted successfully!');
+      toast.success('Cảm ơn bạn đã đánh giá sản phẩm!');
 
       handleClose();
     },
