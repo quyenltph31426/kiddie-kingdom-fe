@@ -21,6 +21,7 @@ import DialogCancelOrder from '../OrdersPage/components/DialogCancelOrder';
 const OrderDetailPage = () => {
   const params = useParams();
   const router = useRouter();
+  const orderId = params.id as string;
 
   const {
     data: order,
