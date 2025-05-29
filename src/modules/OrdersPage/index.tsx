@@ -21,7 +21,6 @@ import OrderItem from './components/OrderItem';
 type OrderFilterTab = 'all' | 'pending' | 'processing' | 'shipping' | 'completed' | 'cancelled' | 'payment-failed';
 
 const OrdersPage = () => {
-  const [activeTab, setActiveTab] = useState<OrderFilterTab>('all');
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(5);
 
