@@ -26,6 +26,7 @@ const LoginPage = () => {
   const { setUser } = useUserStore();
 
   const form = useForm<AuthSchema>({
+    resolver: zodResolver(authSchema),
     defaultValues: {
       email: '',
       password: '',
